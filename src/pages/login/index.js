@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../actions'
+import * as Actions from '../../actions'
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 
 import './style.scss'
@@ -30,4 +30,4 @@ function mapDispatch(dispatch) {
   }
 }
 
-export default connect(mapState, mapDispatch)(Root)
+export default connect(mapState, mapDispatch)(Login)

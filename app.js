@@ -8,7 +8,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './src/reducers'
 
-import Index  from './src/pages/index'
+import Root  from './src/pages/root'
 
 let store = createStore(reducer, compose(
   applyMiddleware(thunk),
@@ -16,17 +16,18 @@ let store = createStore(reducer, compose(
 ))
 
 let render = (Component) => {
-  <AppContainer>
-    <Provider store={store}>
-    <Component />
-    </Provider>
-  </AppContainer>
-,
-  document.getElementById('root')
+   ReactDom.render(
+     <AppContainer>
+      <Provider store={store}>
+        <Component />
+      </Provider>
+     </AppContainer>,
+     document.getElementById('root')
+)
 }
-render(Index)
+render(Root)
 if (module.hot) {
-  module.hot.accept('./src/pages/index', () => {
-    render(Index)
+  module.hot.accept('./src/pages/root', () => {
+    render(Root)
   })
 }

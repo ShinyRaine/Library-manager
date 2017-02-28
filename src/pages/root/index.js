@@ -1,19 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../actions'
+import * as Actions from '../../actions'
 
-
-import './style.scss'
-
-class Index extends React.Component {
+class Root extends React.Component {
   constructor(props) {
     super(props)
   }
   render(){
     return (
       <div className="infor">
-      	abcdxxx
+      	abcdxxxxx
       </div>
     )
   }
@@ -30,4 +27,4 @@ function mapDispatch(dispatch) {
   }
 }
 
-export default connect(mapState, mapDispatch)(Index)
+export default connect(mapState, mapDispatch)(Root)
