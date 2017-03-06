@@ -7,16 +7,22 @@ const { Content } = Layout
 const FormItem = Form.Item;
 import Head from '../../components/head'
 
+import './style.scss'
 class Login extends React.Component {
   constructor(props) {
     super(props)
   }
+  handleSubmit(e) {
+    e.preventDefault()
+    console.log(e);
+  }
   render(){
     const { getFieldDecorator } = this.props.form;
     return (
-      <Layout>
+      <Layout className="login">
         <Head />
-        <Content style={{padding: "50px"}}>
+        <Content>
+          <h1>登录</h1>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
@@ -33,7 +39,6 @@ class Login extends React.Component {
               )}
             </FormItem>
             <FormItem>
-              <a className="login-form-forgot">Forgot password</a>
               <Button type="primary" htmlType="submit" className="login-form-button">
                 Log in
               </Button>

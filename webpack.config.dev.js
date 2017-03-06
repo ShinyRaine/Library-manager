@@ -1,8 +1,11 @@
-var path = require('path')
-var webpack = require('webpack')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const path = require('path')
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    disable: process.env.NODE_ENV === "development"
+});
 module.exports = {
   entry: ['react-hot-loader/patch',
           'webpack-hot-middleware/client',
@@ -29,9 +32,13 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: 'css-loader',
-        use: ExtractTextPlugin.extract({
-          use:'css-loader'
+        loader: extractSass.extract({
+            use: [{
+                loader: "css-loader"
+            }, {
+                loader: "sass-loader"
+            }],
+            fallback: "style-loader"
         })
       },
       {
@@ -48,5 +55,6 @@ module.exports = {
         include: __dirname
       },
     ]
-  }
+  },
+  devtool: "cheap-eval-source-map"
 }

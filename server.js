@@ -23,7 +23,9 @@ if (process.env.NODE_ENV === 'dev') {
 	    publicPath: webpackDevConfig.output.publicPath,
 	    noInfo: false,
 			quiet: false,
-			color: true,
+			stats: {
+				colors: true
+			}
 	}))
 	app.use(webpackHotMiddleware(compiler))
 }
