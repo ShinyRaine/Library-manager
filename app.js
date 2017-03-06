@@ -13,6 +13,8 @@ import { Router, Route, browserHistory } from 'react-router'
 
 import Login  from './src/pages/login'
 import Root  from './src/pages/root'
+import User  from './src/pages/user'
+import Admin  from './src/pages/admin'
 
 let store = createStore(reducer, compose(
   applyMiddleware(thunk),
@@ -26,6 +28,8 @@ let render = (Component) => {
         <Router history={browserHistory}>
           <Route path="/" component={Root} />
           <Route path="/login" component={Login} />
+          <Route path="/user" component={User} />
+          <Route path="/admin" component={Admin} />
         </Router>
       </Provider>
      </AppContainer>,
