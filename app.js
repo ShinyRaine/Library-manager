@@ -8,6 +8,10 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import reducer from './src/reducers'
 
+import { Router, Route, browserHistory } from 'react-router'
+
+
+import Login  from './src/pages/login'
 import Root  from './src/pages/root'
 
 let store = createStore(reducer, compose(
@@ -19,11 +23,14 @@ let render = (Component) => {
    ReactDom.render(
      <AppContainer>
       <Provider store={store}>
-        <Component />
+        <Router history={browserHistory}>
+          <Route path="/" component={Root} />
+          <Route path="/login" component={Login} />
+        </Router>
       </Provider>
      </AppContainer>,
      document.getElementById('root')
-)
+   )
 }
 render(Root)
 if (module.hot) {

@@ -5,11 +5,12 @@ var express = require('express')
 // var MongoClient = require('mongodb').MongoClient
 // var assert = require('assert');
 var http = require('http')
+var path = require('path')
 var app = express()
-
+var reload = require('reload')
+app.use(express.static(__dirname + '/static'))
 var webpack = require('webpack')
-
-// if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV === 'dev') {
 	var webpackDevMiddleware = require('webpack-dev-middleware'),
 	    webpackHotMiddleware = require('webpack-hot-middleware'),
 	    webpackDevConfig = require('./webpack.config.dev.js')
@@ -21,13 +22,24 @@ var webpack = require('webpack')
 	    // public path should be the same with webpack config
 	    publicPath: webpackDevConfig.output.publicPath,
 	    noInfo: false,
-			quiet: true
+			quiet: false,
+			color: true,
 	}))
 	app.use(webpackHotMiddleware(compiler))
-// }
-var server = http.createServer(app);
+}
+app.use((req, res, next) => {
+  // Only fall back for GET methods which accept HTML and don't appear to
+  // end with a file extension.
+  if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
+	 return next()
+  }
+	console.log(req.baseUrl)
+	res.sendFile(req.baseUrl + '/index.html')
+})
 
-server.listen(3000,function () {
+var server = http.createServer(app);
+reload(server, app)
+app.listen(3000,function () {
 	console.log('listening on *:3000')
 })
 // var url = 'mongodb://localhost:27017/test';
