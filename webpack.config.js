@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: ['react-hot-loader/patch',
           'webpack-hot-middleware/client',
-          './app.js'
+          './app/app.js'
   ],
   output: {
     path: '/',
@@ -19,7 +19,7 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('style.css'),
     new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'index.tmpl'),
+        template: path.resolve(__dirname, './app/index.tmpl'),
         inject: true,
         hash: false,
         filename: 'index.html',
@@ -55,6 +55,5 @@ module.exports = {
         include: __dirname
       },
     ]
-  },
-  devtool: "cheap-eval-source-map"
+  }
 }

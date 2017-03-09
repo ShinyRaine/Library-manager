@@ -6,16 +6,16 @@ import { AppContainer } from 'react-hot-loader'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import reducer from './src/reducers'
+import reducer from './reducers'
 
 import { Router, Route, browserHistory } from 'react-router'
 
 
-import LoginForm  from './src/pages/login'
-import Root  from './src/pages/root'
-import User  from './src/pages/user'
-import Admin  from './src/pages/admin'
-import SignupForm from './src/pages/signup'
+import LoginForm  from './pages/login'
+import Root  from './pages/root'
+import User  from './pages/user'
+import Admin  from './pages/admin'
+import SignupForm from './pages/signup'
 
 let store = createStore(reducer, compose(
   applyMiddleware(thunk),
@@ -40,7 +40,7 @@ let render = (Component) => {
 }
 render(Root)
 if (module.hot) {
-  module.hot.accept('./src/pages/root', () => {
+  module.hot.accept('./pages/root', () => {
     render(Root)
   })
 }

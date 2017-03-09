@@ -9,7 +9,6 @@ const { Header, Content, Sider } = Layout;
 import BookTable from '../../components/booktable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
-// 我是新手会写错啦啦啦，API也设计不好。。
 class Admin extends React.Component {
   constructor(props) {
     super(props)
@@ -23,6 +22,10 @@ class Admin extends React.Component {
     })
   }
   handleOk(){
+    const { addBook, fetchData } = this.props.actions
+    let test = this.isbnInput.value
+    addBook(test)
+    fetchData('addbook', {isbn: test})
     this.setState({
       addBookVisible: false
     })
@@ -33,13 +36,14 @@ class Admin extends React.Component {
     })
   }
   render(){
+    const { data } = this.props.state.books
     // 假定图书状态state，未借是0，借出1
-    const data = [
-      { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 3, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 4, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' }
-    ]
+    // const data = [
+    //   { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 3, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 4, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' }
+    // ]
     const list = [
       {
         key: 'fe',
@@ -94,7 +98,7 @@ class Admin extends React.Component {
           visible={this.state.addBookVisible}
           onOk={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}>
-          <input />
+          <input ref={(input)=>{this.isbnInput = input}}/>
         </Modal>
        </Layout>
     )

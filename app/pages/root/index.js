@@ -9,19 +9,26 @@ const { Header, Content, Sider } = Layout
 import BookTable from '../../components/booktable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
-// 我是新手会写错啦啦啦，API也设计不好。。
+
 class Root extends React.Component {
   constructor(props) {
     super(props)
   }
+  componentDidMount() {
+    const { fetchData } = this.props.actions
+    fetchData('books')
+  }
   render(){
+    console.log(this.props.state)
+    const { data } = this.props.state.books
+
     // 假定图书状态state，未借是0，借出1
-    const data = [
-      { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 3, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-      { key: 4, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' }
-    ]
+    // const data = [
+    //   { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 3, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
+    //   { key: 4, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' }
+    // ]
     const list = [
       {
         key: 'fe',

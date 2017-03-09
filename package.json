@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=dev&& node server.js"
+    "start": "set NODE_ENV=dev&& nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "mongodb": "^2.2.24",
-    "mongolass": "^2.4.2"
+    "mongoose": "^4.8.6"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",

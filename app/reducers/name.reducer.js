@@ -1,4 +1,4 @@
-import {ADD_NAME, REQUEST_DATA, RECEIVE_DATA} from '../actions'
+import {ADD_BOOK, REQUEST_DATA, RECEIVE_DATA} from '../actions'
 
 const initialState = {
   name: '',
@@ -8,7 +8,7 @@ const initialState = {
 
 export default function name (state = initialState, action) {
   switch (action.type) {
-    case "ADD_NAME":
+    case "ADD_BOOK":
       return Object.assign({}, state, {
         name: action.text
       })
