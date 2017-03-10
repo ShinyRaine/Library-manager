@@ -13,7 +13,8 @@ class Admin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      addBookVisible: false
+      addBookVisible: false,
+      loadingBookInfor: false
     }
   }
   showAddBookDialog(){
@@ -25,7 +26,7 @@ class Admin extends React.Component {
     const { addBook, fetchData } = this.props.actions
     let test = this.isbnInput.value
     addBook(test)
-    fetchData('addbook', {isbn: test})
+    fetchData('addbook', {isbn:test})
     this.setState({
       addBookVisible: false
     })
@@ -97,6 +98,7 @@ class Admin extends React.Component {
         <Modal title="请输入要添加书目的ISBN"
           visible={this.state.addBookVisible}
           onOk={this.handleOk.bind(this)}
+          confirmLoading={this.state.loadingBookInfor}
           onCancel={this.handleCancel.bind(this)}>
           <input ref={(input)=>{this.isbnInput = input}}/>
         </Modal>

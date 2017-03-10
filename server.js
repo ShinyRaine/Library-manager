@@ -43,26 +43,40 @@ app.get('/books', function (req, res) {
 		res.json(book)
 	})
 })
+
+const https = require('https')
 app.post('/admin/books/new', function(req, res) {
-	console.log(req.body)
-	var isbn = req.body.isbn
-	var bookObj = req.body
-	var _book = new Books({
-			isbn: bookObj.isbn,
-			name: bookObj.name,
-			author: bookObj.author,
-			pic: bookObj.pic,
-			type: bookObj.type,
-			state: bookObj.state,
-			description: bookObj.description,
-			publishTime: bookObj.publishTime
-		})
-		_book.save(function(err,book) {
-			if (err) {
-				console.log(err)
-			}
-			res.send('ok')
-		})
+	let isbn = req.body.isbn
+	console.log(isbn)
+	https.get({
+		host: 'api.douban.com',
+	 	path: '/v2/book/isbn/' + isbn}, (rs) => {
+			let body = ''
+			rs.on('data', (data) => {
+				body += data
+			})
+			rs.on('end', () => {
+				let data = JSON.parse(body)
+				res.send(data)
+			})
+	})
+	// var bookObj = req.body
+	// var _book = new Books({
+	// 		isbn: bookObj.isbn,
+	// 		name: bookObj.name,
+	// 		author: bookObj.author,
+	// 		pic: bookObj.pic,
+	// 		type: bookObj.type,
+	// 		state: bookObj.state,
+	// 		description: bookObj.description,
+	// 		publishTime: bookObj.publishTime
+	// 	})
+	// 	_book.save(function(err,book) {
+	// 		if (err) {
+	// 			console.log(err)
+	// 		}
+	// 		res.send('ok')
+	// 	})
 })
 
 app.use((req, res, next) => {

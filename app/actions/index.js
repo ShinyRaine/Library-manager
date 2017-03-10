@@ -8,6 +8,7 @@ export function addBook(text) {
   }
 }
 
+// 请求相关的Actions
 export const REQUEST_DATA = 'REQUEST_DATA'
 export function requestData(data) {
   return {
@@ -16,11 +17,27 @@ export function requestData(data) {
   }
 }
 
-export const RECEIVE_DATA = 'RECEIVE_DATA'
-export function receiveData(json) {
+export const RECEIVE_BOOKS = 'RECEIVE_BOOKS'
+export function receiveBooks(json) {
   return {
-    type: RECEIVE_DATA,
+    type: RECEIVE_BOOKS,
     json
+  }
+}
+
+export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
+export function receiveAddbookRes(res) {
+  return {
+    type: RECEIVE_ADDBOOK_RES,
+    res
+  }
+}
+
+export const RECEIVE_BOOK_INFO = 'RECEIVE_BOOK_INFO'
+export function receiveBookInfo(res) {
+  return {
+    type: RECEIVE_BOOK_INFO,
+    res
   }
 }
 
@@ -31,9 +48,14 @@ export const fetchData = (type, options) => (dispatch) => {
         return fetch('/books')
           .then(response => response.json())
           .then(json =>
-            dispatch(receiveData(json))
+            dispatch(receiveBooks(json))
           )
-        break;
+      case 'getBookInfo':
+        return fetch('https://api.douban.com/v2/book/isbn/' + options)
+          .then(response => response.json())
+          .then(json =>
+            dispatch(receiveBookInfo(json))
+          )
     // POST
       case 'addbook':
         return fetch('/admin/books/new', {
@@ -41,10 +63,8 @@ export const fetchData = (type, options) => (dispatch) => {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
-          .then(response => response.json())
-          .then(json =>
-            dispatch(receiveData(json))
+          .then(res =>
+            dispatch(receiveAddbookRes(res))
           )
-        break;
     }
 }
