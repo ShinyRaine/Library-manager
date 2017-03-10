@@ -9,7 +9,7 @@ class BookTable extends React.Component {
     const data = this.props.data
 
     const columns = [
-      { title: 'ISBN', dataIndex: 'ISBN', key: 'ISBN' },
+      { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'name', key: 'name' },
       { title: '作者', dataIndex: 'author', key: 'author' },
       { title: '分类', dataIndex: 'type', key: 'type' },
@@ -22,7 +22,7 @@ class BookTable extends React.Component {
       }}
     ]
     const userColumns =  [
-      { title: 'ISBN', dataIndex: 'ISBN', key: 'ISBN' },
+      { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'name', key: 'name' },
       { title: '作者', dataIndex: 'author', key: 'author' },
       { title: '分类', dataIndex: 'type', key: 'type' },

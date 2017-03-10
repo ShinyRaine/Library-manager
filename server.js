@@ -40,7 +40,6 @@ app.get('/books', function (req, res) {
 		if (err) {
 			console.log(err)
 		}
-		console.log(book)
 		res.json(book)
 	})
 })

@@ -21,7 +21,9 @@ class Root extends React.Component {
   render(){
     console.log(this.props.state)
     const { data } = this.props.state.books
-
+    if (data) {
+      data.map((item) => Object.assign(item, {key: item._id}))
+    }
     // 假定图书状态state，未借是0，借出1
     // const data = [
     //   { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
