@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/test')
+mongoose.connect('mongodb://localhost/testlib')
 // var assert = require('assert');
 
 const path = require('path')
@@ -9,11 +9,11 @@ const app = express()
 const webpack = require('webpack')
 
 if (process.env.NODE_ENV === 'dev') {
-	var webpackDevMiddleware = require('webpack-dev-middleware'),
+	let webpackDevMiddleware = require('webpack-dev-middleware'),
 	    webpackHotMiddleware = require('webpack-hot-middleware'),
 	    webpackDevConfig = require('./webpack.config.js')
 
-	var compiler = webpack(webpackDevConfig);
+	let compiler = webpack(webpackDevConfig);
 
 	// attach to the compiler & the server
 	app.use(webpackDevMiddleware(compiler, {
@@ -34,55 +34,25 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()) // parse application/json
 
-const Books = require('./lib/module/books')
-app.get('/books', function (req, res) {
-	Books.fetch(function(err, book){
-		if (err) {
-			console.log(err)
-		}
-		res.json(book)
-	})
-})
+// 用户相关
+// const User = require('./lib/module/user')
 
-const https = require('https')
-app.post('/admin/books/new', function(req, res) {
-	let isbn = req.body.isbn
-	console.log(isbn)
-	https.get({
-		host: 'api.douban.com',
-	 	path: '/v2/book/isbn/' + isbn}, (rs) => {
-			let body = ''
-			rs.on('data', (data) => {
-				body += data
-			})
-			rs.on('end', () => {
-				let data = JSON.parse(body)
-				res.send(data)
-			})
-	})
-	// var bookObj = req.body
-	// var _book = new Books({
-	// 		isbn: bookObj.isbn,
-	// 		name: bookObj.name,
-	// 		author: bookObj.author,
-	// 		pic: bookObj.pic,
-	// 		type: bookObj.type,
-	// 		state: bookObj.state,
-	// 		description: bookObj.description,
-	// 		publishTime: bookObj.publishTime
-	// 	})
-	// 	_book.save(function(err,book) {
-	// 		if (err) {
-	// 			console.log(err)
-	// 		}
-	// 		res.send('ok')
-	// 	})
-})
+// 图书管理
+const bookCollector = require('./lib/module/book')
+app.get('/books', bookCollector.all)
+app.post('/admin/books/new', bookCollector.addbook)
+
+// app.get('*', function (req, res){
+// 		console.log(req.baseUrl)
+// 		res.sendFile(req.baseUrl + '/index.html')
+//   // res.sendFile( 'http://localhost:3000' + '/index.html')
+// })
 
 app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
 	 return next()
   }
+	console.log(req.baseUrl)
 	res.sendFile(req.baseUrl + '/index.html')
 })
 
