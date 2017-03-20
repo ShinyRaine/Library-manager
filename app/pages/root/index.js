@@ -60,7 +60,7 @@ class Root extends React.Component {
     ]
     return (
       <Layout>
-        <Head />
+        <Head user={this.props.state.user}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>

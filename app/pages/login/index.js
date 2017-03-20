@@ -22,7 +22,7 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className="login">
-        <Head />
+        <Head user={this.props.state.user}/>
         <Content>
           <h1>登录</h1>
           <Form onSubmit={this.handleSubmit} className="login-form">
