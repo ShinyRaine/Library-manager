@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as Actions from '../../actions'
+import * as UserActions from '../../actions/user.action'
 import Head from '../../components/head'
 import BookTable from '../../components/booktable'
 import { Layout } from 'antd';
@@ -42,7 +42,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

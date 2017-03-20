@@ -29,7 +29,7 @@ class Admin extends React.Component {
   handleOk(){
     const { addBook, fetchBookData } = this.props.bookActions
     let test = this.isbnInput.value
-    addBook(test)
+    addBook({isbn:test})
     fetchBookData('addbook', {isbn:test})
     this.setState({
       addBookVisible: false
@@ -41,7 +41,8 @@ class Admin extends React.Component {
     })
   }
   render(){
-    const { data } = this.props.state.books
+    const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
+    console.log(addBookInfo, receiveAddbookRes)
     const list = [
       {
         key: 'fe',
@@ -88,7 +89,7 @@ class Admin extends React.Component {
               <Content>
                 <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
               </Content>
-              <BookTable data={data}/>
+              <BookTable data={data} type="admin"/>
             </Content>
           </Layout>
         </Content>

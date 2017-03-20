@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-fetch'
 
 export const ADD_BOOK = 'ADD_BOOK'
-export function addBook(text) {
+export function addBook(info) {
   return {
     type: ADD_BOOK,
-    text
+    info
   }
 }
 
