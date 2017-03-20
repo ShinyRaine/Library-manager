@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../actions'
-import { Layout, Icon, Form, Input, Button, Checkbox } from 'antd';
+import * as UserActions from '../../actions/user.action'
+import { Link } from 'react-router'
+
+import { Layout, Icon, Form, Input, Button, Checkbox } from 'antd'
 const { Content } = Layout
 const FormItem = Form.Item;
 import Head from '../../components/head'
@@ -40,9 +42,9 @@ class Login extends React.Component {
             </FormItem>
             <FormItem>
               <Button type="primary" htmlType="submit" className="login-form-button">
-                Log in
+                登录
               </Button>
-              Or <a>register now!</a>
+              Or <Link to="/signup">注册</Link>
             </FormItem>
           </Form>
         </Content>
@@ -59,7 +61,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../actions'
-import { Layout, Icon, Form, Input, Button, Checkbox } from 'antd';
+import * as UserActions from '../../actions/user.action'
+import { Layout, Icon, Form, Input, Button, Checkbox, Modal } from 'antd';
 const { Content } = Layout
 const FormItem = Form.Item;
 import Head from '../../components/head'
@@ -17,9 +17,11 @@ class Signup extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault()
+    const { fetchData } = this.props.userActions
     this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          console.log('Received values of form: ', values)
+          fetchData('signup', values)
         }
       })
   }
@@ -38,12 +40,12 @@ class Signup extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className="login">
-        <Head />
+        <Head user={this.props.state.user}/>
         <Content>
           <h1>注册</h1>
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
             <FormItem>
-              {getFieldDecorator('userName', {
+              {getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入用户名' }],
               })(
                 <Input placeholder="输入用户名" />
@@ -84,7 +86,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

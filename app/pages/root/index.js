@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../actions'
+import * as BookActions from '../../actions/book.action'
 
 import { Layout } from 'antd';
 const { Header, Content, Sider } = Layout
@@ -15,8 +15,8 @@ class Root extends React.Component {
     super(props)
   }
   componentDidMount() {
-    const { fetchData } = this.props.actions
-    fetchData('books')
+    const { fetchBookData } = this.props.bookActions
+    fetchBookData('books')
   }
   render(){
     console.log(this.props.state)
@@ -24,13 +24,6 @@ class Root extends React.Component {
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
     }
-    // 假定图书状态state，未借是0，借出1
-    // const data = [
-    //   { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-    //   { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-    //   { key: 3, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
-    //   { key: 4, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' }
-    // ]
     const list = [
       {
         key: 'fe',
@@ -90,7 +83,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    bookActions: bindActionCreators(BookActions, dispatch)
   }
 }
 

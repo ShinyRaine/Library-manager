@@ -1,22 +1,23 @@
-import {ADD_BOOK, REQUEST_DATA, RECEIVE_DATA} from '../actions'
+import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES} from '../actions/user.action'
 
 const initialState = {
-  name: '',
   loading: false,
-  data: null
+  name: '',
+  manage: 0,
+  books: null
 }
 
 export default function name (state = initialState, action) {
   switch (action.type) {
-    case "ADD_BOOK":
-      return Object.assign({}, state, {
-        name: action.text
-      })
-      case "REQUEST_DATA":
+    case "USER_REQUEST":
       return Object.assign({}, state, {
         loading: true
       })
-      case "RECEIVE_DATA":
+      case "RECEIVE_SIGNUP_RES":
+      return Object.assign({}, state, {
+        loading: true
+      })
+      case "RECEIVE_LOGIN_RES":
       return Object.assign({}, state, {
         loading: false,
         data: action.json

@@ -12,6 +12,7 @@ class Head extends React.Component {
     console.log(value)
   }
   render(){
+    const user = this.props.user
     return (
       <Header className="header">
           <Menu
@@ -21,8 +22,8 @@ class Head extends React.Component {
             style={{ lineHeight: '64px' }}
           >
             <Menu.Item key="root"><Link to="/">首页</Link></Menu.Item>
-            <Menu.Item key="user"><Link to="/user">个人中心</Link></Menu.Item>
             <Menu.Item key="admin"><Link to="/admin">管理</Link></Menu.Item>
+            {user ? <Menu.Item key="user" style={{float: 'right'}}><Link to="/user">user.name</Link></Menu.Item> : <Menu.Item key="login" style={{float: 'right'}}><Link to="/login">登录</Link></Menu.Item>}
             <Menu.Item key="" style={{float: 'right'}}>
               <Input.Search
                         placeholder="搜索"

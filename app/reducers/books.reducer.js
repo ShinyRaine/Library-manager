@@ -1,4 +1,4 @@
-import {REQUEST_DATA, RECEIVE_BOOKS, RECEIVE_ADDBOOK_RES, RECEIVE_BOOK_INFO} from '../actions'
+import {BOOK_REQUEST, RECEIVE_BOOKS, RECEIVE_ADDBOOK_RES} from '../actions/book.action'
 
 const initialState = {
   loadingData: false,
@@ -9,7 +9,7 @@ const initialState = {
 
 export default function books (state = initialState, action) {
   switch (action.type) {
-      case "REQUEST_DATA":
+      case "BOOK_REQUEST":
         return Object.assign({}, state, {
           loading: true
         })
@@ -21,10 +21,6 @@ export default function books (state = initialState, action) {
       case "RECEIVE_ADDBOOK_RES":
         return Object.assign({}, state, {
           receiveAddbookRes: action.res
-        })
-      case "RECEIVE_BOOK_INFO":
-        return Object.assign({}, state, {
-          info: action.res
         })
     default:
       return state

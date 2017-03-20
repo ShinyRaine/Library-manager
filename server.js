@@ -1,11 +1,12 @@
 const express = require('express')
+const session = require('express-session')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/testlib')
 // var assert = require('assert');
 
 const path = require('path')
 const app = express()
-
+app.use(session({secret: 'library-manager'}))
 const webpack = require('webpack')
 
 if (process.env.NODE_ENV === 'dev') {
@@ -35,18 +36,14 @@ app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-fo
 app.use(bodyParser.json()) // parse application/json
 
 // 用户相关
-// const User = require('./lib/module/user')
+const userCollector = require('./lib/module/user')
+app.post('/user/signup', userCollector.signup)
 
 // 图书管理
 const bookCollector = require('./lib/module/book')
 app.get('/books', bookCollector.all)
 app.post('/admin/books/new', bookCollector.addbook)
 
-// app.get('*', function (req, res){
-// 		console.log(req.baseUrl)
-// 		res.sendFile(req.baseUrl + '/index.html')
-//   // res.sendFile( 'http://localhost:3000' + '/index.html')
-// })
 
 app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {

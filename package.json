@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
+    "express-session": "^1.15.1",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.6"
   },

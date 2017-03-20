@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as Actions from '../../actions'
+import * as BookActions from '../../actions/book.action'
 
 import { Layout, Button, Modal } from 'antd';
 const { Header, Content, Sider } = Layout;
@@ -17,16 +17,20 @@ class Admin extends React.Component {
       loadingBookInfor: false
     }
   }
+  componentDidMount() {
+    const { fetchBookData } = this.props.bookActions
+    fetchBookData('books')
+  }
   showAddBookDialog(){
     this.setState({
       addBookVisible: true
     })
   }
   handleOk(){
-    const { addBook, fetchData } = this.props.actions
+    const { addBook, fetchBookData } = this.props.bookActions
     let test = this.isbnInput.value
     addBook(test)
-    fetchData('addbook', {isbn:test})
+    fetchBookData('addbook', {isbn:test})
     this.setState({
       addBookVisible: false
     })
@@ -107,7 +111,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    bookActions: bindActionCreators(BookActions, dispatch)
   }
 }
 
