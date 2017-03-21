@@ -14,6 +14,8 @@ class User extends React.Component {
     super(props)
   }
   render(){
+    const { message, info, books } = this.props.state.user
+
     const data = [
       { key: 1, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 1, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
       { key: 2, ISBN: 32444444, name: 'John Brown', author: 'John Brown', type: '前端/js', state: 0, description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.' },
@@ -22,7 +24,7 @@ class User extends React.Component {
     ]
     return(
       <Layout>
-        <Head user={this.props.state.user}/>
+        <Head user={info}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>

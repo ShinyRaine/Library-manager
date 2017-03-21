@@ -27,6 +27,7 @@ class Admin extends React.Component {
     })
   }
   handleOk(){
+    const { message, info, books } = this.props.state.user
     const { addBook, fetchBookData } = this.props.bookActions
     let test = this.isbnInput.value
     addBook({isbn:test})
@@ -79,7 +80,7 @@ class Admin extends React.Component {
     ]
     return (
       <Layout>
-        <Head user={this.props.state.user}/>
+        <Head user={info}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>

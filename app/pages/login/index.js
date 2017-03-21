@@ -19,10 +19,11 @@ class Login extends React.Component {
     console.log(e);
   }
   render(){
+    const { message, info, books } = this.props.state.user
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className="login">
-        <Head user={this.props.state.user}/>
+        <Head user={info}/>
         <Content>
           <h1>登录</h1>
           <Form onSubmit={this.handleSubmit} className="login-form">

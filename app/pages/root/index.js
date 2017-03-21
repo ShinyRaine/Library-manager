@@ -20,6 +20,7 @@ class Root extends React.Component {
   }
   render(){
     console.log(this.props.state)
+    const { message, info, books } = this.props.state.user
     const { data } = this.props.state.books
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
@@ -60,7 +61,7 @@ class Root extends React.Component {
     ]
     return (
       <Layout>
-        <Head user={this.props.state.user}/>
+        <Head user={info}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>
