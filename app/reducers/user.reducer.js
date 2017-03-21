@@ -1,26 +1,30 @@
-import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES} from '../actions/user.action'
+import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES, RESET_REQ} from '../actions/user.action'
 
 const initialState = {
-  loading: false,
-  name: '',
-  manage: 0,
-  books: null
+  message: '',
+  info: null,
+  books: null,
 }
 
 export default function name (state = initialState, action) {
   switch (action.type) {
     case "USER_REQUEST":
       return Object.assign({}, state, {
-        loading: true
+        message: ''
       })
-      case "RECEIVE_SIGNUP_RES":
+    case "RESET_REQ":
       return Object.assign({}, state, {
-        loading: true
+        message: ''
       })
-      case "RECEIVE_LOGIN_RES":
+    case "RECEIVE_SIGNUP_RES":
       return Object.assign({}, state, {
-        loading: false,
-        data: action.json
+        message: action.res.message,
+        info: action.res.user || null
+      })
+    case "RECEIVE_LOGIN_RES":
+      return Object.assign({}, state, {
+        message: action.res.message,
+        info: action.res
       })
     default:
       return state

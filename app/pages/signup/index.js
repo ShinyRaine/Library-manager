@@ -1,7 +1,9 @@
 import React from 'react'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UserActions from '../../actions/user.action'
+
 import { Layout, Icon, Form, Input, Button, Checkbox, Modal } from 'antd';
 const { Content } = Layout
 const FormItem = Form.Item;
@@ -15,6 +17,40 @@ class Signup extends React.Component {
       help: ''
     }
   }
+  componentDidUpdate() {
+    const { message, info, books } = this.props.state.user
+    console.log(message);
+    if (message) {
+      if (message === "success") {
+        this.success()
+      }else {
+        this.error(message)
+      }
+    }
+  }
+  success() {
+    const { resetReq } = this.props.userActions
+
+    Modal.success({
+      title: '注册成功',
+      onOk: function(){
+        resetReq()
+        return false
+      }
+    })
+  }
+  error(errmessage) {
+    const { resetReq } = this.props.userActions
+
+    Modal.error({
+      title: '注册失败',
+      content: errmessage,
+      onOk: function(){
+        resetReq()
+        return false
+      }
+    })
+  }
   handleSubmit(e) {
     e.preventDefault()
     const { fetchData } = this.props.userActions
@@ -23,7 +59,7 @@ class Signup extends React.Component {
           console.log('Received values of form: ', values)
           fetchData('signup', values)
         }
-      })
+    })
   }
   handleBlur() {
     const form = this.props.form
@@ -31,16 +67,17 @@ class Signup extends React.Component {
     let passwordRepeat = form.getFieldValue('repeat')
     if (passwordRepeat !== password) {
       this.setState({passwordStatus : 'error', help: '请输入一致的密码'})
-      console.log(this.state)
     } else {
       this.setState({passwordStatus : '', help: ''})
     }
   }
   render(){
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
+    const { message, info, books } = this.props.state.user
+
     return (
       <Layout className="login">
-        <Head user={this.props.state.user}/>
+        <Head user={info}/>
         <Content>
           <h1>注册</h1>
           <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">

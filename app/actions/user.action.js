@@ -9,11 +9,18 @@ export function userRequest(type) {
   }
 }
 
+export const RESET_REQ = 'RESET_REQ'
+export function resetReq() {
+  return {
+    type: RESET_REQ
+  }
+}
+
 export const RECEIVE_SIGNUP_RES = 'RECEIVE_SIGNUP_RES'
-export function receiveSignupRes(json) {
+export function receiveSignupRes(res) {
   return {
     type: RECEIVE_SIGNUP_RES,
-    json
+    res
   }
 }
 
@@ -35,9 +42,8 @@ export const fetchData = (type, options) => (dispatch) => {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
-          .then(res =>
-            dispatch(receiveSignupRes(res))
-          )
+         .then(res => res.json())
+         .then(json =>dispatch(receiveSignupRes(json)))
 
       // 登录
       case 'login':
@@ -45,9 +51,8 @@ export const fetchData = (type, options) => (dispatch) => {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
-         })
-          .then(res =>
-            dispatch(receiveLoginRes(res))
-          )
+        })
+        .then(res => res.json())
+        .then(json =>dispatch(receiveLoginRes(json)))
     }
 }

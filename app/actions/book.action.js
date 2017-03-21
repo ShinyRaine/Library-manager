@@ -49,8 +49,7 @@ export const fetchBookData = (type, options) => (dispatch) => {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
-          .then(res =>
-            dispatch(receiveAddbookRes(res))
-          )
+          .then(res => res.json())
+          .then(json => dispatch(receiveAddbookRes(json)))
     }
 }

@@ -12,10 +12,10 @@ class Head extends React.Component {
     console.log(value)
   }
   render(){
-    const user = this.props.user
+    const user = this.props.user || {}
     let rightList = (name) => {
       if (name) {
-        return <Menu.Item key="user" className="right-list"><Link to="/user">{user.name}</Link></Menu.Item>
+        return <Menu.Item key="user" className="right-list"><Link to="/user">{name}</Link></Menu.Item>
       } else {
         return (
           <Menu.SubMenu className="right-list" title={<Link to="/login" className="login-link">登录</Link>}>
