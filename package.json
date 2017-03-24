@@ -19,6 +19,7 @@
   "homepage": "https://github.com/RizzleCi/Library-manager#readme",
   "dependencies": {
     "body-parser": "^1.16.1",
+    "connect-mongodb-session": "^1.3.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.1",
     "express-session": "^1.15.1",

@@ -1,5 +1,13 @@
 const express = require('express')
 const session = require('express-session')
+const MongoDBStore = require('connect-mongodb-session')(session)
+
+const store = new MongoDBStore(
+	{
+		uri: 'mongodb://localhost/testlib',
+		collection: 'mySessions'
+	});
+
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/testlib')
@@ -7,7 +15,10 @@ mongoose.connect('mongodb://localhost/testlib')
 
 const path = require('path')
 const app = express()
-app.use(session({secret: 'library-manager'}))
+app.use(session({
+	secret: 'library-manager',
+	store: store
+}))
 const webpack = require('webpack')
 
 if (process.env.NODE_ENV === 'dev') {
@@ -50,12 +61,7 @@ app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
 	 return next()
   }
-	// if (req.session.i) {
-	// 	req.session.i++
-	// } else {
-	// 	req.session.i = 1
-	// }
-	console.log(req.session.user)
+	console.log(req.session.loggedIn)
 	res.sendFile(req.baseUrl + '/index.html')
 })
 
