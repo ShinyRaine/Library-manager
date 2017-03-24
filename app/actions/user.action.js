@@ -39,6 +39,7 @@ export const fetchData = (type, options) => (dispatch) => {
       case 'signup':
         return fetch('/user/signup', {
           method: 'POST',
+          credentials: 'include',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
@@ -55,5 +56,15 @@ export const fetchData = (type, options) => (dispatch) => {
         })
         .then(res => res.json())
         .then(json =>dispatch(receiveLoginRes(json)))
+        // 注销
+      // case 'logout':
+      //   return fetch('/user/logout', {
+      //     method: 'POST',
+      //     credentials: 'include',
+      //     headers: {'Content-Type': 'application/json'},
+      //     body: JSON.stringify(options)
+      //   })
+      //   .then(res => res.json())
+      //   .then(json =>dispatch(receiveLoginRes(json)))
     }
 }

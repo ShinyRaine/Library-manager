@@ -49,8 +49,10 @@ app.use(bodyParser.json()) // parse application/json
 
 // 用户相关
 const userCollector = require('./lib/module/user')
+app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
+app.get('/user/logout', userCollector.logout)
 
 // 图书管理
 const bookCollector = require('./lib/module/book')

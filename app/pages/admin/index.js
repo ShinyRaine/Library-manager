@@ -13,6 +13,7 @@ class Admin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      type: 'book',
       addBookVisible: false,
       loadingBookInfor: false
     }
@@ -21,29 +22,14 @@ class Admin extends React.Component {
     const { fetchBookData } = this.props.bookActions
     fetchBookData('books')
   }
-  showAddBookDialog(){
-    this.setState({
-      addBookVisible: true
-    })
+  changeType(type) {
+    this.setState({type: type})
   }
-  handleOk(){
-    const { message, info, books } = this.props.state.user
-    const { addBook, fetchBookData } = this.props.bookActions
-    let test = this.isbnInput.value
-    addBook({isbn:test})
-    fetchBookData('addbook', {isbn:test})
-    this.setState({
-      addBookVisible: false
-    })
-  }
-  handleCancel(){
-    this.setState({
-      addBookVisible: false
-    })
-  }
-  render(){
+  layout() {
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
-    console.log(addBookInfo, receiveAddbookRes)
+
+    const { message, info, books } = this.props.state.user
+
     const list = [
       {
         key: 'fe',
@@ -78,10 +64,9 @@ class Admin extends React.Component {
         ]
       }
     ]
-    return (
-      <Layout>
-        <Head user={info}/>
-        <Content style={{ padding: '50px' }}>
+    switch (this.state.type) {
+      case 'book':
+        return (
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>
               <Sidebar list={list}/>
@@ -93,6 +78,53 @@ class Admin extends React.Component {
               <BookTable data={data} type="admin"/>
             </Content>
           </Layout>
+        )
+      case 'user':
+        return (
+          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+              <BookTable data={data} type="admin"/>
+            </Content>
+          </Layout>
+        )
+      default:
+
+    }
+  }
+  showAddBookDialog(){
+    this.setState({
+      addBookVisible: true
+    })
+  }
+  handleOk(){
+    const { message, info, books } = this.props.state.user
+    const { addBook, fetchBookData } = this.props.bookActions
+    let test = this.isbnInput.value
+    addBook({isbn:test})
+    fetchBookData('addbook', {isbn:test})
+    this.setState({
+      addBookVisible: false
+    })
+  }
+  handleCancel(){
+    this.setState({
+      addBookVisible: false
+    })
+  }
+  render(){
+    const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
+    const { message, info, books } = this.props.state.user
+    console.log(this.state)
+
+    return (
+      <Layout>
+        <Head user={info}/>
+        <Content style={{ padding: '50px' }}>
+          <Content>
+            <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>
+            <Button onClick={this.changeType.bind(this, 'user')} >管理用户</Button>
+          </Content>
+          {this.layout()}
         </Content>
         <Modal title="请输入要添加书目的ISBN"
           visible={this.state.addBookVisible}
