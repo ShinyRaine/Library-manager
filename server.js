@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/testlib')
 // var assert = require('assert');
@@ -38,18 +39,23 @@ app.use(bodyParser.json()) // parse application/json
 // 用户相关
 const userCollector = require('./lib/module/user')
 app.post('/user/signup', userCollector.signup)
+app.post('/user/login', userCollector.login)
 
 // 图书管理
 const bookCollector = require('./lib/module/book')
 app.get('/books', bookCollector.all)
 app.post('/admin/books/new', bookCollector.addbook)
 
-
 app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
 	 return next()
   }
-	console.log(req.baseUrl)
+	// if (req.session.i) {
+	// 	req.session.i++
+	// } else {
+	// 	req.session.i = 1
+	// }
+	console.log(req.session.user)
 	res.sendFile(req.baseUrl + '/index.html')
 })
 

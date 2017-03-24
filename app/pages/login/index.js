@@ -16,7 +16,13 @@ class Login extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    console.log(e);
+    const { fetchData } = this.props.userActions
+    this.props.form.validateFields((err, values) => {
+        if (!err) {
+          console.log(values)
+          fetchData('login', values)
+        }
+    })
   }
   render(){
     const { message, info, books } = this.props.state.user
@@ -26,7 +32,7 @@ class Login extends React.Component {
         <Head user={info}/>
         <Content>
           <h1>登录</h1>
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
             <FormItem>
               {getFieldDecorator('userName', {
                 rules: [{ required: true, message: 'Please input your username!' }],
