@@ -49,6 +49,7 @@ export const fetchData = (type, options) => (dispatch) => {
       case 'login':
         return fetch('/user/login', {
           method: 'POST',
+          credentials: 'include',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
         })
