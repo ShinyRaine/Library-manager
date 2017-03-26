@@ -6,7 +6,7 @@ import * as BookActions from '../../actions/book.action'
 import { Layout, Button, Modal } from 'antd';
 const { Header, Content, Sider } = Layout;
 
-import BookTable from '../../components/booktable'
+import MainTable from '../../components/mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 class Admin extends React.Component {
@@ -75,7 +75,7 @@ class Admin extends React.Component {
               <Content>
                 <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
               </Content>
-              <BookTable data={data} type="admin"/>
+              <MainTable data={data} type="admin"/>
             </Content>
           </Layout>
         )
@@ -83,7 +83,7 @@ class Admin extends React.Component {
         return (
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <BookTable data={data} type="admin"/>
+              <MainTable data={data} type="admin"/>
             </Content>
           </Layout>
         )
@@ -114,11 +114,13 @@ class Admin extends React.Component {
   render(){
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
     const { message, info, books } = this.props.state.user
-    console.log(this.state)
-
+    let user
+    if (info) {
+      user = info.user
+    }
     return (
       <Layout>
-        <Head user={info}/>
+        <Head user={user}/>
         <Content style={{ padding: '50px' }}>
           <Content>
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as BookActions from '../../actions/book.action'
 
-class BookTable extends React.Component {
+class MainTable extends React.Component {
   constructor(props){
     super(props)
   }
@@ -29,16 +29,23 @@ class BookTable extends React.Component {
       user: [
         { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
         { title: '书名', dataIndex: 'name', key: 'name' },
-        { title: '作者', dataIndex: 'author', key: 'author' },
         { title: '分类', dataIndex: 'type', key: 'type' },
-        { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (<Button type="primary">归还</Button>)}
+        { title: '借阅时间', dataIndex: 'time', key: 'time' },
+        { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
+          <Button type="primary">归还</Button>
+        )}
       ],
       admin: [
         { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
         { title: '书名', dataIndex: 'name', key: 'name' },
         { title: '作者', dataIndex: 'author', key: 'author' },
         { title: '分类', dataIndex: 'type', key: 'type' },
-        { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (<Button type="primary">删除</Button>)}
+        { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
+          <div>
+            <Button type="primary">编辑</Button>
+            <Button type="primary">删除</Button>
+          </div>
+        )}
       ]
     }
 
@@ -64,4 +71,4 @@ function mapDispatch(dispatch) {
   }
 }
 
-export default connect(mapState, mapDispatch)(BookTable)
+export default connect(mapState, mapDispatch)(MainTable)

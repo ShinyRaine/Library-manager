@@ -6,7 +6,7 @@ import * as BookActions from '../../actions/book.action'
 import { Layout } from 'antd';
 const { Header, Content, Sider } = Layout
 
-import BookTable from '../../components/booktable'
+import MainTable from '../../components/mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 
@@ -19,8 +19,11 @@ class Root extends React.Component {
     fetchBookData('books')
   }
   render(){
-    console.log(this.props.state)
     const { message, info, books } = this.props.state.user
+    let user
+    if (info) {
+      user = info.user
+    }
     const { data } = this.props.state.books
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
@@ -61,14 +64,14 @@ class Root extends React.Component {
     ]
     return (
       <Layout>
-        <Head user={info}/>
+        <Head user={user}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>
               <Sidebar list={list}/>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <BookTable data={data}/>
+              <MainTable data={data}/>
             </Content>
           </Layout>
         </Content>

@@ -26,10 +26,14 @@ class Login extends React.Component {
   }
   render(){
     const { message, info, books } = this.props.state.user
+    let user
+    if (info) {
+      user = info.user
+    }
     const { getFieldDecorator } = this.props.form;
     return (
       <Layout className="login">
-        <Head user={info}/>
+        <Head user={user}/>
         <Content>
           <h1>登录</h1>
           <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
