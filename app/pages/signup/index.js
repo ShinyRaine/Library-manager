@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UserActions from '../../actions/user.action'
+import { browserHistory } from 'react-router'
 
 import { Layout, Icon, Form, Input, Button, Checkbox, Modal } from 'antd';
 const { Content } = Layout
@@ -35,6 +36,7 @@ class Signup extends React.Component {
       title: '注册成功',
       onOk: function(){
         resetReq()
+        browserHistory.push('/')
         return false
       }
     })

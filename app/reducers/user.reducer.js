@@ -2,7 +2,8 @@ import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES, RESET_REQ} from '..
 
 const initialState = {
   message: '',
-  info: null,
+  name: '',
+  token: '',
   books: null,
 }
 
@@ -17,14 +18,18 @@ export default function name (state = initialState, action) {
         message: ''
       })
     case "RECEIVE_SIGNUP_RES":
+    // 将token存入localstorage
       return Object.assign({}, state, {
         message: action.res.message,
-        info: action.res.user || null
+        name: action.res.name,
+        token: action.res.token
       })
     case "RECEIVE_LOGIN_RES":
+    // 将token存入localstorage
       return Object.assign({}, state, {
         message: action.res.message,
-        info: action.res
+        name: action.res.name,
+        token: action.res.token
       })
     default:
       return state

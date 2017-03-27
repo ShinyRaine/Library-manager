@@ -32,6 +32,14 @@ export function receiveLoginRes(res) {
   }
 }
 
+export const RECEIVE_LOGOUT_RES = 'RECEIVE_LOGOUT_RES'
+export function receiveLogoutRes(res) {
+  return {
+    type: RECEIVE_LOGOUT_RES,
+    res
+  }
+}
+
 export const fetchData = (type, options) => (dispatch) => {
     dispatch(userRequest(type))
     switch (type) {
@@ -39,7 +47,6 @@ export const fetchData = (type, options) => (dispatch) => {
       case 'signup':
         return fetch('/user/signup', {
           method: 'POST',
-          credentials: 'include',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
@@ -50,21 +57,19 @@ export const fetchData = (type, options) => (dispatch) => {
       case 'login':
         return fetch('/user/login', {
           method: 'POST',
-          credentials: 'include',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
         })
         .then(res => res.json())
         .then(json =>dispatch(receiveLoginRes(json)))
         // 注销
-      // case 'logout':
-      //   return fetch('/user/logout', {
-      //     method: 'POST',
-      //     credentials: 'include',
-      //     headers: {'Content-Type': 'application/json'},
-      //     body: JSON.stringify(options)
-      //   })
-      //   .then(res => res.json())
-      //   .then(json =>dispatch(receiveLoginRes(json)))
+      case 'logout':
+        return fetch('/user/logout', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json =>dispatch(receiveLogoutRes(json)))
     }
 }

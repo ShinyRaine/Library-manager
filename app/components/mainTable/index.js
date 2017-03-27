@@ -46,6 +46,16 @@ class MainTable extends React.Component {
             <Button type="primary">删除</Button>
           </div>
         )}
+      ],
+      userList: [
+        { title: '用户名', dataIndex: 'name', key: 'name' },
+        { title: '权限', dataIndex: 'isbn', key: 'isbn' },
+        { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
+          <div>
+            <Button type="primary">设为管理员</Button>
+            <Button type="primary">删除</Button>
+          </div>
+        )}
       ]
     }
 

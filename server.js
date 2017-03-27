@@ -1,12 +1,12 @@
 const express = require('express')
-const session = require('express-session')
-const MongoDBStore = require('connect-mongodb-session')(session)
+// const session = require('express-session')
+// const MongoDBStore = require('connect-mongodb-session')(session)
 
-const store = new MongoDBStore(
-	{
-		uri: 'mongodb://localhost/testlib',
-		collection: 'mySessions'
-	});
+// const store = new MongoDBStore(
+// 	{
+// 		uri: 'mongodb://localhost/testlib',
+// 		collection: 'mySessions'
+// 	});
 
 const cookieParser = require('cookie-parser')
 const mongoose = require('mongoose')
@@ -15,10 +15,10 @@ mongoose.connect('mongodb://localhost/testlib')
 
 const path = require('path')
 const app = express()
-app.use(session({
-	secret: 'library-manager',
-	store: store
-}))
+// app.use(session({
+// 	secret: 'library-manager',
+// 	store: store
+// }))
 const webpack = require('webpack')
 
 if (process.env.NODE_ENV === 'dev') {
@@ -52,7 +52,7 @@ const userCollector = require('./lib/module/user')
 app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
-app.get('/user/logout', userCollector.logout)
+// app.get('/user/logout', userCollector.logout)
 app.post('/user/setmanage', userCollector.setManage)
 // 图书管理
 const bookCollector = require('./lib/module/book')

@@ -83,7 +83,7 @@ class Admin extends React.Component {
         return (
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <MainTable data={data} type="admin"/>
+              <MainTable data={data} type="userList"/>
             </Content>
           </Layout>
         )

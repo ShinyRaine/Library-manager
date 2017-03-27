@@ -14,6 +14,41 @@ class Login extends React.Component {
   constructor(props) {
     super(props)
   }
+  componentDidUpdate() {
+    const { message, info, books } = this.props.state.user
+    console.log(message)
+    if (message) {
+      if (message === "success") {
+        this.success()
+      }else {
+        this.error(message)
+      }
+    }
+  }
+  success() {
+    const { resetReq } = this.props.userActions
+
+    Modal.success({
+      title: '登录成功',
+      onOk: function(){
+        resetReq()
+        browserHistory.push('/')
+        return false
+      }
+    })
+  }
+  error(errmessage) {
+    const { resetReq } = this.props.userActions
+
+    Modal.error({
+      title: '登录失败',
+      content: errmessage,
+      onOk: function(){
+        resetReq()
+        return false
+      }
+    })
+  }
   handleSubmit(e) {
     e.preventDefault()
     const { fetchData } = this.props.userActions
