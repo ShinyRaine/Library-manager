@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import * as UserActions from '../../actions/user.action'
 import { Link } from 'react-router'
+import { browserHistory } from 'react-router'
 
-import { Layout, Icon, Form, Input, Button, Checkbox } from 'antd'
+import { Layout, Icon, Form, Input, Button, Modal } from 'antd'
 const { Content } = Layout
 const FormItem = Form.Item;
-import Head from '../../components/head'
+import Head from '../head'
 
 import './style.scss'
 class Login extends React.Component {
@@ -15,39 +17,29 @@ class Login extends React.Component {
     super(props)
   }
   componentDidUpdate() {
-    const { message, info, books } = this.props.state.user
-    console.log(message)
+    const { resetReq } = this.props.userActions
+    const { message } = this.props.state.user
     if (message) {
       if (message === "success") {
-        this.success()
+        Modal.success({
+          title: '登录成功',
+          onOk: function(){
+            resetReq()
+            browserHistory.push('/')
+            return false
+          }
+        })
       }else {
-        this.error(message)
+        Modal.error({
+          title: '登录失败',
+          content: message,
+          onOk: function(){
+            resetReq()
+            return false
+          }
+        })
       }
     }
-  }
-  success() {
-    const { resetReq } = this.props.userActions
-
-    Modal.success({
-      title: '登录成功',
-      onOk: function(){
-        resetReq()
-        browserHistory.push('/')
-        return false
-      }
-    })
-  }
-  error(errmessage) {
-    const { resetReq } = this.props.userActions
-
-    Modal.error({
-      title: '登录失败',
-      content: errmessage,
-      onOk: function(){
-        resetReq()
-        return false
-      }
-    })
   }
   handleSubmit(e) {
     e.preventDefault()

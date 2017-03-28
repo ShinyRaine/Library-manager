@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as UserActions from '../../actions/user.action'
-import Head from '../../components/head'
-import MainTable from '../../components/mainTable'
+import Head from '../head'
+import MainTable from '../mainTable'
 import { Layout } from 'antd';
 
 const { Header, Content, Sider } = Layout;
@@ -14,11 +14,12 @@ class User extends React.Component {
     super(props)
   }
   render(){
-    const { message, info, books } = this.props.state.user
+    const { message, name, books } = this.props.state.user
+    const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
 
     return(
       <Layout>
-        <Head user={info}/>
+        <Head user={name}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>

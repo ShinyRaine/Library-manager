@@ -6,8 +6,8 @@ import * as BookActions from '../../actions/book.action'
 import { Layout } from 'antd';
 const { Header, Content, Sider } = Layout
 
-import MainTable from '../../components/mainTable'
-import Head from '../../components/head'
+import MainTable from '../mainTable'
+import Head from '../head'
 import Sidebar from '../../components/sidebar'
 
 class Root extends React.Component {
@@ -19,11 +19,7 @@ class Root extends React.Component {
     fetchBookData('books')
   }
   render(){
-    const { message, info, books } = this.props.state.user
-    let user
-    if (info) {
-      user = info.user
-    }
+    const { message, name, books } = this.props.state.user
     const { data } = this.props.state.books
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
@@ -64,7 +60,7 @@ class Root extends React.Component {
     ]
     return (
       <Layout>
-        <Head user={user}/>
+        <Head user={name}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>

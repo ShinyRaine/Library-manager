@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router'
 import { Layout, Icon, Form, Input, Button, Checkbox, Modal } from 'antd';
 const { Content } = Layout
 const FormItem = Form.Item;
-import Head from '../../components/head'
+import Head from '../head'
 
 class Signup extends React.Component {
   constructor(props) {
@@ -19,39 +19,29 @@ class Signup extends React.Component {
     }
   }
   componentDidUpdate() {
+    const { resetReq } = this.props.userActions
     const { message, info, books } = this.props.state.user
-    console.log(message);
     if (message) {
       if (message === "success") {
-        this.success()
+        Modal.success({
+          title: '注册成功',
+          onOk: function(){
+            resetReq()
+            browserHistory.push('/')
+            return false
+          }
+        })
       }else {
-        this.error(message)
+        Modal.error({
+          title: '注册失败',
+          content: message,
+          onOk: function(){
+            resetReq()
+            return false
+          }
+        })
       }
     }
-  }
-  success() {
-    const { resetReq } = this.props.userActions
-
-    Modal.success({
-      title: '注册成功',
-      onOk: function(){
-        resetReq()
-        browserHistory.push('/')
-        return false
-      }
-    })
-  }
-  error(errmessage) {
-    const { resetReq } = this.props.userActions
-
-    Modal.error({
-      title: '注册失败',
-      content: errmessage,
-      onOk: function(){
-        resetReq()
-        return false
-      }
-    })
   }
   handleSubmit(e) {
     e.preventDefault()

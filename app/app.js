@@ -11,11 +11,11 @@ import reducer from './reducers'
 import { Router, Route, browserHistory } from 'react-router'
 
 
-import LoginForm  from './pages/login'
-import Root  from './pages/root'
-import User  from './pages/user'
-import Admin  from './pages/admin'
-import SignupForm from './pages/signup'
+import LoginForm  from './container/login'
+import Root  from './container/root'
+import User  from './container/user'
+import Admin  from './container/admin'
+import SignupForm from './container/signup'
 
 let store = createStore(reducer, compose(
   applyMiddleware(thunk),
@@ -40,7 +40,7 @@ let render = (Component) => {
 }
 render(Root)
 if (module.hot) {
-  module.hot.accept('./pages/root', () => {
+  module.hot.accept('./container/root', () => {
     render(Root)
   })
 }

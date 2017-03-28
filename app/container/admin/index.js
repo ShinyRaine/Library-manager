@@ -6,8 +6,8 @@ import * as BookActions from '../../actions/book.action'
 import { Layout, Button, Modal } from 'antd';
 const { Header, Content, Sider } = Layout;
 
-import MainTable from '../../components/mainTable'
-import Head from '../../components/head'
+import MainTable from '../mainTable'
+import Head from '../head'
 import Sidebar from '../../components/sidebar'
 class Admin extends React.Component {
   constructor(props) {
@@ -113,14 +113,10 @@ class Admin extends React.Component {
   }
   render(){
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
-    const { message, info, books } = this.props.state.user
-    let user
-    if (info) {
-      user = info.user
-    }
+    const { message, name, books } = this.props.state.user
     return (
       <Layout>
-        <Head user={user}/>
+        <Head user={name}/>
         <Content style={{ padding: '50px' }}>
           <Content>
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>

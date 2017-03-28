@@ -62,7 +62,7 @@ class MainTable extends React.Component {
     return (
       <Table
         columns={columns[type]}
-        expandedRowRender={record => <p>{record.description}</p>}
+        expandedRowRender={record => type === 'default' ? (<p>{record.description}</p>) : null}
         dataSource={data}
       />
     )
