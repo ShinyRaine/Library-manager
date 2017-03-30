@@ -9,7 +9,7 @@ import { browserHistory } from 'react-router'
 import { Layout, Icon, Form, Input, Button, Modal } from 'antd'
 const { Content } = Layout
 const FormItem = Form.Item;
-import Head from '../head'
+import Head from '../../components/head'
 
 import './style.scss'
 class Login extends React.Component {
@@ -43,24 +43,20 @@ class Login extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    const { fetchData } = this.props.userActions
+    const { fetchUserData } = this.props.userActions
     this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log(values)
-          fetchData('login', values)
+          fetchUserData('login', values)
         }
     })
   }
   render(){
-    const { message, info, books } = this.props.state.user
-    let user
-    if (info) {
-      user = info.user
-    }
-    const { getFieldDecorator } = this.props.form;
+    const { message, books } = this.props.state.user
+    const { getFieldDecorator } = this.props.form
     return (
       <Layout className="login">
-        <Head user={user}/>
+        <Head user={localStorage.userName}/>
         <Content>
           <h1>登录</h1>
           <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">

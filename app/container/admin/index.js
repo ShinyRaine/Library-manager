@@ -9,7 +9,7 @@ import { Layout, Button, Modal } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import MainTable from '../mainTable'
-import Head from '../head'
+import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 class Admin extends React.Component {
   constructor(props) {
@@ -22,10 +22,10 @@ class Admin extends React.Component {
   }
   componentWillMount() {
     const { manage, message } = this.props.state.user
-    const { fetchData } = this.props.userActions
+    const { fetchUserData } = this.props.userActions
     const token = localStorage.token
     if (token) {
-      fetchData('checkManage', {token: localStorage.token})
+      fetchUserData('checkManage', {token: localStorage.token})
       if (manage === 0) {
         Modal.error({
           title: '错误',
@@ -55,7 +55,7 @@ class Admin extends React.Component {
   layout() {
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
 
-    const { message, info, books } = this.props.state.user
+    const { message, books } = this.props.state.user
 
     const list = [
       {

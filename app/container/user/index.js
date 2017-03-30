@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import * as UserActions from '../../actions/user.action'
-import Head from '../head'
+import Head from '../../components/head'
 import MainTable from '../mainTable'
 import { Layout } from 'antd';
 

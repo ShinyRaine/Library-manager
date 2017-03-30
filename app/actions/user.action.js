@@ -56,7 +56,7 @@ function checkBeforeAdmin(res) {
   }
 }
 
-export const fetchData = (type, options) => (dispatch) => {
+export const fetchUserData = (type, options) => (dispatch) => {
     dispatch(userRequest(type))
     switch (type) {
       // 注册

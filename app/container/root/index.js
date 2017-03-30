@@ -8,7 +8,7 @@ import { Layout } from 'antd';
 const { Header, Content, Sider } = Layout
 
 import MainTable from '../mainTable'
-import Head from '../head'
+import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 
 class Root extends React.Component {

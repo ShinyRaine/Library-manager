@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router'
 import { Layout, Icon, Form, Input, Button, Checkbox, Modal } from 'antd';
 const { Content } = Layout
 const FormItem = Form.Item;
-import Head from '../head'
+import Head from '../../components/head'
 
 class Signup extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class Signup extends React.Component {
   }
   componentDidUpdate() {
     const { resetReq } = this.props.userActions
-    const { message, info, books } = this.props.state.user
+    const { message, books } = this.props.state.user
     if (message) {
       if (message === "success") {
         Modal.success({
@@ -45,11 +45,11 @@ class Signup extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    const { fetchData } = this.props.userActions
+    const { fetchUserData } = this.props.userActions
     this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          fetchData('signup', values)
+          console.log(values)
+          fetchUserData('signup', values)
         }
     })
   }
@@ -65,11 +65,11 @@ class Signup extends React.Component {
   }
   render(){
     const { getFieldDecorator } = this.props.form
-    const { message, info, books } = this.props.state.user
+    const { message, books } = this.props.state.user
 
     return (
       <Layout className="login">
-        <Head user={info}/>
+        <Head user={localStorage.userName}/>
         <Content>
           <h1>注册</h1>
           <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
