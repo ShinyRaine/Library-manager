@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as BookActions from '../../actions/book.action'
+import * as UserActions from '../../actions/user.action'
 
 import { Layout } from 'antd';
 const { Header, Content, Sider } = Layout
@@ -19,7 +20,7 @@ class Root extends React.Component {
     fetchBookData('books')
   }
   render(){
-    const { message, name, books } = this.props.state.user
+    const { message, books } = this.props.state.user
     const { data } = this.props.state.books
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
@@ -60,7 +61,7 @@ class Root extends React.Component {
     ]
     return (
       <Layout>
-        <Head user={name}/>
+        <Head user={localStorage.userName}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Sider width={200} style={{ background: '#fff' }}>
@@ -83,7 +84,8 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    bookActions: bindActionCreators(BookActions, dispatch)
+    bookActions: bindActionCreators(BookActions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 

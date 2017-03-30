@@ -53,11 +53,14 @@ app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
 // app.get('/user/logout', userCollector.logout)
+app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
+
 // 图书管理
 const bookCollector = require('./lib/module/book')
 app.get('/books', bookCollector.all)
 app.post('/admin/books/new', bookCollector.addbook)
+
 
 app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {

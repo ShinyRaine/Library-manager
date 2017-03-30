@@ -21,6 +21,12 @@ let store = createStore(reducer, compose(
   applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f
 ))
+function getLogState () {
+    let token = localStorage.token
+    if (!token) {
+      browserHistory.push('/login')
+    }
+}
 
 let render = (Component) => {
    ReactDom.render(
@@ -29,9 +35,9 @@ let render = (Component) => {
         <Router history={browserHistory}>
           <Route path="/" component={Root} />
           <Route path="/login" component={LoginForm} />
-          <Route path="/user" component={User} />
+          <Route path="/user" component={User} onEnter={getLogState}/>
           <Route path="/signup" component={SignupForm} />
-          <Route path="/admin" component={Admin} />
+          <Route path="/admin" component={Admin} onEnter={getLogState}/>
         </Router>
       </Provider>
      </AppContainer>,

@@ -1,10 +1,9 @@
-import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES, RESET_REQ} from '../actions/user.action'
+import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES, RECEIVE_MANAGECODE, RESET_REQ} from '../actions/user.action'
 
 const initialState = {
   message: '',
-  name: '',
-  token: '',
   books: null,
+  manage: 0
 }
 
 export default function name (state = initialState, action) {
@@ -17,19 +16,29 @@ export default function name (state = initialState, action) {
       return Object.assign({}, state, {
         message: ''
       })
+    case "RECEIVE_MANAGECODE":
+      if (action.res.message) {
+        return Object.assign({}, state, {
+          message: action.res.message
+        })
+      } else {
+        return Object.assign({}, state, {
+          manage: action.res.manage
+        })
+      }
     case "RECEIVE_SIGNUP_RES":
     // 将token存入localstorage
+      localStorage.setItem("token", action.res.token)
+      localStorage.setItem("userName", action.res.name)
       return Object.assign({}, state, {
-        message: action.res.message,
-        name: action.res.name,
-        token: action.res.token
+        message: action.res.message
       })
     case "RECEIVE_LOGIN_RES":
     // 将token存入localstorage
+      localStorage.setItem("token", action.res.token)
+      localStorage.setItem("userName", action.res.name)
       return Object.assign({}, state, {
-        message: action.res.message,
-        name: action.res.name,
-        token: action.res.token
+        message: action.res.message
       })
     default:
       return state

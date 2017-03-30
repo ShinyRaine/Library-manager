@@ -14,12 +14,12 @@ class User extends React.Component {
     super(props)
   }
   render(){
-    const { message, name, books } = this.props.state.user
+    const { message, books } = this.props.state.user
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
 
     return(
       <Layout>
-        <Head user={name}/>
+        <Head user={localStorage.userName}/>
         <Content style={{ padding: '50px' }}>
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>

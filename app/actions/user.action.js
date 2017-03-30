@@ -40,6 +40,22 @@ export function receiveLogoutRes(res) {
   }
 }
 
+export const RECEIVE_MANAGECODE = 'RECEIVE_MANAGECODE'
+function receiveManagecode(res) {
+  return {
+    type: RECEIVE_MANAGECODE,
+    res
+  }
+}
+
+export const CHECK_BEFORE_ADMIN = 'CHECK_BEFORE_ADMIN'
+function checkBeforeAdmin(res) {
+  return {
+    type: CHECK_BEFORE_ADMIN,
+    res
+  }
+}
+
 export const fetchData = (type, options) => (dispatch) => {
     dispatch(userRequest(type))
     switch (type) {
@@ -51,7 +67,7 @@ export const fetchData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
          })
          .then(res => res.json())
-         .then(json =>dispatch(receiveSignupRes(json)))
+         .then(json => dispatch(receiveSignupRes(json)))
 
       // 登录
       case 'login':
@@ -61,7 +77,7 @@ export const fetchData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
         })
         .then(res => res.json())
-        .then(json =>dispatch(receiveLoginRes(json)))
+        .then(json => dispatch(receiveLoginRes(json)))
         // 注销
       case 'logout':
         return fetch('/user/logout', {
@@ -70,6 +86,14 @@ export const fetchData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
         })
         .then(res => res.json())
-        .then(json =>dispatch(receiveLogoutRes(json)))
+        .then(json => dispatch(receiveLogoutRes(json)))
+      case 'checkManage':
+        return fetch('/user/checkmanage', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => dispatch(receiveManagecode(json)))
     }
 }

@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
+import * as UserActions from '../../actions/user.action'
 
-import { Layout, Button, Modal } from 'antd';
-const { Header, Content, Sider } = Layout;
+import { Layout, Button, Modal } from 'antd'
+const { Header, Content, Sider } = Layout
 
 import MainTable from '../mainTable'
 import Head from '../head'
@@ -16,6 +18,31 @@ class Admin extends React.Component {
       type: 'book',
       addBookVisible: false,
       loadingBookInfor: false
+    }
+  }
+  componentWillMount() {
+    const { manage, message } = this.props.state.user
+    const { fetchData } = this.props.userActions
+    const token = localStorage.token
+    if (token) {
+      fetchData('checkManage', {token: localStorage.token})
+      if (manage === 0) {
+        Modal.error({
+          title: '错误',
+          content: '权限不足',
+          onOk: () => {
+            browserHistory.push('/')
+          }
+        })
+      }
+    } else {
+      Modal.error({
+        title: '错误',
+        content: '请登录',
+        onOk: () => {
+          browserHistory.push('/login')
+        }
+      })
     }
   }
   componentDidMount() {
@@ -97,7 +124,7 @@ class Admin extends React.Component {
     })
   }
   handleOk(){
-    const { message, info, books } = this.props.state.user
+    const { message, books } = this.props.state.user
     const { addBook, fetchBookData } = this.props.bookActions
     let test = this.isbnInput.value
     addBook({isbn:test})
@@ -116,7 +143,7 @@ class Admin extends React.Component {
     const { message, name, books } = this.props.state.user
     return (
       <Layout>
-        <Head user={name}/>
+        <Head user={localStorage.userName}/>
         <Content style={{ padding: '50px' }}>
           <Content>
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>
@@ -143,7 +170,8 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
-    bookActions: bindActionCreators(BookActions, dispatch)
+    bookActions: bindActionCreators(BookActions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch)
   }
 }
 
