@@ -1,4 +1,4 @@
-import {USER_REQUEST, RECEIVE_SIGNUP_RES, RECEIVE_LOGIN_RES, RECEIVE_MANAGECODE, RESET_REQ} from '../actions/user.action'
+import {USER_REQUEST, RECEIVE_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_REQ} from '../actions/user.action'
 
 const initialState = {
   message: '',
@@ -16,31 +16,21 @@ export default function name (state = initialState, action) {
       return Object.assign({}, state, {
         message: ''
       })
+    case "RECEIVE_MESSAGE":
+      return Object.assign({}, state, {
+        message: action.res.message || ''
+      })
     case "RECEIVE_MANAGECODE":
-      if (action.res.message) {
         return Object.assign({}, state, {
-          message: action.res.message
+          manage: action.res.manage || 0
         })
-      } else {
-        return Object.assign({}, state, {
-          manage: action.res.manage
-        })
-      }
-    case "RECEIVE_SIGNUP_RES":
-    // 将token存入localstorage
-      localStorage.setItem("token", action.res.token)
-      localStorage.setItem("userName", action.res.name)
-      return Object.assign({}, state, {
-        message: action.res.message
-      })
-    case "RECEIVE_LOGIN_RES":
-    // 将token存入localstorage
-      localStorage.setItem("token", action.res.token)
-      localStorage.setItem("userName", action.res.name)
-      return Object.assign({}, state, {
-        message: action.res.message
-      })
+    case "RECEIVE_LOG_RES":
+      setTokenStorage(action.res.name, action.res.token)
     default:
       return state
   }
+}
+function setTokenStorage (name, token) {
+  localStorage.setItem("token", token)
+  localStorage.setItem("userName", name)
 }

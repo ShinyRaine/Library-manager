@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import { Layout, Menu, Input } from 'antd'
 import { Link } from 'react-router'
 import './style.scss'
@@ -11,7 +12,12 @@ class Head extends React.Component {
   search(value) {
     console.log(value)
   }
-  render(){
+  logout() {
+    localStorage.userName = ''
+    localStorage.token = ''
+    browserHistory.push('/')
+  }
+  render() {
     const user = this.props.user || ''
     let rightList = (name) => {
       if (name) {
@@ -21,7 +27,7 @@ class Head extends React.Component {
               <Link to="/user">个人中心</Link>
             </Menu.Item>
             <Menu.Item key="logout">
-              <a href="/user/logout">退出登录</a>
+              <a onClick={this.logout.bind(this)}>退出登录</a>
             </Menu.Item>
           </Menu.SubMenu>
         )

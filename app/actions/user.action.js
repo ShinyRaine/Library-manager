@@ -24,18 +24,10 @@ export function receiveSignupRes(res) {
   }
 }
 
-export const RECEIVE_LOGIN_RES = 'RECEIVE_LOGIN_RES'
-export function receiveLoginRes(res) {
+export const RECEIVE_LOG_RES = 'RECEIVE_LOG_RES'
+export function receiveLogRes(res) {
   return {
-    type: RECEIVE_LOGIN_RES,
-    res
-  }
-}
-
-export const RECEIVE_LOGOUT_RES = 'RECEIVE_LOGOUT_RES'
-export function receiveLogoutRes(res) {
-  return {
-    type: RECEIVE_LOGOUT_RES,
+    type: RECEIVE_LOG_RES,
     res
   }
 }
@@ -48,10 +40,10 @@ function receiveManagecode(res) {
   }
 }
 
-export const CHECK_BEFORE_ADMIN = 'CHECK_BEFORE_ADMIN'
-function checkBeforeAdmin(res) {
+export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE'
+function receiveMessage(res) {
   return {
-    type: CHECK_BEFORE_ADMIN,
+    type: RECEIVE_MESSAGE,
     res
   }
 }
@@ -67,8 +59,10 @@ export const fetchUserData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
          })
          .then(res => res.json())
-         .then(json => dispatch(receiveSignupRes(json)))
-
+         .then(json => {
+           dispatch(receiveLogRes(json))
+           dispatch(receiveMessage(json))
+         })
       // 登录
       case 'login':
         return fetch('/user/login', {
@@ -77,16 +71,10 @@ export const fetchUserData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
         })
         .then(res => res.json())
-        .then(json => dispatch(receiveLoginRes(json)))
-        // 注销
-      case 'logout':
-        return fetch('/user/logout', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
+        .then(json => {
+          dispatch(receiveLogRes(json))
+          dispatch(receiveMessage(json))
         })
-        .then(res => res.json())
-        .then(json => dispatch(receiveLogoutRes(json)))
       case 'checkManage':
         return fetch('/user/checkmanage', {
           method: 'POST',
@@ -94,6 +82,17 @@ export const fetchUserData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
         })
         .then(res => res.json())
-        .then(json => dispatch(receiveManagecode(json)))
+        .then(json => {
+          dispatch(receiveMessage(json))
+          dispatch(receiveManagecode(json))
+        })
+      case 'setManage':
+        return fetch('/user/checkmanage', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => dispatch(receiveMessage(json)))
     }
 }
