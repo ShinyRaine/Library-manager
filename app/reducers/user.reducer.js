@@ -1,9 +1,10 @@
-import {USER_REQUEST, RECEIVE_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_REQ} from '../actions/user.action'
+import {USER_REQUEST, RECEIVE_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_REQ, RECEIVE_USERS} from '../actions/user.action'
 
 const initialState = {
   message: '',
   books: null,
-  manage: 0
+  manage: 0,
+  users: null
 }
 
 export default function name (state = initialState, action) {
@@ -25,7 +26,13 @@ export default function name (state = initialState, action) {
           manage: action.res.manage || 0
         })
     case "RECEIVE_LOG_RES":
-      setTokenStorage(action.res.name, action.res.token)
+      if (action.res.name) {
+        setTokenStorage(action.res.name, action.res.token)
+      }
+    case "RECEIVE_USERS":
+      return Object.assign({}, state, {
+        users: action.res
+      })
     default:
       return state
   }

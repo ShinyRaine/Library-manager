@@ -21,21 +21,9 @@ class Admin extends React.Component {
     }
   }
   componentWillMount() {
-    const { manage, message } = this.props.state.user
     const { fetchUserData } = this.props.userActions
     const token = localStorage.token
-    if (token) {
-      fetchUserData('checkManage', {token: localStorage.token})
-      if (manage === 0) {
-        Modal.error({
-          title: '错误',
-          content: '权限不足',
-          onOk: () => {
-            browserHistory.push('/')
-          }
-        })
-      }
-    } else {
+    if (!token) {
       Modal.error({
         title: '错误',
         content: '请登录',
@@ -43,11 +31,26 @@ class Admin extends React.Component {
           browserHistory.push('/login')
         }
       })
+    } else {
+      fetchUserData('checkManage', {token: token})
     }
   }
   componentDidMount() {
+    const { manage } = this.props.state.user
+
+    if (manage === 0) {
+      Modal.error({
+        title: '错误',
+        content: '权限不足',
+        onOk: () => {
+          browserHistory.push('/')
+        }
+      })
+    }
+    const { fetchUserData } = this.props.userActions
     const { fetchBookData } = this.props.bookActions
     fetchBookData('books')
+    fetchUserData('users')
   }
   changeType(type) {
     this.setState({type: type})
@@ -55,7 +58,7 @@ class Admin extends React.Component {
   layout() {
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
 
-    const { message, books } = this.props.state.user
+    const { message, books, users } = this.props.state.user
 
     const list = [
       {
@@ -110,7 +113,7 @@ class Admin extends React.Component {
         return (
           <Layout style={{ padding: '24px 0', background: '#fff' }}>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <MainTable data={data} type="userList"/>
+              <MainTable data={users} type="userList"/>
             </Content>
           </Layout>
         )

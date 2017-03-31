@@ -52,7 +52,7 @@ const userCollector = require('./lib/module/user')
 app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
-// app.get('/user/logout', userCollector.logout)
+app.post('/user/remove', userCollector.remove)
 app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
 

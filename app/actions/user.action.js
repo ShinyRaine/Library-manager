@@ -1,11 +1,11 @@
 import fetch from 'isomorphic-fetch'
 
 // 请求相关的Actions
-export const USER_REQUEST = 'USER_REQUEST'
-export function userRequest(type) {
+export const RECEIVE_USERS = 'RECEIVE_USERS'
+export function receiveUsers(res) {
   return {
-    type: USER_REQUEST,
-    type
+    type: RECEIVE_USERS,
+    res
   }
 }
 
@@ -49,9 +49,12 @@ function receiveMessage(res) {
 }
 
 export const fetchUserData = (type, options) => (dispatch) => {
-    dispatch(userRequest(type))
     switch (type) {
       // 注册
+      case 'users':
+        return fetch('/user/all')
+          .then(res => res.json())
+          .then(json => dispatch(receiveUsers(json)))
       case 'signup':
         return fetch('/user/signup', {
           method: 'POST',
@@ -87,7 +90,15 @@ export const fetchUserData = (type, options) => (dispatch) => {
           dispatch(receiveManagecode(json))
         })
       case 'setManage':
-        return fetch('/user/checkmanage', {
+        return fetch('/user/setmanage', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => dispatch(receiveMessage(json)))
+      case 'remove':
+        return fetch('/user/remove', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)

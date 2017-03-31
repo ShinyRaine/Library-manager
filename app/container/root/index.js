@@ -16,6 +16,11 @@ class Root extends React.Component {
     super(props)
   }
   componentDidMount() {
+    const { fetchUserData } = this.props.userActions
+    const token = localStorage.token
+    if (token) {
+      fetchUserData('checkManage', {token: token})
+    }
     const { fetchBookData } = this.props.bookActions
     fetchBookData('books')
   }
