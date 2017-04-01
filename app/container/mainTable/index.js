@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button } from 'antd'
+import { Table, Button, Modal } from 'antd'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -10,12 +10,32 @@ class MainTable extends React.Component {
   constructor(props) {
     super(props)
   }
+  showDialog(options) {
+    const { fetchUserData, resetReq } = this.props.userActions
+    if (options.success) {
+      return Modal.success({
+        title: options.title,
+        onOk: () => {
+          fetchUserData(options.type)
+          resetReq()
+          return false
+        }
+      })
+    }
+  }
   setManage(name, num) {
-    const { fetchUserData } = this.props.userActions
+    const { fetchUserData, resetReq } = this.props.userActions
     fetchUserData('setManage', {
       token: localStorage.token,
       name: name,
       manage: num
+    }).then(() => {
+      const { message } = this.props.state.user
+      this.showDialog({
+        success: true,
+        title: message,
+        type: 'users'
+      })
     })
   }
   remove(type, id) {
@@ -24,6 +44,13 @@ class MainTable extends React.Component {
       fetchUserData('remove', {
         token: localStorage.token,
         name: id
+      }).then(() => {
+        const { message } = this.props.state.user
+        this.showDialog({
+          success: true,
+          title: message,
+          type: 'users'
+        })
       })
     }
   }
