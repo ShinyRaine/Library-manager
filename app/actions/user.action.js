@@ -9,10 +9,10 @@ export function receiveUsers(res) {
   }
 }
 
-export const RESET_REQ = 'RESET_REQ'
-export function resetReq() {
+export const RESET_USER_REQ = 'RESET_USER_REQ'
+export function resetUserReq() {
   return {
-    type: RESET_REQ
+    type: RESET_USER_REQ
   }
 }
 
@@ -40,18 +40,17 @@ function receiveManagecode(res) {
   }
 }
 
-export const RECEIVE_MESSAGE = 'RECEIVE_MESSAGE'
+export const RECEIVE_USER_MESSAGE = 'RECEIVE_USER_MESSAGE'
 function receiveMessage(res) {
   return {
-    type: RECEIVE_MESSAGE,
+    type: RECEIVE_USER_MESSAGE,
     res
   }
 }
 
 export const fetchUserData = (type, options) => (dispatch) => {
     switch (type) {
-      // 注册
-      case 'users':
+      case 'user':
         return fetch('/user/all')
           .then(res => res.json())
           .then(json => dispatch(receiveUsers(json)))
@@ -66,7 +65,6 @@ export const fetchUserData = (type, options) => (dispatch) => {
            dispatch(receiveLogRes(json))
            dispatch(receiveMessage(json))
          })
-      // 登录
       case 'login':
         return fetch('/user/login', {
           method: 'POST',

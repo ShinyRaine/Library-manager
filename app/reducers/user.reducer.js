@@ -1,4 +1,4 @@
-import {USER_REQUEST, RECEIVE_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_REQ, RECEIVE_USERS} from '../actions/user.action'
+import { RECEIVE_USER_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_USER_REQ, RECEIVE_USERS} from '../actions/user.action'
 
 const initialState = {
   message: '',
@@ -9,15 +9,11 @@ const initialState = {
 
 export default function name (state = initialState, action) {
   switch (action.type) {
-    case "USER_REQUEST":
+    case "RESET_USER_REQ":
       return Object.assign({}, state, {
         message: ''
       })
-    case "RESET_REQ":
-      return Object.assign({}, state, {
-        message: ''
-      })
-    case "RECEIVE_MESSAGE":
+    case "RECEIVE_USER_MESSAGE":
       return Object.assign({}, state, {
         message: action.res.message || ''
       })

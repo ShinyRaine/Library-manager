@@ -11,17 +11,30 @@ class MainTable extends React.Component {
     super(props)
   }
   showDialog(options) {
-    const { fetchUserData, resetReq } = this.props.userActions
+    const { fetchUserData, resetUserReq } = this.props.userActions
+    const { fetchBookData, resetBookReq } = this.props.bookActions
+    let fetchData, reset
+    switch (options.type) {
+      case 'user':
+        fetchData = fetchUserData
+        reset = resetUserReq
+        break
+      case 'book':
+        fetchData = fetchBookData
+        reset = resetBookReq
+        break
+    }
     if (options.success) {
       return Modal.success({
         title: options.title,
         onOk: () => {
-          fetchUserData(options.type)
-          resetReq()
+          fetchData(options.type)
+          reset()
           return false
         }
       })
     }
+
   }
   setManage(name, num) {
     const { fetchUserData, resetReq } = this.props.userActions
@@ -34,25 +47,31 @@ class MainTable extends React.Component {
       this.showDialog({
         success: true,
         title: message,
-        type: 'users'
+        type: 'user'
       })
     })
   }
   remove(type, id) {
     const { fetchUserData } = this.props.userActions
-    if (type === 'user') {
-      fetchUserData('remove', {
-        token: localStorage.token,
-        name: id
-      }).then(() => {
-        const { message } = this.props.state.user
-        this.showDialog({
-          success: true,
-          title: message,
-          type: 'users'
-        })
-      })
+    const { fetchBookData } = this.props.bookActions
+    let fetchData, data
+    switch (type) {
+      case 'user':
+        fetchData = fetchUserData
+        data = {token: localStorage.token, name: id}
+        break
+      case 'book':
+        fetchData = fetchBookData
+        data = {token: localStorage.token, isbn: id}
+        break
     }
+    fetchData('remove', data).then(() => {
+      this.showDialog({
+        success: true,
+        title: (type === 'user' ? this.props.state.user.message : this.props.state.book.message),
+        type: type
+      })
+    })
   }
   getColumns(type) {
     switch (type) {
@@ -75,7 +94,7 @@ class MainTable extends React.Component {
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
             <Button.Group>
               <Button type="primary">编辑</Button>
-              <Button>删除</Button>
+              <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
             </Button.Group>
           )}
         ]
@@ -87,7 +106,7 @@ class MainTable extends React.Component {
             <Button.Group>
               {record.manage ?
                 <Button type="primary" onClick={this.setManage.bind(this, record.name, 0)}>取消管理员</Button> :
-                   <Button type="primary" onClick={this.setManage.bind(this, record.name, 1)}>设为管理员</Button>}
+                <Button type="primary" onClick={this.setManage.bind(this, record.name, 1)}>设为管理员</Button>}
               <Button onClick={this.remove.bind(this, 'user', record.name)}>删除</Button>
             </Button.Group>
           )}

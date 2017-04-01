@@ -17,14 +17,14 @@ class Login extends React.Component {
     super(props)
   }
   componentDidUpdate() {
-    const { resetReq } = this.props.userActions
+    const { resetUserReq } = this.props.userActions
     const { message } = this.props.state.user
     if (message) {
       if (message === "success") {
         Modal.success({
           title: '登录成功',
           onOk: function(){
-            resetReq()
+            resetUserReq()
             browserHistory.push('/')
             return false
           }
@@ -34,7 +34,7 @@ class Login extends React.Component {
           title: '登录失败',
           content: message,
           onOk: function(){
-            resetReq()
+            resetUserReq()
             return false
           }
         })

@@ -60,14 +60,14 @@ class Admin extends React.Component {
     })
 
     const { fetchBookData } = this.props.bookActions
-    fetchBookData('books')
-    fetchUserData('users')
+    fetchBookData('book')
+    fetchUserData('user')
   }
   changeType(type) {
     this.setState({type: type})
   }
   layout() {
-    const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
+    const { data, addBookInfo, receiveAddbookRes } = this.props.state.book
 
     const { message, books, users } = this.props.state.user
 
@@ -153,7 +153,7 @@ class Admin extends React.Component {
     })
   }
   render(){
-    const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
+    const { data, addBookInfo, receiveAddbookRes } = this.props.state.book
     const { message, name, books } = this.props.state.user
     return (
       <Layout>

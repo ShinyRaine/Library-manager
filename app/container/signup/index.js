@@ -19,14 +19,14 @@ class Signup extends React.Component {
     }
   }
   componentDidUpdate() {
-    const { resetReq } = this.props.userActions
+    const { resetUserReq } = this.props.userActions
     const { message, books } = this.props.state.user
     if (message) {
       if (message === "success") {
         Modal.success({
           title: '注册成功',
           onOk: function(){
-            resetReq()
+            resetUserReq()
             browserHistory.push('/')
             return false
           }
@@ -36,7 +36,7 @@ class Signup extends React.Component {
           title: '注册失败',
           content: message,
           onOk: function(){
-            resetReq()
+            resetUserReq()
             return false
           }
         })

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 import user from './user.reducer'
-import books from './books.reducer'
+import book from './book.reducer'
 
 const reducer = combineReducers({
-  books,
+  book,
   user
 })
 export default reducer

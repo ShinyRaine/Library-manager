@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
 
+
 export const ADD_BOOK = 'ADD_BOOK'
 export function addBook(info) {
   return {
@@ -9,6 +10,19 @@ export function addBook(info) {
 }
 
 // 请求相关的Actions
+export const RESET_BOOK_REQ = 'RESET_BOOK_REQ'
+export function resetBookReq() {
+  return {
+    type: RESET_BOOK_REQ
+  }
+}
+export const RECEIVE_BOOK_MESSAGE = 'RECEIVE_BOOK_MESSAGE'
+function receiveMessage(res) {
+  return {
+    type: RECEIVE_BOOK_MESSAGE,
+    res
+  }
+}
 export const BOOK_REQUEST = 'BOOK_REQUEST'
 export function bookRequest(data) {
   return {
@@ -36,7 +50,7 @@ export function receiveAddbookRes(res) {
 export const fetchBookData = (type, options) => (dispatch) => {
     dispatch(bookRequest(type))
     switch (type) {
-      case 'books':
+      case 'book':
         return fetch('/books')
           .then(response => response.json())
           .then(json =>
@@ -51,5 +65,13 @@ export const fetchBookData = (type, options) => (dispatch) => {
          })
           .then(res => res.json())
           .then(json => dispatch(receiveAddbookRes(json)))
+      case 'remove':
+        return fetch('/admin/books/remove', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => dispatch(receiveMessage(json)))
     }
 }

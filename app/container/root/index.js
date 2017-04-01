@@ -26,7 +26,7 @@ class Root extends React.Component {
   }
   render(){
     const { message, books } = this.props.state.user
-    const { data } = this.props.state.books
+    const { data } = this.props.state.book
     if (data) {
       data.map((item) => Object.assign(item, {key: item._id}))
     }

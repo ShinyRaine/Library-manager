@@ -60,7 +60,7 @@ app.post('/user/setmanage', userCollector.setManage)
 const bookCollector = require('./lib/module/book')
 app.get('/books', bookCollector.all)
 app.post('/admin/books/new', bookCollector.addbook)
-
+app.post('/admin/books/remove', bookCollector.remove)
 
 app.use((req, res, next) => {
   if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
