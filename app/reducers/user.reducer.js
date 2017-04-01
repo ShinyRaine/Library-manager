@@ -22,7 +22,12 @@ export default function name (state = initialState, action) {
         message: action.res.message || ''
       })
     case "RECEIVE_MANAGECODE":
+      if(action.res.name === 'TokenExpiredError') {
         return Object.assign({}, state, {
+          message: action.res.name
+        })
+      }
+      return Object.assign({}, state, {
           manage: action.res.manage || 0
         })
     case "RECEIVE_LOG_RES":

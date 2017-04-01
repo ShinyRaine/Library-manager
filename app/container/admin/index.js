@@ -31,23 +31,34 @@ class Admin extends React.Component {
           browserHistory.push('/login')
         }
       })
-    } else {
-      fetchUserData('checkManage', {token: token})
     }
   }
   componentDidMount() {
-    const { manage } = this.props.state.user
-
-    if (manage === 0) {
+    const { message } = this.props.state.user
+    const { fetchUserData } = this.props.userActions
+    const token = localStorage.token
+    if (message === 'TokenExpiredError') {
       Modal.error({
         title: '错误',
-        content: '权限不足',
+        content: '登录过期 请重新登录',
         onOk: () => {
-          browserHistory.push('/')
+          browserHistory.push('/login')
         }
       })
     }
-    const { fetchUserData } = this.props.userActions
+    fetchUserData('checkManage', {token: token}).then(() => {
+      const { manage } = this.props.state.user
+      if (manage === 0) {
+        Modal.error({
+          title: '错误',
+          content: '权限不足',
+          onOk: () => {
+            browserHistory.push('/')
+          }
+        })
+      }
+    })
+
     const { fetchBookData } = this.props.bookActions
     fetchBookData('books')
     fetchUserData('users')
