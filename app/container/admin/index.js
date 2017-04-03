@@ -11,13 +11,13 @@ const { Header, Content, Sider } = Layout
 import MainTable from '../mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
+import BookForm from '../../components/bookForm'
 class Admin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       type: 'book',
-      addBookVisible: false,
-      loadingBookInfor: false
+      addBookVisible: false
     }
   }
   componentWillMount() {
@@ -34,26 +34,28 @@ class Admin extends React.Component {
     }
   }
   componentDidMount() {
-    const { message } = this.props.state.user
-    const { fetchUserData } = this.props.userActions
+    const { fetchUserData, resetUserReq } = this.props.userActions
     const token = localStorage.token
-    if (message === 'TokenExpiredError') {
-      Modal.error({
-        title: '错误',
-        content: '登录过期 请重新登录',
-        onOk: () => {
-          browserHistory.push('/login')
-        }
-      })
-    }
+
     fetchUserData('checkManage', {token: token}).then(() => {
-      const { manage } = this.props.state.user
+      const { manage, message } = this.props.state.user
+      if (message === 'TokenExpiredError') {
+        Modal.error({
+          title: '错误',
+          content: '登录过期 请重新登录',
+          onOk: () => {
+            browserHistory.push('/login')
+            resetUserReq()
+          }
+        })
+      }
       if (manage === 0) {
         Modal.error({
           title: '错误',
           content: '权限不足',
           onOk: () => {
             browserHistory.push('/')
+            resetUserReq()
           }
         })
       }
@@ -103,12 +105,16 @@ class Admin extends React.Component {
             name: 'java'
           }
         ]
+      },
+      {
+        key: 'null',
+        name: '未分类'
       }
     ]
     switch (this.state.type) {
       case 'book':
         return (
-          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+          <Layout className="main-layout">
             <Sider width={200} style={{ background: '#fff' }}>
               <Sidebar list={list}/>
             </Sider>
@@ -122,14 +128,12 @@ class Admin extends React.Component {
         )
       case 'user':
         return (
-          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+          <Layout className="main-layout">
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <MainTable data={users} type="userList"/>
             </Content>
           </Layout>
         )
-      default:
-
     }
   }
   showAddBookDialog(){
@@ -140,11 +144,12 @@ class Admin extends React.Component {
   handleOk(){
     const { message, books } = this.props.state.user
     const { addBook, fetchBookData } = this.props.bookActions
-    let test = this.isbnInput.value
-    addBook({isbn:test})
-    fetchBookData('addbook', {isbn:test})
+    let isbn = this.isbnInput.value
+    // addBook({isbn:test})
+    // fetchBookData('addbook', {isbn:test})
     this.setState({
-      addBookVisible: false
+      addBookVisible: false,
+      bookToAdd: isbn
     })
   }
   handleCancel(){
@@ -155,6 +160,10 @@ class Admin extends React.Component {
   render(){
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.book
     const { message, name, books } = this.props.state.user
+    const { bookInfo } = this.props.state.book
+
+    const { addBook, fetchBookData } = this.props.bookActions
+
     return (
       <Layout>
         <Head user={localStorage.userName}/>
@@ -165,13 +174,12 @@ class Admin extends React.Component {
           </Content>
           {this.layout()}
         </Content>
-        <Modal title="请输入要添加书目的ISBN"
+
+        <BookForm title="请输入要添加书目的ISBN"
           visible={this.state.addBookVisible}
-          onOk={this.handleOk.bind(this)}
-          confirmLoading={this.state.loadingBookInfor}
-          onCancel={this.handleCancel.bind(this)}>
-          <input ref={(input)=>{this.isbnInput = input}}/>
-        </Modal>
+          onSubmit={this.handleOk.bind(this)}
+          onCancel={this.handleCancel.bind(this)}
+          />
        </Layout>
     )
   }

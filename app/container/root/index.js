@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout } from 'antd';
+import { Layout, Modal } from 'antd'
 const { Header, Content, Sider } = Layout
 
+import './style.scss'
 import MainTable from '../mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
@@ -16,13 +18,23 @@ class Root extends React.Component {
     super(props)
   }
   componentDidMount() {
-    const { fetchUserData } = this.props.userActions
+    const { fetchUserData, resetUserReq } = this.props.userActions
     const token = localStorage.token
-    if (token) {
-      fetchUserData('checkManage', {token: token})
-    }
+    fetchUserData('checkManage', {token: token}).then(() => {
+      const { message } = this.props.state.user
+      if (message === 'TokenExpiredError') {
+        Modal.error({
+          title: '错误',
+          content: '登录过期 请重新登录',
+          onOk: () => {
+            browserHistory.push('/login')
+            resetUserReq()
+          }
+        })
+      }
+    })
     const { fetchBookData } = this.props.bookActions
-    fetchBookData('books')
+    fetchBookData('book')
   }
   render(){
     const { message, books } = this.props.state.user
@@ -68,7 +80,7 @@ class Root extends React.Component {
       <Layout>
         <Head user={localStorage.userName}/>
         <Content style={{ padding: '50px' }}>
-          <Layout style={{ padding: '24px 0', background: '#fff' }}>
+          <Layout className="main-layout">
             <Sider width={200} style={{ background: '#fff' }}>
               <Sidebar list={list}/>
             </Sider>

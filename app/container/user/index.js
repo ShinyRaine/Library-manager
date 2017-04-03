@@ -13,6 +13,10 @@ class User extends React.Component {
   constructor(props){
     super(props)
   }
+  componentDidMount() {
+    const { fetchBookData } = this.props.bookActions
+    fetchBookData('book')
+  }
   render(){
     const { message, books } = this.props.state.user
     const { data, addBookInfo, receiveAddbookRes } = this.props.state.books
