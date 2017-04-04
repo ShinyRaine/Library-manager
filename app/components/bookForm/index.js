@@ -51,6 +51,8 @@ class bookModal extends React.Component {
       description: ''
     })
     this.setState({
+      title: '',
+      loading: false,
       loadedInfo: false
     })
   }
@@ -69,12 +71,15 @@ class bookModal extends React.Component {
         form.setFieldsValue({
           title: info.title,
           author: info.author,
+          pic: info.image,
           translator: info.translator,
+          publishTime: info.pubdate,
           description: info.summary
         })
         this.setState({
           title: '补全图书信息',
-          loadedInfo: true
+          loadedInfo: true,
+          loading: false
         })
       }).catch(err => {
         console.log(err)
@@ -88,9 +93,8 @@ class bookModal extends React.Component {
   handleSubmit() {
     this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values)
-          if (this.props.submit) {
-            this.props.submit(values)
+          if (this.props.onSubmit) {
+            this.props.onSubmit(values)
           }
         }
     })
@@ -122,6 +126,13 @@ class bookModal extends React.Component {
           )}
         </FormItem>
         <FormItem
+          label="出版日期"
+          >
+          {getFieldDecorator('publishTime')(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
           label="简介"
           >
           {getFieldDecorator('description')(
@@ -145,9 +156,9 @@ class bookModal extends React.Component {
         onCancel={this.onCancel.bind(this)}
         confirmLoading={this.state.loadedInfo}
         footer={this.state.loadedInfo ? [
-          <Button key="back" size="large" onClick={this.handleCancel}>Return</Button>,
-          <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
-            Submit
+          <Button key="back" size="large" onClick={this.handleCancel}>取消</Button>,
+          <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleSubmit.bind(this)}>
+            提交
           </Button>,
         ] : null}
         >

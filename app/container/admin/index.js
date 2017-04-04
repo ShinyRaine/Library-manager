@@ -141,15 +141,16 @@ class Admin extends React.Component {
       addBookVisible: true
     })
   }
-  handleOk(){
+  handleOk( info ){
     const { message, books } = this.props.state.user
     const { addBook, fetchBookData } = this.props.bookActions
-    let isbn = this.isbnInput.value
+    console.log(info)
     // addBook({isbn:test})
-    // fetchBookData('addbook', {isbn:test})
-    this.setState({
-      addBookVisible: false,
-      bookToAdd: isbn
+    fetchBookData('addbook', info).then(() => {
+      this.setState({
+        addBookVisible: false
+      })
+      fetchBookData('book')
     })
   }
   handleCancel(){
