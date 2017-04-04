@@ -5,11 +5,10 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Modal } from 'antd'
+import { Layout, Modal, Table, Button } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import './style.scss'
-import MainTable from '../mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 
@@ -39,9 +38,6 @@ class Root extends React.Component {
   render(){
     const { message, books } = this.props.state.user
     const { data } = this.props.state.book
-    if (data) {
-      data.map((item) => Object.assign(item, {key: item._id}))
-    }
     const list = [
       {
         key: 'fe',
@@ -76,6 +72,19 @@ class Root extends React.Component {
         ]
       }
     ]
+    const columns = [
+      { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
+      { title: '书名', dataIndex: 'name', key: 'name' },
+      { title: '作者', dataIndex: 'author', key: 'author' },
+      { title: '分类', dataIndex: 'type', key: 'type' },
+      { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
+          if (record.state == 0) {
+            return <Button type="primary">借出</Button>
+          } else if (record.state == 1) {
+            return <span>已借</span>
+          }
+      }}
+    ]
     return (
       <Layout>
         <Head user={localStorage.userName}/>
@@ -85,7 +94,11 @@ class Root extends React.Component {
               <Sidebar list={list}/>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <MainTable data={data}/>
+              <Table
+                columns={columns}
+                dataSource={data}
+                expandedRowRender={record => <p>{record.description}</p>}
+              />
             </Content>
           </Layout>
         </Content>

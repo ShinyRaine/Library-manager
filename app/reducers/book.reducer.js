@@ -22,9 +22,13 @@ export default function book (state = initialState, action) {
           loadingData: true
         })
       case "RECEIVE_BOOKS":
+        const data = action.json
+        if (data) {
+          data.map((item) => Object.assign(item, {key: item._id}))
+        }
         return Object.assign({}, state, {
           loadingData: false,
-          data: action.json
+          data: data
         })
       case "RECEIVE_ADDBOOK_RES":
         return Object.assign({}, state, {

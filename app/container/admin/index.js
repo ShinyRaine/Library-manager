@@ -5,10 +5,9 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Button, Modal } from 'antd'
+import { Layout, Button, Modal, Table } from 'antd'
 const { Header, Content, Sider } = Layout
 
-import MainTable from '../mainTable'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
@@ -68,11 +67,73 @@ class Admin extends React.Component {
   changeType(type) {
     this.setState({type: type})
   }
+  showDialog(options) {
+    const { fetchUserData, resetUserReq } = this.props.userActions
+    const { fetchBookData, resetBookReq } = this.props.bookActions
+    let fetchData, reset
+    switch (options.type) {
+      case 'user':
+        fetchData = fetchUserData
+        reset = resetUserReq
+        break
+      case 'book':
+        fetchData = fetchBookData
+        reset = resetBookReq
+        break
+    }
+    if (options.success) {
+      return Modal.success({
+        title: options.title,
+        onOk: () => {
+          fetchData(options.type)
+          reset()
+          return false
+        }
+      })
+    }
+
+  }
+  setManage(name, num) {
+    const { fetchUserData, resetReq } = this.props.userActions
+    fetchUserData('setManage', {
+      token: localStorage.token,
+      name: name,
+      manage: num
+    }).then(() => {
+      const { message } = this.props.state.user
+      this.showDialog({
+        success: true,
+        title: message,
+        type: 'user'
+      })
+    })
+  }
+  remove(type, id) {
+    const { fetchUserData } = this.props.userActions
+    const { fetchBookData } = this.props.bookActions
+    let fetchData, data
+    switch (type) {
+      case 'user':
+        fetchData = fetchUserData
+        data = {token: localStorage.token, name: id}
+        break
+      case 'book':
+        fetchData = fetchBookData
+        data = {token: localStorage.token, isbn: id}
+        break
+    }
+    fetchData('remove', data).then(() => {
+      this.showDialog({
+        success: true,
+        title: (type === 'user' ? this.props.state.user.message : this.props.state.book.message),
+        type: type
+      })
+    })
+  }
+  editBook(item) {
+    console.log(item);
+  }
   layout() {
-    const { data, addBookInfo, receiveAddbookRes } = this.props.state.book
-
-    const { message, books, users } = this.props.state.user
-
     const list = [
       {
         key: 'fe',
@@ -113,6 +174,19 @@ class Admin extends React.Component {
     ]
     switch (this.state.type) {
       case 'book':
+        const { data } = this.props.state.book
+        let columns = [
+          { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
+          { title: '书名', dataIndex: 'name', key: 'name' },
+          { title: '作者', dataIndex: 'author', key: 'author' },
+          { title: '分类', dataIndex: 'type', key: 'type' },
+          { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
+            <Button.Group>
+              <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
+              <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
+            </Button.Group>
+          )}
+        ]
         return (
           <Layout className="main-layout">
             <Sider width={200} style={{ background: '#fff' }}>
@@ -122,15 +196,35 @@ class Admin extends React.Component {
               <Content>
                 <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
               </Content>
-              <MainTable data={data} type="admin"/>
+              <Table
+                columns={columns}
+                dataSource={data}
+                expandedRowRender={record => <p>{record.description}</p>}
+              />
             </Content>
           </Layout>
         )
       case 'user':
+        const { users } = this.props.state.user
+        columns = [
+          { title: '用户名', dataIndex: 'name', key: 'name' },
+          { title: '权限', dataIndex: 'manage', key: 'manage' },
+          { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
+            <Button.Group>
+              {record.manage ?
+                <Button type="primary" onClick={this.setManage.bind(this, record.name, 0)}>取消管理员</Button> :
+                <Button type="primary" onClick={this.setManage.bind(this, record.name, 1)}>设为管理员</Button>}
+              <Button onClick={this.remove.bind(this, 'user', record.name)}>删除</Button>
+            </Button.Group>
+          )}
+        ]
         return (
           <Layout className="main-layout">
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <MainTable data={users} type="userList"/>
+              <Table
+                columns={columns}
+                dataSource={users}
+              />
             </Content>
           </Layout>
         )
