@@ -16,7 +16,9 @@ class Admin extends React.Component {
     super(props)
     this.state = {
       type: 'book',
-      addBookVisible: false
+      bookFormVisible: false,
+      bookFormType: 'addbook',
+      bookData: null
     }
   }
   componentWillMount() {
@@ -131,7 +133,11 @@ class Admin extends React.Component {
     })
   }
   editBook(item) {
-    console.log(item);
+    this.setState({
+      bookFormVisible: true,
+      bookFormType: 'edit',
+      bookData: item
+    })
   }
   layout() {
     const list = [
@@ -177,7 +183,7 @@ class Admin extends React.Component {
         const { data } = this.props.state.book
         let columns = [
           { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
-          { title: '书名', dataIndex: 'name', key: 'name' },
+          { title: '书名', dataIndex: 'title', key: 'title' },
           { title: '作者', dataIndex: 'author', key: 'author' },
           { title: '分类', dataIndex: 'type', key: 'type' },
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
@@ -232,24 +238,24 @@ class Admin extends React.Component {
   }
   showAddBookDialog(){
     this.setState({
-      addBookVisible: true
+      bookFormType: 'addbook',
+      bookFormVisible: true
     })
   }
-  handleOk( info ){
+  handleOk( type, info ){
     const { message, books } = this.props.state.user
     const { addBook, fetchBookData } = this.props.bookActions
-    console.log(info)
     // addBook({isbn:test})
-    fetchBookData('addbook', info).then(() => {
+    fetchBookData(type, Object.assign({token: localStorage.token}, info)).then(() => {
       this.setState({
-        addBookVisible: false
+        bookFormVisible: false
       })
       fetchBookData('book')
     })
   }
   handleCancel(){
     this.setState({
-      addBookVisible: false
+      bookFormVisible: false
     })
   }
   render(){
@@ -271,7 +277,9 @@ class Admin extends React.Component {
         </Content>
 
         <BookForm title="请输入要添加书目的ISBN"
-          visible={this.state.addBookVisible}
+          visible={this.state.bookFormVisible}
+          data={this.state.bookData}
+          type={this.state.bookFormType}
           onSubmit={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}
           />

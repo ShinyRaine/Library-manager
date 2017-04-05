@@ -9,7 +9,7 @@ export function resetBookReq() {
   }
 }
 export const RECEIVE_BOOK_MESSAGE = 'RECEIVE_BOOK_MESSAGE'
-function receiveMessage(res) {
+function receiveBookMessage(res) {
   return {
     type: RECEIVE_BOOK_MESSAGE,
     res
@@ -57,7 +57,6 @@ export const fetchBookData = (type, options) => (dispatch) => {
             dispatch(receiveBooks(json))
           )
     // POST
-
       case 'addbook':
         return fetch('/admin/books/new', {
           method: 'POST',
@@ -66,6 +65,14 @@ export const fetchBookData = (type, options) => (dispatch) => {
          })
           .then(res => res.json())
           .then(json => dispatch(receiveAddbookRes(json)))
+      case 'edit':
+        return fetch('/admin/books/edit', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+         })
+          .then(res => res.json())
+          .then(json => dispatch(receiveBookMessage(json)))
       case 'remove':
         return fetch('/admin/books/remove', {
           method: 'POST',
@@ -73,6 +80,6 @@ export const fetchBookData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
         })
         .then(res => res.json())
-        .then(json => dispatch(receiveMessage(json)))
+        .then(json => dispatch(receiveBookMessage(json)))
     }
 }

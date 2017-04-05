@@ -41,6 +41,17 @@ class bookModal extends React.Component {
       loadedInfo: false
     }
   }
+  componentWillReceiveProps(nextProps) {
+    const { data, type } = nextProps
+    const nowBook = this.props.data || ''
+    if (data && type === 'edit' && data.isbn !== nowBook.isbn) {
+      console.log(nowBook.isbn, data);
+      this.setForm(data)
+      this.setState({
+        loadedInfo: true
+      })
+    }
+  }
   resetForm() {
     const form = this.props.form
     form.setFieldsValue({
@@ -56,6 +67,18 @@ class bookModal extends React.Component {
       loadedInfo: false
     })
   }
+  setForm(info) {
+    const form = this.props.form
+    form.setFieldsValue({
+      isbn: info.isbn,
+      title: info.title,
+      author: info.author,
+      pic: info.pic,
+      translator: info.translator,
+      publishTime: info.publishTime,
+      description: info.description
+    })
+  }
   onCancel() {
     this.resetForm()
     this.props.onCancel()
@@ -63,12 +86,13 @@ class bookModal extends React.Component {
   handleInput() {
     const form = this.props.form
     let isbn = form.getFieldValue('isbn')
-    if (isbn.match(/\d{13}/)) {
+    if (isbn && isbn.match(/\d{13}/)) {
       this.setState({
         loading: true
       })
       loadJSONP('https://api.douban.com/v2/book/isbn/' + isbn).then((info) => {
-        form.setFieldsValue({
+        this.setForm({
+          isbn: isbn,
           title: info.title,
           author: info.author,
           pic: info.image,
@@ -77,7 +101,7 @@ class bookModal extends React.Component {
           description: info.summary
         })
         this.setState({
-          title: '补全图书信息',
+          title: '图书信息',
           loadedInfo: true,
           loading: false
         })
@@ -94,7 +118,8 @@ class bookModal extends React.Component {
     this.props.form.validateFields((err, values) => {
         if (!err) {
           if (this.props.onSubmit) {
-            this.props.onSubmit(values)
+            this.props.onSubmit(this.props.type, values)
+            this.resetForm()
           }
         }
     })
@@ -144,6 +169,12 @@ class bookModal extends React.Component {
           >
           {getFieldDecorator('pic')(
             <Input />
+          )}
+        </FormItem>
+        <FormItem
+          >
+          {getFieldDecorator('edit')(
+            <Input disabled display='none'/>
           )}
         </FormItem>
       </div>

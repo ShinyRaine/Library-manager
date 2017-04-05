@@ -76,7 +76,7 @@ class Root extends React.Component {
     ]
     const columns = [
       { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
-      { title: '书名', dataIndex: 'name', key: 'name' },
+      { title: '书名', dataIndex: 'title', key: 'title' },
       { title: '作者', dataIndex: 'author', key: 'author' },
       { title: '分类', dataIndex: 'type', key: 'type' },
       { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
