@@ -55,6 +55,7 @@ app.post('/user/login', userCollector.login)
 app.post('/user/remove', userCollector.remove)
 app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
+app.post('/user/checklogin', userCollector.checklogin)
 
 // 图书管理
 const bookCollector = require('./lib/module/book')

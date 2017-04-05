@@ -19,19 +19,21 @@ class Root extends React.Component {
   componentDidMount() {
     const { fetchUserData, resetUserReq } = this.props.userActions
     const token = localStorage.token
-    fetchUserData('checkManage', {token: token}).then(() => {
-      const { message } = this.props.state.user
-      if (message === 'TokenExpiredError') {
-        Modal.error({
-          title: '错误',
-          content: '登录过期 请重新登录',
-          onOk: () => {
-            browserHistory.push('/login')
-            resetUserReq()
-          }
-        })
-      }
-    })
+    if (token) {
+      fetchUserData('checkLogin', {token: token}).then(() => {
+        const { message } = this.props.state.user
+        if (message === 'TokenExpiredError') {
+          Modal.error({
+            title: '错误',
+            content: '登录过期 请重新登录',
+            onOk: () => {
+              browserHistory.push('/login')
+              resetUserReq()
+            }
+          })
+        }
+      })
+    }
     const { fetchBookData } = this.props.bookActions
     fetchBookData('book')
   }

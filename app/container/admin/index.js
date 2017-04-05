@@ -43,8 +43,8 @@ class Admin extends React.Component {
           title: '错误',
           content: '登录过期 请重新登录',
           onOk: () => {
-            browserHistory.push('/login')
             resetUserReq()
+            browserHistory.push('/login')
           }
         })
       }
@@ -53,8 +53,8 @@ class Admin extends React.Component {
           title: '错误',
           content: '权限不足',
           onOk: () => {
-            browserHistory.push('/')
             resetUserReq()
+            browserHistory.push('/')
           }
         })
       }

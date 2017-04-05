@@ -76,6 +76,16 @@ export const fetchUserData = (type, options) => (dispatch) => {
           dispatch(receiveLogRes(json))
           dispatch(receiveMessage(json))
         })
+      case 'checkLogin':
+        return fetch('/user/checklogin', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => {
+          dispatch(receiveMessage(json))
+        })
       case 'checkManage':
         return fetch('/user/checkmanage', {
           method: 'POST',
