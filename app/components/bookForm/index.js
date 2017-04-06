@@ -41,33 +41,32 @@ class bookModal extends React.Component {
       loadedInfo: false
     }
   }
-  componentWillReceiveProps(nextProps) {
-    const { data, type } = nextProps
-    const nowBook = this.props.data || ''
-    if (data && type === 'edit' && data.isbn !== nowBook.isbn) {
-      console.log(nowBook.isbn, data);
-      this.setForm(data)
-      this.setState({
-        loadedInfo: true
-      })
-    }
-  }
   resetForm() {
     const form = this.props.form
-    form.setFieldsValue({
-      isbn: '',
-      title: '',
-      author: '',
-      translator: '',
-      description: ''
-    })
+    form.resetFields()
+    // form.setFieldsValue({
+    //   isbn: '',
+    //   title: '',
+    //   author: '',
+    //   pic: '',
+    //   translator: '',
+    //   publishTime: '',
+    //   description: ''
+    // })
+    // this.isbnInput.value = ''
+    // this.titleInput.value = ''
+    // this.authorInput.value = ''
+    // this.picInput.value = ''
+    // this.translatorInput.value = ''
+    // this.publishTimeInput.value = ''
+    // this.descriptionInput.value = ''
     this.setState({
       title: '',
       loading: false,
       loadedInfo: false
     })
   }
-  setForm(info) {
+  setForm( info ) {
     const form = this.props.form
     form.setFieldsValue({
       isbn: info.isbn,
@@ -78,7 +77,30 @@ class bookModal extends React.Component {
       publishTime: info.publishTime,
       description: info.description
     })
+    // this.isbnInput.value = info.isbn
+    // this.titleInput.value = info.title
+    // this.authorInput.value = info.author
+    // this.picInput.value = info.pic
+    // this.translatorInput.value = info.translator
+    // this.publishTimeInput.value = info.publishTime
+    // this.descriptionInput.value = info.description
+    this.setState({
+      title: '图书信息',
+      loadedInfo: true,
+      loading: false
+    })
   }
+  // getFormValues() {
+  //   return {
+  //     title: this.titleInput.value,
+  //     author: this.authorInput.value,
+  //     translator: this.translatorInput.value,
+  //     publishTime: this.publishTimeInput.value,
+  //     pic: this.picInput.value,
+  //     isbn: this.isbnInput.value,
+  //     description: this.descriptionInput.value
+  //   }
+  // }
   onCancel() {
     this.resetForm()
     this.props.onCancel()
@@ -100,11 +122,6 @@ class bookModal extends React.Component {
           publishTime: info.pubdate,
           description: info.summary
         })
-        this.setState({
-          title: '图书信息',
-          loadedInfo: true,
-          loading: false
-        })
       }).catch(err => {
         console.log(err)
       })
@@ -115,70 +132,26 @@ class bookModal extends React.Component {
     }
   }
   handleSubmit() {
-    this.props.form.validateFields((err, values) => {
-        if (!err) {
-          if (this.props.onSubmit) {
-            this.props.onSubmit(this.props.type, values)
-            this.resetForm()
-          }
+    const form = this.props.form
+    form.validateFields((err, values) => {
+      if (err) {
+        console.log(err)
+      }
+      if (values.isbn) {
+        if (this.props.onSubmit) {
+          this.props.onSubmit(this.props.type, values)
+          this.resetForm()
         }
+      }
     })
+
   }
   render() {
-    const { getFieldDecorator } = this.props.form
+    const form = this.props.form
+    const { getFieldDecorator } = form
     const title = this.state.title || this.props.title
-    const infoItem = (
-      <div>
-        <FormItem
-          label="书名"
-          >
-          {getFieldDecorator('title')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          label="作者"
-          >
-          {getFieldDecorator('author')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          label="译者"
-          >
-          {getFieldDecorator('translator')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          label="出版日期"
-          >
-          {getFieldDecorator('publishTime')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          label="简介"
-          >
-          {getFieldDecorator('description')(
-            <textarea style={{width: '100%'}}></textarea>
-          )}
-        </FormItem>
-        <FormItem
-          label="封面"
-          >
-          {getFieldDecorator('pic')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem
-          >
-          {getFieldDecorator('edit')(
-            <Input disabled display='none'/>
-          )}
-        </FormItem>
-      </div>
-    )
+    const data = this.props.data || {}
+    console.log(data.description);
     return (
       <Modal
         title={title}
@@ -186,23 +159,80 @@ class bookModal extends React.Component {
         onOk={this.handleSubmit.bind(this)}
         onCancel={this.onCancel.bind(this)}
         confirmLoading={this.state.loadedInfo}
-        footer={this.state.loadedInfo ? [
+        footer={ [
           <Button key="back" size="large" onClick={this.handleCancel}>取消</Button>,
           <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleSubmit.bind(this)}>
             提交
           </Button>,
-        ] : null}
+        ] }
         >
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <FormItem
-            label="isbn"
-            >
-            {getFieldDecorator('isbn')(
-              <Input />
-            )}
-            <Button onClick={this.handleInput.bind(this)}>确认</Button>
-          </FormItem>
-          {this.state.loadedInfo ? infoItem : null}
+        <Form className="login-form">
+        <FormItem
+          label="isbn"
+          required="true"
+          >
+          {getFieldDecorator('isbn', {
+            initialValue: data.isbn || ''
+          })(
+            <Input ref={(input) => {this.isbnInput = input }}/>
+          )}
+          <Button onClick={this.handleInput.bind(this)}>获取信息</Button>
+        </FormItem>
+        <FormItem
+          label="书名"
+          required="true"
+          >
+          {getFieldDecorator('title', {
+            initialValue: data.title || ''
+          })(
+            <Input ref={(input) => {this.titleInput = input }} />
+          )}
+        </FormItem>
+        <FormItem
+          label="作者"
+          >
+          {getFieldDecorator('author', {
+            initialValue: data.author || ''
+          })(
+            <Input ref={(input) => {this.authorInput = input }} />
+        )}
+        </FormItem>
+        <FormItem
+          label="译者"
+          >
+          {getFieldDecorator('translator', {
+            initialValue: data.translator || ''
+          })(
+            <Input ref={(input) => {this.translatorInput = input }} />
+        )}
+        </FormItem>
+        <FormItem
+          label="出版日期"
+          >
+          {getFieldDecorator('publishTime', {
+            initialValue: data.publishTime || ''
+          })(
+            <Input ref={(input) => {this.publishTimeInput = input }}/>
+        )}
+        </FormItem>
+        <FormItem
+          label="简介"
+          >
+          {getFieldDecorator('description', {
+            initialValue: data.description || ''
+          })(
+            <textarea ref={(input) => {this.descriptionInput = input }} style={{width: '100%'}}></textarea>
+        )}
+        </FormItem>
+        <FormItem
+          label="封面"
+          >
+          {getFieldDecorator('pic', {
+            initialValue: data.pic || ''
+          })(
+            <Input ref={(input) => {this.picInput = input }}/>
+          )}
+        </FormItem>
         </Form>
       </Modal>
     )

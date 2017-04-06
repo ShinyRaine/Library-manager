@@ -255,7 +255,8 @@ class Admin extends React.Component {
   }
   handleCancel(){
     this.setState({
-      bookFormVisible: false
+      bookFormVisible: false,
+      bookData: null
     })
   }
   render(){
@@ -275,7 +276,6 @@ class Admin extends React.Component {
           </Content>
           {this.layout()}
         </Content>
-
         <BookForm title="请输入要添加书目的ISBN"
           visible={this.state.bookFormVisible}
           data={this.state.bookData}
