@@ -25,44 +25,30 @@ class Admin extends React.Component {
     const { fetchUserData } = this.props.userActions
     const token = localStorage.token
     if (!token) {
-      Modal.error({
-        title: '错误',
-        content: '请登录',
-        onOk: () => {
-          browserHistory.push('/login')
-        }
+      this.showDialog({
+        title: '请登录',
+        type: 'user',
+        cb: browserHistory.push.bind(null, '/login')
       })
     }
   }
   componentDidMount() {
-    const { fetchUserData, resetUserReq } = this.props.userActions
+    const { fetchUserData } = this.props.userActions
+    const { fetchBookData } = this.props.bookActions
     const token = localStorage.token
 
     fetchUserData('checkManage', {token: token}).then(() => {
-      const { manage, message } = this.props.state.user
-      if (message === 'TokenExpiredError') {
-        Modal.error({
-          title: '错误',
-          content: '登录过期 请重新登录',
-          onOk: () => {
-            resetUserReq()
-            browserHistory.push('/login')
-          }
-        })
-      }
-      if (manage === 0) {
-        Modal.error({
-          title: '错误',
-          content: '权限不足',
-          onOk: () => {
-            resetUserReq()
-            browserHistory.push('/')
-          }
+      const { resCode, manage, message } = this.props.state.user
+      let routeTo = manage === 0 ? browserHistory.push.bind(null, '/') : browserHistory.push.bind(null, '/login')
+      if (resCode === 'error') {
+        this.showDialog({
+          title: message,
+          type: 'user',
+          cb: routeTo
         })
       }
     })
 
-    const { fetchBookData } = this.props.bookActions
     fetchBookData('book')
     fetchUserData('user')
   }
@@ -70,30 +56,28 @@ class Admin extends React.Component {
     this.setState({type: type})
   }
   showDialog(options) {
-    const { fetchUserData, resetUserReq } = this.props.userActions
-    const { fetchBookData, resetBookReq } = this.props.bookActions
-    let fetchData, reset
-    switch (options.type) {
-      case 'user':
-        fetchData = fetchUserData
-        reset = resetUserReq
-        break
-      case 'book':
-        fetchData = fetchBookData
-        reset = resetBookReq
-        break
-    }
-    if (options.success) {
+    const { resetUserReq } = this.props.userActions
+    const { resetBookReq } = this.props.bookActions
+    let reset = options.type === 'user' ? resetUserReq : resetBookReq
+    if (options.success === "success") {
       return Modal.success({
         title: options.title,
         onOk: () => {
-          fetchData(options.type)
+          options.cb()
+          reset()
+          return false
+        }
+      })
+    }else {
+      return Modal.error({
+        title: options.title,
+        onOk: () => {
+          options.cb()
           reset()
           return false
         }
       })
     }
-
   }
   setManage(name, num) {
     const { fetchUserData, resetReq } = this.props.userActions
@@ -102,18 +86,19 @@ class Admin extends React.Component {
       name: name,
       manage: num
     }).then(() => {
-      const { message } = this.props.state.user
+      const { resCode, message } = this.props.state.user
       this.showDialog({
-        success: true,
+        success: resCode,
         title: message,
-        type: 'user'
+        type: 'user',
+        cb: fetchUserData.bind(null, 'user')
       })
     })
   }
   remove(type, id) {
     const { fetchUserData } = this.props.userActions
     const { fetchBookData } = this.props.bookActions
-    let fetchData, data
+    let fetchData, data, resCode, message
     switch (type) {
       case 'user':
         fetchData = fetchUserData
@@ -126,9 +111,10 @@ class Admin extends React.Component {
     }
     fetchData('remove', data).then(() => {
       this.showDialog({
-        success: true,
-        title: (type === 'user' ? this.props.state.user.message : this.props.state.book.message),
-        type: type
+        success: type === 'user' ? this.props.state.user.resCode : this.props.state.user.message,
+        title: type === 'user' ? this.props.state.book.resCode : this.props.state.book.message,
+        type: type,
+        cb: fetchData.bind(null, type)
       })
     })
   }
@@ -242,15 +228,20 @@ class Admin extends React.Component {
       bookFormVisible: true
     })
   }
-  handleOk( type, info ){
-    const { message, books } = this.props.state.user
-    const { addBook, fetchBookData } = this.props.bookActions
+  handleSubmit( type, info ){
     // addBook({isbn:test})
+    const { addBook, fetchBookData } = this.props.bookActions
     fetchBookData(type, Object.assign({token: localStorage.token}, info)).then(() => {
+      const { resCode, message } = this.props.state.book
+      this.showDialog({
+        success: resCode,
+        title: message,
+        type: 'book',
+        cb: fetchBookData.bind(null, 'book')
+      })
       this.setState({
         bookFormVisible: false
       })
-      fetchBookData('book')
     })
   }
   handleCancel(){
@@ -280,7 +271,7 @@ class Admin extends React.Component {
           visible={this.state.bookFormVisible}
           data={this.state.bookData}
           type={this.state.bookFormType}
-          onSubmit={this.handleOk.bind(this)}
+          onSubmit={this.handleSubmit.bind(this)}
           onCancel={this.handleCancel.bind(this)}
           />
        </Layout>

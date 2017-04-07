@@ -1,20 +1,22 @@
-import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS, RECEIVE_ADDBOOK_RES} from '../actions/book.action'
+import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS} from '../actions/book.action'
 
 const initialState = {
+  resCode: '',
   message: '',
   loadingData: false,
-  data: null,
-  receiveAddbookRes: null
+  data: null
 }
 
 export default function book (state = initialState, action) {
   switch (action.type) {
       case "RESET_BOOK_REQ":
         return Object.assign({}, state, {
+          resCode: '',
           message: ''
         })
       case "RECEIVE_BOOK_MESSAGE":
         return Object.assign({}, state, {
+          resCode: action.res.code || '',
           message: action.res.message || ''
         })
       case "BOOK_REQUEST":
@@ -29,10 +31,6 @@ export default function book (state = initialState, action) {
         return Object.assign({}, state, {
           loadingData: false,
           data: data
-        })
-      case "RECEIVE_ADDBOOK_RES":
-        return Object.assign({}, state, {
-          receiveAddbookRes: action.res
         })
     default:
       return state

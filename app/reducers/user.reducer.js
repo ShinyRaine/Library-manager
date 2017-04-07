@@ -1,6 +1,7 @@
 import { RECEIVE_USER_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_USER_REQ, RECEIVE_USERS} from '../actions/user.action'
 
 const initialState = {
+  resCode: '',
   message: '',
   books: null,
   manage: 0,
@@ -11,18 +12,15 @@ export default function name (state = initialState, action) {
   switch (action.type) {
     case "RESET_USER_REQ":
       return Object.assign({}, state, {
+        resCode: '',
         message: ''
       })
     case "RECEIVE_USER_MESSAGE":
       return Object.assign({}, state, {
+        resCode: action.res.code || '',
         message: action.res.message || ''
       })
     case "RECEIVE_MANAGECODE":
-      if(action.res.name === 'TokenExpiredError') {
-        return Object.assign({}, state, {
-          message: action.res.name
-        })
-      }
       return Object.assign({}, state, {
           manage: action.res.manage || 0
         })

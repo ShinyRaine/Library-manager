@@ -31,13 +31,13 @@ export function receiveBooks(json) {
   }
 }
 
-export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
-export function receiveAddbookRes(res) {
-  return {
-    type: RECEIVE_ADDBOOK_RES,
-    res
-  }
-}
+// export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
+// export function receiveAddbookRes(res) {
+//   return {
+//     type: RECEIVE_ADDBOOK_RES,
+//     res
+//   }
+// }
 
 // export const RECEIVE_BOOK_INFO = 'RECEIVE_BOOK_INFO'
 // export function receiveBookInfo(res) {
@@ -64,7 +64,9 @@ export const fetchBookData = (type, options) => (dispatch) => {
           body: JSON.stringify(options)
          })
           .then(res => res.json())
-          .then(json => dispatch(receiveAddbookRes(json)))
+          .then(json => {
+            dispatch(receiveBookMessage(json))
+          })
       case 'edit':
         return fetch('/admin/books/edit', {
           method: 'POST',

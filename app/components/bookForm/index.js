@@ -1,7 +1,6 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
-import { Modal } from 'antd'
-import { Form, Input, Button } from 'antd'
+import { Form, Input, Button, Modal } from 'antd'
 const FormItem = Form.Item
 import { Link } from 'react-router'
 // JSONP的 promise 封装
@@ -21,7 +20,7 @@ function loadJSONP(url) {
     document.head.appendChild(script)
 
     timer = setTimeout(() => {
-      reject('time out')
+      reject('timeout')
       document.head.removeChild(script)
     }, timeout)
   });
@@ -44,22 +43,6 @@ class bookModal extends React.Component {
   resetForm() {
     const form = this.props.form
     form.resetFields()
-    // form.setFieldsValue({
-    //   isbn: '',
-    //   title: '',
-    //   author: '',
-    //   pic: '',
-    //   translator: '',
-    //   publishTime: '',
-    //   description: ''
-    // })
-    // this.isbnInput.value = ''
-    // this.titleInput.value = ''
-    // this.authorInput.value = ''
-    // this.picInput.value = ''
-    // this.translatorInput.value = ''
-    // this.publishTimeInput.value = ''
-    // this.descriptionInput.value = ''
     this.setState({
       title: '',
       loading: false,
@@ -77,30 +60,13 @@ class bookModal extends React.Component {
       publishTime: info.publishTime,
       description: info.description
     })
-    // this.isbnInput.value = info.isbn
-    // this.titleInput.value = info.title
-    // this.authorInput.value = info.author
-    // this.picInput.value = info.pic
-    // this.translatorInput.value = info.translator
-    // this.publishTimeInput.value = info.publishTime
-    // this.descriptionInput.value = info.description
+
     this.setState({
       title: '图书信息',
       loadedInfo: true,
       loading: false
     })
   }
-  // getFormValues() {
-  //   return {
-  //     title: this.titleInput.value,
-  //     author: this.authorInput.value,
-  //     translator: this.translatorInput.value,
-  //     publishTime: this.publishTimeInput.value,
-  //     pic: this.picInput.value,
-  //     isbn: this.isbnInput.value,
-  //     description: this.descriptionInput.value
-  //   }
-  // }
   onCancel() {
     this.resetForm()
     this.props.onCancel()
@@ -123,7 +89,9 @@ class bookModal extends React.Component {
           description: info.summary
         })
       }).catch(err => {
-        console.log(err)
+        Modal.error({
+          title: '获取信息超时，请重新尝试'
+        })
       })
     } else {
       Modal.error({
@@ -151,7 +119,6 @@ class bookModal extends React.Component {
     const { getFieldDecorator } = form
     const title = this.state.title || this.props.title
     const data = this.props.data || {}
-    console.log(data.description);
     return (
       <Modal
         title={title}
