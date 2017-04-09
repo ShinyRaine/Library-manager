@@ -20,9 +20,9 @@ class Signup extends React.Component {
   }
   componentDidUpdate() {
     const { resetUserReq } = this.props.userActions
-    const { message, books } = this.props.state.user
-    if (message) {
-      if (message === "success") {
+    const { resCode, message, books } = this.props.state.user
+    if (resCode) {
+      if (resCode === "success") {
         Modal.success({
           title: '注册成功',
           onOk: function(){

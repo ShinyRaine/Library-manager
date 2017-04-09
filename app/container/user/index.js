@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 
 import * as UserActions from '../../actions/user.action'
 import Head from '../../components/head'
-import { Layout, Table } from 'antd';
+import { Layout, Table, Button } from 'antd';
 
 const { Header, Content, Sider } = Layout;
 

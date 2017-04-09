@@ -10,7 +10,6 @@ class Sidebar extends React.Component {
     super(props)
   }
   render(){
-    // 因为只封装要做的项目的定制组件，就不考虑第三层菜单了
     const list = this.props.list
 
     const menu = list.map((item) => {

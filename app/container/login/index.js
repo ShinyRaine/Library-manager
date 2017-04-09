@@ -18,9 +18,9 @@ class Login extends React.Component {
   }
   componentDidUpdate() {
     const { resetUserReq } = this.props.userActions
-    const { message } = this.props.state.user
-    if (message) {
-      if (message === "success") {
+    const { resCode, message } = this.props.state.user
+    if (resCode) {
+      if (resCode === "success") {
         Modal.success({
           title: '登录成功',
           onOk: function(){
@@ -46,7 +46,6 @@ class Login extends React.Component {
     const { fetchUserData } = this.props.userActions
     this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log(values)
           fetchUserData('login', values)
         }
     })

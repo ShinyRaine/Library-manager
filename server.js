@@ -42,35 +42,40 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 app.use(express.static(__dirname + '/static'))
+// 页面路由重定向
+app.use((req, res, next) => {
+  if (req.method === 'GET' && req.path === "/login" || req.path === "/user" || req.path === "/signup" || req.path === "/admin" ) {
+		return res.sendFile(req.baseUrl + '/index.html')
+  }else {
+		return next()
+	}
+	// console.log(req.session.loggedIn)
+})
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()) // parse application/json
 
-// 用户相关
 const userCollector = require('./lib/module/user')
+const tokenCollector = require('./lib/module/tokenCollector')
+const bookCollector = require('./lib/module/book')
+
 app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
+app.get('/books', bookCollector.all)
+
+app.use(tokenCollector.checklogin)
 app.post('/user/remove', userCollector.remove)
 app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
-app.post('/user/checklogin', userCollector.checklogin)
+app.post('/user/checklogin', userCollector.checkManage)
 
-// 图书管理
-const bookCollector = require('./lib/module/book')
-app.get('/books', bookCollector.all)
 app.post('/admin/books/new', bookCollector.addbook)
 app.post('/admin/books/remove', bookCollector.remove)
 app.post('/admin/books/edit', bookCollector.edit)
 
-app.use((req, res, next) => {
-  if (req.method !== 'GET' || !req.accepts('html') || req.path.endsWith('.js') || req.path.endsWith('.css')) {
-	 return next()
-  }
-	// console.log(req.session.loggedIn)
-	res.sendFile(req.baseUrl + '/index.html')
-})
+
 
 app.listen(3000,function () {
 	console.log('listening on *:3000')

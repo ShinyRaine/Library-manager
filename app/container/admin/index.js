@@ -39,7 +39,7 @@ class Admin extends React.Component {
 
     fetchUserData('checkManage', {token: token}).then(() => {
       const { resCode, manage, message } = this.props.state.user
-      let routeTo = manage === 0 ? browserHistory.push.bind(null, '/') : browserHistory.push.bind(null, '/login')
+      let routeTo = message.match(/过期/) ? browserHistory.push.bind(null, '/login') : browserHistory.push.bind(null, '/')
       if (resCode === 'error') {
         this.showDialog({
           title: message,
