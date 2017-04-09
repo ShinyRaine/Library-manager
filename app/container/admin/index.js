@@ -225,6 +225,7 @@ class Admin extends React.Component {
   showAddBookDialog(){
     this.setState({
       bookFormType: 'addbook',
+      bookData: null,
       bookFormVisible: true
     })
   }

@@ -107,8 +107,8 @@ class bookModal extends React.Component {
       }
       if (values.isbn) {
         if (this.props.onSubmit) {
-          this.props.onSubmit(this.props.type, values)
           this.resetForm()
+          this.props.onSubmit(this.props.type, values)
         }
       }
     })
