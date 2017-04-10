@@ -47,7 +47,7 @@ class Root extends React.Component {
         submenu: [
           {
             key: 'htmlcss',
-            name: 'html+css'
+            name: 'htmlcss'
           },
           {
             key: 'javascript',

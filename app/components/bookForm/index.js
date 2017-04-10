@@ -1,6 +1,6 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
-import { Form, Input, Button, Modal } from 'antd'
+import { Form, Input, Button, Modal, Cascader } from 'antd'
 const FormItem = Form.Item
 import { Link } from 'react-router'
 // JSONP的 promise 封装
@@ -105,6 +105,7 @@ class bookModal extends React.Component {
       if (err) {
         console.log(err)
       }
+      console.log(values);
       if (values.isbn) {
         if (this.props.onSubmit) {
           this.resetForm()
@@ -119,6 +120,36 @@ class bookModal extends React.Component {
     const { getFieldDecorator } = form
     const title = this.state.title || this.props.title
     const data = this.props.data || {}
+    const types = [{
+        value: 'fe',
+        label: '前端',
+        children: [{
+          value: 'htmlcss',
+          label: 'htmlcss'
+        },{
+          value: 'javascript',
+          label: 'javascript'
+        },{
+          value: 'feframe',
+          label: '前端框架'
+        }],
+      }, {
+        value: 'be',
+        label: '后端',
+        children: [{
+          value: 'php',
+          label: 'php',
+        },{
+          value: 'java',
+          label: 'java',
+        },{
+          value: '数据库',
+          label: '数据库',
+        }],
+      },{
+        value: '未分类',
+        label: '未分类'
+      }]
     return (
       <Modal
         title={title}
@@ -144,6 +175,16 @@ class bookModal extends React.Component {
             <Input ref={(input) => {this.isbnInput = input }}/>
           )}
           <Button onClick={this.handleInput.bind(this)}>获取信息</Button>
+        </FormItem>
+        <FormItem
+          label="分类"
+          required="true"
+          >
+          {getFieldDecorator('type', {
+            initialValue: data.type || ['']
+          })(
+            <Cascader options={types}/>
+          )}
         </FormItem>
         <FormItem
           label="书名"
