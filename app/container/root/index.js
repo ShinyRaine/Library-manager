@@ -78,7 +78,7 @@ class Root extends React.Component {
       { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'title', key: 'title' },
       { title: '作者', dataIndex: 'author', key: 'author' },
-      { title: '分类', dataIndex: 'type', key: 'type' },
+      { title: '分类', dataIndex: 'type', key: 'type', render: (text) => text.join('/') },
       { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
           if (record.state == 0) {
             return <Button type="primary">借出</Button>

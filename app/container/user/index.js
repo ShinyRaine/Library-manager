@@ -21,7 +21,7 @@ class User extends React.Component {
     const columns = [
       { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'title', key: 'title' },
-      { title: '分类', dataIndex: 'type', key: 'type' },
+      { title: '分类', dataIndex: 'type', key: 'type',render: (text) => text.join('/') },
       { title: '借阅时间', dataIndex: 'time', key: 'time' },
       { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
         <Button type="primary">归还</Button>
