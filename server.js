@@ -66,6 +66,7 @@ app.post('/user/login', userCollector.login)
 app.get('/books', bookCollector.all)
 
 app.use(tokenCollector.checklogin)
+
 app.post('/user/remove', userCollector.remove)
 app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
