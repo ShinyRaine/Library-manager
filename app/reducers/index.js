@@ -4,6 +4,7 @@ import book from './book.reducer'
 
 const reducer = combineReducers({
   book,
-  user
+  user,
+  type
 })
 export default reducer

@@ -31,6 +31,14 @@ export function receiveBooks(json) {
   }
 }
 
+export const RECEIVE_TYPES = 'RECEIVE_TYPES'
+export function receiveTypes(json) {
+  return {
+    type: RECEIVE_TYPES,
+    json
+  }
+}
+
 export const fetchBookData = fetchData
 
 // export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
