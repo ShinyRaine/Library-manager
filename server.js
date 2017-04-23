@@ -59,11 +59,13 @@ app.use(bodyParser.json()) // parse application/json
 const userCollector = require('./lib/module/user')
 const tokenCollector = require('./lib/module/tokenCollector')
 const bookCollector = require('./lib/module/book')
+const typeCollector = require('./lib/module/booksType')
 
 app.get('/user/all', userCollector.all)
 app.post('/user/signup', userCollector.signup)
 app.post('/user/login', userCollector.login)
 app.get('/books', bookCollector.all)
+app.get('/types', typeCollector.all)
 
 app.use(tokenCollector.checklogin)
 

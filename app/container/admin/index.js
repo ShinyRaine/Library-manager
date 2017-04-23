@@ -11,6 +11,7 @@ const { Header, Content, Sider } = Layout
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
+
 class Admin extends React.Component {
   constructor(props) {
     super(props)

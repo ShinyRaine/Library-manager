@@ -1,8 +1,11 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
-import { Form, Input, Button, Modal, Cascader } from 'antd'
-const FormItem = Form.Item
 import { Link } from 'react-router'
+import { Form, Input, Button, Modal, Cascader, Popover } from 'antd'
+const FormItem = Form.Item
+import AddPopover from '../addPopover'
+import Text from '../test'
+
 // JSONP的 promise 封装
 function loadJSONP(url) {
   const timeout = 5000
@@ -183,8 +186,11 @@ class bookModal extends React.Component {
           {getFieldDecorator('type', {
             initialValue: data.type || ['']
           })(
-            <Cascader options={types}/>
+            <Cascader options={types} style={{width: '40%',display:'inline-block'}}/>
           )}
+          <AddPopover
+            name="添加类目"
+            />
         </FormItem>
         <FormItem
           label="书名"
