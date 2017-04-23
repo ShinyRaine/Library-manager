@@ -11,6 +11,18 @@ class AddPopover extends React.Component {
       father: null
     }
   }
+  showPop() {
+    if (this.state.visible) {
+      this.setState({
+        visible: false
+      })
+    } else {
+      this.setState({
+        visible: true
+      })
+    }
+
+  }
   handleVisibleChange(visible) {
     this.setState({
       visible: visible
@@ -27,7 +39,6 @@ class AddPopover extends React.Component {
     })
   }
   render() {
-    console.log(111);
     const content = (
       <div>
         <p>选择一个一级分类，若不选择则添加为一级分类</p>
@@ -42,7 +53,7 @@ class AddPopover extends React.Component {
           <Option value="lucy">Lucy</Option>
           <Option value="tom">Tom</Option>
         </Select>
-        <Input />
+        <Input style={{width: 200}}/>
         <Button onClick={this.submit.bind(this)}>提交</Button>
       </div>
     )
@@ -50,12 +61,17 @@ class AddPopover extends React.Component {
       <Popover
         content={content}
         title={this.props.name}
-        trigger="click"
         placement="right"
+        trigger="click"
         visible={this.state.visible}
-        onVisibleChange={this.handleVisibleChange.bind(this)}
       >
-        <Button style={{marginLeft:'10px'}} type="primary">{this.props.name}</Button>
+        <Button
+          style={{marginLeft:'10px'}}
+          type="primary"
+          onClick={this.showPop.bind(this)}
+          >
+          {this.props.name}
+         </Button>
       </Popover>
     )
   }
