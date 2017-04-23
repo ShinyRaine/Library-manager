@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-
+import { fetchData } from '../api/bookApi'
 
 // 请求相关的Actions
 export const RESET_BOOK_REQ = 'RESET_BOOK_REQ'
@@ -9,7 +9,7 @@ export function resetBookReq() {
   }
 }
 export const RECEIVE_BOOK_MESSAGE = 'RECEIVE_BOOK_MESSAGE'
-function receiveBookMessage(res) {
+export function receiveBookMessage(res) {
   return {
     type: RECEIVE_BOOK_MESSAGE,
     res
@@ -31,6 +31,8 @@ export function receiveBooks(json) {
   }
 }
 
+export const fetchBookData = fetchData
+
 // export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
 // export function receiveAddbookRes(res) {
 //   return {
@@ -46,42 +48,3 @@ export function receiveBooks(json) {
 //     res
 //   }
 // }
-
-export const fetchBookData = (type, options) => (dispatch) => {
-    dispatch(bookRequest(type))
-    switch (type) {
-      case 'book':
-        return fetch('/books')
-          .then(response => response.json())
-          .then(json =>
-            dispatch(receiveBooks(json))
-          )
-    // POST
-      case 'addbook':
-        return fetch('/admin/books/new', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-         })
-          .then(res => res.json())
-          .then(json => {
-            dispatch(receiveBookMessage(json))
-          })
-      case 'edit':
-        return fetch('/admin/books/edit', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-         })
-          .then(res => res.json())
-          .then(json => dispatch(receiveBookMessage(json)))
-      case 'remove':
-        return fetch('/admin/books/remove', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => dispatch(receiveBookMessage(json)))
-    }
-}

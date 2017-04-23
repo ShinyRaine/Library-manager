@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router'
 
 import { Layout, Icon, Form, Input, Button, Modal } from 'antd'
 const { Content } = Layout
-const FormItem = Form.Item;
+const FormItem = Form.Item
 import Head from '../../components/head'
 
 import './style.scss'
