@@ -1,4 +1,4 @@
-import { receiveTypes } from '../actions/book.action'
+import { receiveTypes, receiveTypeMessage } from '../actions/book.action'
 
 
 export const fetchData = (type, options) => (dispatch) => {
@@ -10,31 +10,26 @@ export const fetchData = (type, options) => (dispatch) => {
             dispatch(receiveTypes(json))
           )
     // POST
-      case 'addbook':
-        return fetch('/admin/books/new', {
+      case 'addtype':
+        return fetch('/admin/type/new', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
           .then(res => res.json())
           .then(json => {
-            dispatch(receiveBookMessage(json))
+            dispatch(receiveTypeMessage(json))
           })
-      case 'edit':
-        return fetch('/admin/books/edit', {
+      case 'removetype':
+        return fetch('/admin/type/remove', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
          })
           .then(res => res.json())
-          .then(json => dispatch(receiveBookMessage(json)))
-      case 'remove':
-        return fetch('/admin/books/remove', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => dispatch(receiveBookMessage(json)))
+          .then(json => {
+            dispatch(receiveTypeMessage(json))
+          })
+
     }
 }

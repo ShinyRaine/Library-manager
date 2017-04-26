@@ -15,6 +15,14 @@ export function receiveBookMessage(res) {
     res
   }
 }
+export const RECEIVE_TYPE_MESSAGE = 'RECEIVE_TYPE_MESSAGE'
+export function receiveTypeMessage(res) {
+  return {
+    type: RECEIVE_TYPE_MESSAGE,
+    res
+  }
+}
+
 export const BOOK_REQUEST = 'BOOK_REQUEST'
 export function bookRequest(data) {
   return {
