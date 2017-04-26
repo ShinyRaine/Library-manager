@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 import { Form, Input, Button, Modal, Cascader, Popover } from 'antd'
 const FormItem = Form.Item
 import AddPopover from '../addPopover'
-import Text from '../test'
 
 // JSONP的 promise 封装
 function loadJSONP(url) {
