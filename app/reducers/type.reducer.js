@@ -2,7 +2,7 @@ import { RECEIVE_TYPES, RECEIVE_TYPE_MESSAGE } from '../actions/book.action'
 
 const initialState = {
   resCode: '',
-  message: '',
+  resMessage: '',
   data: null
 }
 
@@ -15,7 +15,7 @@ export default function type (state = initialState, action) {
       case "RECEIVE_TYPE_MESSAGE":
         return Object.assign({}, state, {
           resCode: action.res.code || '',
-          message: action.res.message || ''
+          resMessage: action.res.message || ''
         })
     default:
       return state

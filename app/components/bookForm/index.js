@@ -1,7 +1,11 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
 import { Link } from 'react-router'
-import { Form, Input, Button, Modal, Cascader, Popover } from 'antd'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as BookActions from '../../actions/book.action'
+
+import { Form, Input, Button, Modal, Cascader, Popover, message } from 'antd'
 const FormItem = Form.Item
 import AddPopover from '../addPopover'
 
@@ -115,7 +119,19 @@ class bookModal extends React.Component {
         }
       }
     })
-
+  }
+  addTypeSubmit(options) {
+    const { fetchTypeData } = this.props.bookActions
+    fetchTypeData('addtype', Object.assign({token: localStorage.token}, options) )
+      .then(fetchTypeData('all'))
+      .then(() => {
+        const { resCode, resMessage } = this.props.state.type
+        if(resCode === 'success') {
+          message.success(resMessage)
+        } else {
+          message.error(resMessage)
+        }
+      })
   }
   render() {
     const form = this.props.form
@@ -189,6 +205,7 @@ class bookModal extends React.Component {
           )}
           <AddPopover
             name="添加类目"
+            onSubmit={this.addTypeSubmit.bind(this)}
             />
         </FormItem>
         <FormItem
@@ -253,4 +270,16 @@ class bookModal extends React.Component {
 }
 const BookForm = Form.create()(bookModal)
 
-export default BookForm
+function mapState(state) {
+  return {
+    state: state
+  }
+}
+
+function mapDispatch(dispatch) {
+  return {
+    bookActions: bindActionCreators(BookActions, dispatch)
+  }
+}
+
+export default connect(mapState, mapDispatch)(BookForm)

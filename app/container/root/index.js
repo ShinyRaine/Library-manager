@@ -42,7 +42,7 @@ class Root extends React.Component {
     const { data } = this.props.state.book
     const list = [
       {
-        key: 'fe',
+        key: '前端',
         name: '前端',
         submenu: [
           {
@@ -54,7 +54,7 @@ class Root extends React.Component {
             name: 'javascript'
           },
           {
-            key: 'feframe',
+            key: '前端框架',
             name: '前端框架'
           }
         ]

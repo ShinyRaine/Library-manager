@@ -78,6 +78,8 @@ app.post('/admin/books/new', bookCollector.addbook)
 app.post('/admin/books/remove', bookCollector.remove)
 app.post('/admin/books/edit', bookCollector.edit)
 
+app.post('/admin/type/new', typeCollector.add)
+app.post('/admin/type/remove', typeCollector.remove)
 
 
 app.listen(3000,function () {

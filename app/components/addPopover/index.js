@@ -8,7 +8,8 @@ class AddPopover extends React.Component {
     super(props)
     this.state = {
       visible: false,
-      father: null
+      father: '',
+      value: ''
     }
   }
   showPop() {
@@ -33,10 +34,22 @@ class AddPopover extends React.Component {
       father: value
     })
   }
-  submit() {
+  handleInput(event) {
+    this.setState({
+      value: event.target.value
+    })
+  }
+  handleSubmit() {
+    console.log(this.state);
     this.setState({
       visible: false
     })
+    if (this.props.onSubmit) {
+      this.props.onSubmit({
+        father: this.state.father,
+        name: this.state.value
+      })
+    }
   }
   render() {
     const content = (
@@ -53,8 +66,8 @@ class AddPopover extends React.Component {
           <Option value="lucy">Lucy</Option>
           <Option value="tom">Tom</Option>
         </Select>
-        <Input style={{width: 200}}/>
-        <Button onClick={this.submit.bind(this)}>提交</Button>
+        <Input style={{width: 200}} onChange={this.handleInput.bind(this)}/>
+        <Button onClick={this.handleSubmit.bind(this)}>提交</Button>
       </div>
     )
     return (

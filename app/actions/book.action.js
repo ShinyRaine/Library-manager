@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { fetchData } from '../api/bookApi'
-
+import { fetchData as fetchType } from '../api/typeApi'
 // 请求相关的Actions
 export const RESET_BOOK_REQ = 'RESET_BOOK_REQ'
 export function resetBookReq() {
@@ -48,6 +48,7 @@ export function receiveTypes(json) {
 }
 
 export const fetchBookData = fetchData
+export const fetchTypeData = fetchType
 
 // export const RECEIVE_ADDBOOK_RES = 'RECEIVE_ADDBOOK_RES'
 // export function receiveAddbookRes(res) {
