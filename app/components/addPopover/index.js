@@ -52,6 +52,7 @@ class AddPopover extends React.Component {
     }
   }
   render() {
+    const proList = this.props.proList || []
     const content = (
       <div>
         <p>选择一个一级分类，若不选择则添加为一级分类</p>
@@ -62,9 +63,11 @@ class AddPopover extends React.Component {
           onChange={this.handleChange.bind(this)}
           filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input) >= 0}
         >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="tom">Tom</Option>
+          { proList.map( (item) => {
+            if (!item.father) {
+              return (<Option key={item._id} value={item.name}>{item.name}</Option>)
+            }
+          }) }
         </Select>
         <Input style={{width: 200}} onChange={this.handleInput.bind(this)}/>
         <Button onClick={this.handleSubmit.bind(this)}>提交</Button>

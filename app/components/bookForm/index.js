@@ -7,35 +7,8 @@ import * as BookActions from '../../actions/book.action'
 
 import { Form, Input, Button, Modal, Cascader, Popover, message } from 'antd'
 const FormItem = Form.Item
-import AddPopover from '../addPopover'
 
-// JSONP的 promise 封装
-function loadJSONP(url) {
-  const timeout = 5000
-  let timer
-  return new Promise((resolve, reject) => {
-    window.jsonpfn = function (res) {
-      clearTimeout(timer)
-      resolve(res)
-      removeScript()
-    }
-
-    let script = document.createElement("script")
-    script.id = 'jsonp'
-    script.src = url + "?callback=jsonpfn"
-    document.head.appendChild(script)
-
-    timer = setTimeout(() => {
-      reject('timeout')
-      document.head.removeChild(script)
-    }, timeout)
-  });
-}
-
-function removeScript () {
-  let script = document.getElementById('jsonp')
-  document.head.removeChild(script)
-}
+import { getTypeList, loadJSONP } from '../../api/tools'
 
 class bookModal extends React.Component {
   constructor(props){
@@ -120,54 +93,12 @@ class bookModal extends React.Component {
       }
     })
   }
-  addTypeSubmit(options) {
-    const { fetchTypeData } = this.props.bookActions
-    fetchTypeData('addtype', Object.assign({token: localStorage.token}, options) )
-      .then(fetchTypeData('all'))
-      .then(() => {
-        const { resCode, resMessage } = this.props.state.type
-        if(resCode === 'success') {
-          message.success(resMessage)
-        } else {
-          message.error(resMessage)
-        }
-      })
-  }
   render() {
     const form = this.props.form
     const { getFieldDecorator } = form
     const title = this.state.title || this.props.title
     const data = this.props.data || {}
-    const types = [{
-        value: 'fe',
-        label: '前端',
-        children: [{
-          value: 'htmlcss',
-          label: 'htmlcss'
-        },{
-          value: 'javascript',
-          label: 'javascript'
-        },{
-          value: 'feframe',
-          label: '前端框架'
-        }],
-      }, {
-        value: 'be',
-        label: '后端',
-        children: [{
-          value: 'php',
-          label: 'php',
-        },{
-          value: 'java',
-          label: 'java',
-        },{
-          value: '数据库',
-          label: '数据库',
-        }],
-      },{
-        value: '未分类',
-        label: '未分类'
-      }]
+    const types = getTypeList(this.props.state.type.data || [])
     return (
       <Modal
         title={title}
@@ -201,12 +132,8 @@ class bookModal extends React.Component {
           {getFieldDecorator('type', {
             initialValue: data.type || ['']
           })(
-            <Cascader options={types} style={{width: '40%',display:'inline-block'}}/>
+            <Cascader options={types} style={{display:'inline-block'}}/>
           )}
-          <AddPopover
-            name="添加类目"
-            onSubmit={this.addTypeSubmit.bind(this)}
-            />
         </FormItem>
         <FormItem
           label="书名"

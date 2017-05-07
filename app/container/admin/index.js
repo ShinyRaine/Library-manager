@@ -5,12 +5,14 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Button, Modal, Table } from 'antd'
+import { Layout, Button, Modal, Table, message } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
+import AddPopover from '../../components/addPopover'
+import { getTypeList } from '../../api/tools'
 
 class Admin extends React.Component {
   constructor(props) {
@@ -35,7 +37,7 @@ class Admin extends React.Component {
   }
   componentDidMount() {
     const { fetchUserData } = this.props.userActions
-    const { fetchBookData } = this.props.bookActions
+    const { fetchBookData, fetchTypeData } = this.props.bookActions
     const token = localStorage.token
 
     fetchUserData('checkManage', {token: token}).then(() => {
@@ -49,7 +51,7 @@ class Admin extends React.Component {
         })
       }
     })
-
+    fetchTypeData('all')
     fetchBookData('book')
     fetchUserData('user')
   }
@@ -126,45 +128,60 @@ class Admin extends React.Component {
       bookData: item
     })
   }
+  addTypeSubmit(options) {
+    const { fetchTypeData } = this.props.bookActions
+    fetchTypeData('addtype', Object.assign({token: localStorage.token}, options) )
+      .then(fetchTypeData('all'))
+      .then(() => {
+        const { resCode, resMessage } = this.props.state.type
+        if(resCode === 'success') {
+          message.success(resMessage)
+        } else {
+          message.error(resMessage)
+        }
+      })
+  }
   layout() {
-    const list = [
-      {
-        key: 'fe',
-        name: '前端',
-        submenu: [
-          {
-            key: 'htmlcss',
-            name: 'html+css'
-          },
-          {
-            key: 'javascript',
-            name: 'javascript'
-          },
-          {
-            key: 'feframe',
-            name: '前端框架'
-          }
-        ]
-      },
-      {
-        key: 'be',
-        name: '后端',
-        submenu: [
-          {
-            key: 'php',
-            name: 'php'
-          },
-          {
-            key: 'java',
-            name: 'java'
-          }
-        ]
-      },
-      {
-        key: 'null',
-        name: '未分类'
-      }
-    ]
+    const list = getTypeList( this.props.state.type.data || [] )
+
+    // const list = [
+    //   {
+    //     key: 'fe',
+    //     name: '前端',
+    //     submenu: [
+    //       {
+    //         key: 'htmlcss',
+    //         name: 'html+css'
+    //       },
+    //       {
+    //         key: 'javascript',
+    //         name: 'javascript'
+    //       },
+    //       {
+    //         key: 'feframe',
+    //         name: '前端框架'
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     key: 'be',
+    //     name: '后端',
+    //     submenu: [
+    //       {
+    //         key: 'php',
+    //         name: 'php'
+    //       },
+    //       {
+    //         key: 'java',
+    //         name: 'java'
+    //       }
+    //     ]
+    //   },
+    //   {
+    //     key: 'null',
+    //     name: '未分类'
+    //   }
+    // ]
     switch (this.state.type) {
       case 'book':
         const { data } = this.props.state.book
@@ -188,6 +205,11 @@ class Admin extends React.Component {
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Content>
                 <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
+                <AddPopover
+                  name="添加类目"
+                  proList={list}
+                  onSubmit={this.addTypeSubmit.bind(this)}
+                  />
               </Content>
               <Table
                 columns={columns}
