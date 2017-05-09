@@ -136,6 +136,16 @@ class bookModal extends React.Component {
           )}
         </FormItem>
         <FormItem
+          label="数量"
+          required="true"
+          >
+          {getFieldDecorator('num', {
+            initialValue: data.num || ''
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem
           label="书名"
           required="true"
           >
