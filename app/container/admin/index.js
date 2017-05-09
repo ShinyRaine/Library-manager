@@ -128,60 +128,22 @@ class Admin extends React.Component {
       bookData: item
     })
   }
-  addTypeSubmit(options) {
+  handleTypeSubmit( type, options ) {
     const { fetchTypeData } = this.props.bookActions
-    fetchTypeData('addtype', Object.assign({token: localStorage.token}, options) )
-      .then(fetchTypeData('all'))
+    fetchTypeData(type, Object.assign({token: localStorage.token}, options) )
       .then(() => {
         const { resCode, resMessage } = this.props.state.type
         if(resCode === 'success') {
           message.success(resMessage)
+          fetchTypeData('all')
         } else {
           message.error(resMessage)
         }
       })
   }
   layout() {
-    const list = getTypeList( this.props.state.type.data || [] )
-
-    // const list = [
-    //   {
-    //     key: 'fe',
-    //     name: '前端',
-    //     submenu: [
-    //       {
-    //         key: 'htmlcss',
-    //         name: 'html+css'
-    //       },
-    //       {
-    //         key: 'javascript',
-    //         name: 'javascript'
-    //       },
-    //       {
-    //         key: 'feframe',
-    //         name: '前端框架'
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     key: 'be',
-    //     name: '后端',
-    //     submenu: [
-    //       {
-    //         key: 'php',
-    //         name: 'php'
-    //       },
-    //       {
-    //         key: 'java',
-    //         name: 'java'
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     key: 'null',
-    //     name: '未分类'
-    //   }
-    // ]
+    const listData = this.props.state.type.data || []
+    const list = getTypeList( listData )
     switch (this.state.type) {
       case 'book':
         const { data } = this.props.state.book
@@ -200,16 +162,21 @@ class Admin extends React.Component {
         return (
           <Layout className="main-layout">
             <Sider width={200} style={{ background: '#fff' }}>
+              <AddPopover
+                name="添加类目"
+                proList={listData}
+                onSubmit={this.handleTypeSubmit.bind(this, 'addtype')}
+                />
+              <AddPopover
+                name="删除类目"
+                proList={listData}
+                onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
+                />
               <Sidebar list={list}/>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Content>
                 <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
-                <AddPopover
-                  name="添加类目"
-                  proList={list}
-                  onSubmit={this.addTypeSubmit.bind(this)}
-                  />
               </Content>
               <Table
                 columns={columns}

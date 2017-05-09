@@ -46,7 +46,6 @@ export const fetchData = (type, options) => (dispatch) => {
         })
         .then(res => res.json())
         .then(json => {
-          dispatch(receiveUserMessage(json))
           dispatch(receiveManagecode(json))
         })
       case 'setManage':

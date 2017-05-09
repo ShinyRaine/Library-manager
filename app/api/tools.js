@@ -4,13 +4,18 @@ export function getTypeList (data) {
     let submenu = []
     if (!data[i].father) {
       for (let j = 0; j < data[i].son.length; j++) {
-        submenu.push({
-          key: data[i].son[j],
-          name: data[i].son[j]
+        let temp = data.find(function(ele){
+          return ele.father === data[i].name && ele.name === data[i].son[j]
         })
+        if (temp) {
+          submenu.push({
+            key: temp._id,
+            name: temp.name
+          })
+        }
       }
       result.push({
-        key: data[i].name,
+        key: data[i]._id,
         name: data[i].name,
         submenu: submenu
       })

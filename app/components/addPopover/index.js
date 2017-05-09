@@ -22,7 +22,6 @@ class AddPopover extends React.Component {
         visible: true
       })
     }
-
   }
   handleVisibleChange(visible) {
     this.setState({
@@ -39,23 +38,34 @@ class AddPopover extends React.Component {
       value: event.target.value
     })
   }
+  selectItem(value) {
+    this.setState({
+      value: value
+    })
+  }
   handleSubmit() {
-    console.log(this.state);
     this.setState({
       visible: false
     })
     if (this.props.onSubmit) {
-      this.props.onSubmit({
-        father: this.state.father,
-        name: this.state.value
-      })
+      if (this.props.name === "添加类目" || this.state.value) {
+        this.props.onSubmit({
+          father: this.state.father,
+          name: this.state.value
+        })
+      } else {
+        this.props.onSubmit({
+          father: '',
+          name: this.state.father
+        })
+      }
     }
   }
   render() {
     const proList = this.props.proList || []
     const content = (
       <div>
-        <p>选择一个一级分类，若不选择则添加为一级分类</p>
+        {this.props.name === "添加类目" ? <p>选择一个一级分类，若不选择则添加为一级分类</p> : null}
         <Select
           showSearch
           style={{ width: 200 }}
@@ -63,13 +73,29 @@ class AddPopover extends React.Component {
           onChange={this.handleChange.bind(this)}
           filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input) >= 0}
         >
-          { proList.map( (item) => {
-            if (!item.father) {
-              return (<Option key={item._id} value={item.name}>{item.name}</Option>)
-            }
-          }) }
+          { proList.filter((item)=>{
+              if (!item.father) {
+                return true
+              }
+            }).map( (item) => <Option key={item._id} value={item.name}>{item.name}</Option>)
+          }
         </Select>
-        <Input style={{width: 200}} onChange={this.handleInput.bind(this)}/>
+        {this.props.name === "添加类目" ? <Input style={{width: 200}} onChange={this.handleInput.bind(this)}/> :
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            optionFilterProp="children"
+            onChange={this.selectItem.bind(this)}
+            filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input) >= 0}
+          >
+            { proList.filter((item)=>{
+                if (item.father && item.father === this.state.father) {
+                  return true
+                }
+              }).map( (item) => <Option key={item._id} value={item.name}>{item.name}</Option>)
+            }
+          </Select>
+        }
         <Button onClick={this.handleSubmit.bind(this)}>提交</Button>
       </div>
     )

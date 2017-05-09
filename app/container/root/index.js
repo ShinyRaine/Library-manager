@@ -32,6 +32,8 @@ class Root extends React.Component {
               resetUserReq()
             }
           })
+        } else {
+          resetUserReq()
         }
       })
     }
@@ -43,40 +45,7 @@ class Root extends React.Component {
     const { message, books } = this.props.state.user
     const { data } = this.props.state.book
     const list = getTypeList( this.props.state.type.data || [] )
-    // const list = [
-    //   {
-    //     key: '前端',
-    //     name: '前端',
-    //     submenu: [
-    //       {
-    //         key: 'htmlcss',
-    //         name: 'htmlcss'
-    //       },
-    //       {
-    //         key: 'javascript',
-    //         name: 'javascript'
-    //       },
-    //       {
-    //         key: '前端框架',
-    //         name: '前端框架'
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     key: 'be',
-    //     name: '后端',
-    //     submenu: [
-    //       {
-    //         key: 'php',
-    //         name: 'php'
-    //       },
-    //       {
-    //         key: 'java',
-    //         name: 'java'
-    //       }
-    //     ]
-    //   }
-    // ]
+
     const columns = [
       { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'title', key: 'title' },
