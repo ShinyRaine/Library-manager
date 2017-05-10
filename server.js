@@ -41,6 +41,7 @@ if (process.env.NODE_ENV === 'dev') {
 	app.use(webpackHotMiddleware(compiler))
 }
 
+
 app.use(express.static(__dirname + '/static'))
 // 页面路由重定向
 app.use((req, res, next) => {

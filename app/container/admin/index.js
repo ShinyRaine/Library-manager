@@ -12,7 +12,7 @@ import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
 import AddPopover from '../../components/addPopover'
-import { getTypeList } from '../../api/tools'
+import { getSideList } from '../../api/tools'
 
 class Admin extends React.Component {
   constructor(props) {
@@ -143,7 +143,7 @@ class Admin extends React.Component {
   }
   layout() {
     const listData = this.props.state.type.data || []
-    const list = getTypeList( listData )
+    const list = getSideList( listData )
     switch (this.state.type) {
       case 'book':
         const { data } = this.props.state.book
@@ -152,6 +152,7 @@ class Admin extends React.Component {
           { title: '书名', dataIndex: 'title', key: 'title' },
           { title: '作者', dataIndex: 'author', key: 'author' },
           { title: '分类', dataIndex: 'type', key: 'type', render: (text) => text.join('/') },
+          { title: '数量', dataIndex: 'num', key: 'num' },
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
             <Button.Group>
               <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>

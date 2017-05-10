@@ -1,4 +1,18 @@
-export function getTypeList (data) {
+export function getSideList (data) {
+  return getList({
+    key: 'key',
+    name: 'name',
+    sublist: 'submenu'
+  }, data)
+}
+export function getFormList (data) {
+  return getList({
+    key: 'label',
+    name: 'value',
+    sublist: 'children'
+  }, data)
+}
+function getList (names, data) {
   let result = []
   for (let i = 0; i < data.length; i++) {
     let submenu = []
@@ -9,15 +23,15 @@ export function getTypeList (data) {
         })
         if (temp) {
           submenu.push({
-            key: temp._id,
-            name: temp.name
+            [names.key]: temp.name,
+            [names.name]: temp.name
           })
         }
       }
       result.push({
-        key: data[i]._id,
-        name: data[i].name,
-        submenu: submenu
+        [names.key]: data[i].name,
+        [names.name]: data[i].name,
+        [names.sublist]: submenu
       })
     }
   }

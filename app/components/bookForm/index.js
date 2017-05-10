@@ -8,7 +8,7 @@ import * as BookActions from '../../actions/book.action'
 import { Form, Input, Button, Modal, Cascader, Popover, message } from 'antd'
 const FormItem = Form.Item
 
-import { getTypeList, loadJSONP } from '../../api/tools'
+import { getFormList, loadJSONP } from '../../api/tools'
 
 class bookModal extends React.Component {
   constructor(props){
@@ -98,7 +98,8 @@ class bookModal extends React.Component {
     const { getFieldDecorator } = form
     const title = this.state.title || this.props.title
     const data = this.props.data || {}
-    const types = getTypeList(this.props.state.type.data || [])
+    const types = getFormList(this.props.state.type.data || [])
+
     return (
       <Modal
         title={title}
