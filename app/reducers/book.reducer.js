@@ -1,10 +1,12 @@
-import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS} from '../actions/book.action'
+import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS, FILTER_BOOK} from '../actions/book.action'
 
 const initialState = {
   resCode: '',
   message: '',
   loadingData: false,
-  data: null
+  type: '',
+  data: null,
+  filtedata: null
 }
 
 export default function book (state = initialState, action) {
@@ -31,6 +33,15 @@ export default function book (state = initialState, action) {
         return Object.assign({}, state, {
           loadingData: false,
           data: data
+        })
+      case "FILTER_BOOK":
+      console.log(state.data)
+        const filtedata = state.data.filter((item) => {
+          return item.type.join('') === action.text.join('')
+        })
+        return Object.assign({}, state, {
+          type: action.text,
+          filtedata: filtedata
         })
     default:
       return state

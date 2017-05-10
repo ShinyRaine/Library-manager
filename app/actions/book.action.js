@@ -47,6 +47,14 @@ export function receiveTypes(json) {
   }
 }
 
+export const FILTER_BOOK = 'FILTER_BOOK'
+export function filterBook(text) {
+  return {
+    type: FILTER_BOOK,
+    text
+  }
+}
+
 export const fetchBookData = fetchData
 export const fetchTypeData = fetchType
 
