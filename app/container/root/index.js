@@ -45,7 +45,7 @@ class Root extends React.Component {
     const { message, books } = this.props.state.user
     const { data } = this.props.state.book
     const list = getSideList( this.props.state.type.data || [] )
-
+    console.log(list);
     const columns = [
       { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'title', key: 'title' },

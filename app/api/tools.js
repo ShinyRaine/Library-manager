@@ -21,6 +21,7 @@ function getList (names, data) {
         let temp = data.find(function(ele){
           return ele.father === data[i].name && ele.name === data[i].son[j]
         })
+        console.log(temp);
         if (temp) {
           submenu.push({
             [names.key]: temp.name,

@@ -57,10 +57,10 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()) // parse application/json
 
-const userCollector = require('./lib/module/user')
-const tokenCollector = require('./lib/module/tokenCollector')
-const bookCollector = require('./lib/module/book')
-const typeCollector = require('./lib/module/booksType')
+const userCollector = require('./lib/collectors/user.collector')
+const tokenCollector = require('./lib/collectors/token.collector')
+const bookCollector = require('./lib/collectors/book.collector')
+const typeCollector = require('./lib/collectors/type.collector')
 
 app.use(['/admin/*', /\/user\/(?!(all|signup|login))/], tokenCollector.checklogin)
 
