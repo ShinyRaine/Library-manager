@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Modal, Table, Button, Cascader } from 'antd'
+import { Layout, Modal, Table, Button, Cascader, message as Message } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import './style.scss'
@@ -26,6 +26,25 @@ class Root extends React.Component {
     const { filterBook } = this.props.bookActions
     filterBook(value)
   }
+  onBorrow(value) {
+    const { fetchBookData, fetchTypeData } = this.props.bookActions
+    fetchBookData('borrow', {
+      token: localStorage.token,
+      isbn: value.isbn
+    })
+    .then(() => {
+      const { resCode, message } = this.props.state.book
+      if (resCode === "success") {
+        Message.success(message)
+        fetchBookData('book')
+      } else {
+        Modal.error({
+          title: '错误',
+          content: message
+        })
+      }
+    })
+  }
   render(){
     const { message, books } = this.props.state.user
     const { data, filtedata } = this.props.state.book
@@ -45,9 +64,9 @@ class Root extends React.Component {
      },
       { title: '数量', dataIndex: 'num', key: 'num' },
       { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
-          if (record.state == 0) {
-            return <Button type="primary">借出</Button>
-          } else if (record.state == 1) {
+          if (record.num > 0) {
+            return <Button type="primary" onClick={this.onBorrow.bind(this, record)}>借出</Button>
+          } else {
             return <span>已借</span>
           }
       }}

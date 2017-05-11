@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
 
 import * as UserActions from '../../actions/user.action'
+import * as BookActions from '../../actions/book.action'
 import Head from '../../components/head'
-import { Layout, Table, Button, Modal } from 'antd';
+import { Layout, Table, Button, Modal, message as Message } from 'antd';
 
 const { Header, Content, Sider } = Layout;
 
@@ -32,10 +33,23 @@ class User extends React.Component {
     })
   }
   onReturn(value) {
+    const { fetchUserData } = this.props.userActions
     const { fetchBookData } = this.props.bookActions
     fetchBookData('return', {
       token: localStorage.token,
       isbn: value.isbn
+    })
+    .then(() => {
+      const { resCode, message } = this.props.state.book
+      if (resCode === "success") {
+        Message.success(message)
+        fetchUserData("getBorrowed", {token: localStorage.token})
+      } else {
+        Modal.error({
+          title: '错误',
+          content: message
+        })
+      }
     })
   }
   render(){
@@ -75,6 +89,7 @@ function mapState(state) {
 
 function mapDispatch(dispatch) {
   return {
+    bookActions: bindActionCreators(BookActions, dispatch),
     userActions: bindActionCreators(UserActions, dispatch)
   }
 }
