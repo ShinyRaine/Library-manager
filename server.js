@@ -83,6 +83,10 @@ app.post('/admin/type/new', typeCollector.add)
 app.post('/admin/type/remove', typeCollector.remove)
 
 
+app.post('/books/borrow', bookCollector.borrowBook)
+app.post('/books/return', bookCollector.returnBook)
+
+
 app.listen(3000,function () {
 	console.log('listening on *:3000')
 })
