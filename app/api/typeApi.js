@@ -1,6 +1,9 @@
 import { receiveTypes, receiveTypeMessage } from '../actions/book.action'
 
-
+const urls = {
+  addtype: '/admin/type/new',
+  removetype: '/admin/type/remove'
+}
 export const fetchData = (type, options) => (dispatch) => {
     switch (type) {
       case 'all':
@@ -9,19 +12,8 @@ export const fetchData = (type, options) => (dispatch) => {
           .then(json =>
             dispatch(receiveTypes(json))
           )
-    // POST
-      case 'addtype':
-        return fetch('/admin/type/new', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-         })
-          .then(res => res.json())
-          .then(json => {
-            dispatch(receiveTypeMessage(json))
-          })
-      case 'removetype':
-        return fetch('/admin/type/remove', {
+      default:
+        return fetch(urls[type], {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)

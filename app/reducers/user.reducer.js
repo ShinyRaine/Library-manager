@@ -33,6 +33,12 @@ export default function name (state = initialState, action) {
         users: action.res
       })
     case "RECEIVE_BORROWED":
+      if (action.res.code === "error") {
+        return Object.assign({}, state, {
+          resCode: action.res.code,
+          message: action.res.message || ''
+        })
+      }
       return Object.assign({}, state, {
         books: action.res
       })

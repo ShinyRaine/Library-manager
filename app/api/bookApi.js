@@ -1,5 +1,12 @@
 import { bookRequest, receiveBooks, receiveBookMessage } from '../actions/book.action'
-
+const urls = {
+  book : '/books',
+  addbook : '/admin/books/new',
+  edit : '/admin/books/edit',
+  remove : '/admin/books/remove',
+  borrow : '/books/borrow',
+  return : '/books/return'
+}
 export const fetchData = (type, options) => (dispatch) => {
     dispatch(bookRequest(type))
     switch (type) {
@@ -9,8 +16,8 @@ export const fetchData = (type, options) => (dispatch) => {
           .then(json =>
             dispatch(receiveBooks(json))
           )
-      case 'addbook':
-        return fetch('/admin/books/new', {
+      default:
+        return fetch(urls[type], {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
@@ -19,37 +26,5 @@ export const fetchData = (type, options) => (dispatch) => {
           .then(json => {
             dispatch(receiveBookMessage(json))
           })
-      case 'edit':
-        return fetch('/admin/books/edit', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-         })
-          .then(res => res.json())
-          .then(json => dispatch(receiveBookMessage(json)))
-      case 'remove':
-        return fetch('/admin/books/remove', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => dispatch(receiveBookMessage(json)))
-      case 'borrow':
-        return fetch('/books/borrow', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => dispatch(receiveBookMessage(json)))
-      case 'return':
-        return fetch('/books/return', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => dispatch(receiveBookMessage(json)))
     }
 }

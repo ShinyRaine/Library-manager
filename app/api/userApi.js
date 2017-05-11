@@ -1,4 +1,4 @@
-import { receiveUsers, receiveLogRes, receiveUserMessage, receiveManagecode } from '../actions/user.action'
+import { receiveUsers, receiveLogRes, receiveUserMessage, receiveManagecode, receiveBorrowed } from '../actions/user.action'
 
 export const fetchData = (type, options) => (dispatch) => {
     switch (type) {
@@ -26,16 +26,6 @@ export const fetchData = (type, options) => (dispatch) => {
         .then(res => res.json())
         .then(json => {
           dispatch(receiveLogRes(json))
-          dispatch(receiveUserMessage(json))
-        })
-      case 'checkLogin':
-        return fetch('/user/checklogin', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(options)
-        })
-        .then(res => res.json())
-        .then(json => {
           dispatch(receiveUserMessage(json))
         })
       case 'checkManage':
