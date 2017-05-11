@@ -43,7 +43,6 @@ class Root extends React.Component {
   }
   handleFilter(value){
     const { filterBook } = this.props.bookActions
-    console.log(value)
     filterBook(value)
   }
   render(){
@@ -78,7 +77,7 @@ class Root extends React.Component {
         <Content style={{ padding: '50px' }}>
           <Layout className="main-layout">
             <Sider width={200} style={{ background: '#fff' }}>
-              <Sidebar list={list}/>
+              <Sidebar list={list} action={this.handleFilter.bind(this)}/>
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Table

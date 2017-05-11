@@ -9,6 +9,9 @@ class Sidebar extends React.Component {
   constructor(props){
     super(props)
   }
+  handleSelect(e) {
+    this.props.action(e.keyPath.reverse())
+  }
   render(){
     const list = this.props.list
 
@@ -31,7 +34,9 @@ class Sidebar extends React.Component {
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           style={{ height: '100%' }}
+          onClick={this.handleSelect.bind(this)}
         >
+          <Menu.Item key='all'>全部</Menu.Item>
           {menu}
         </Menu>
     )

@@ -5,14 +5,14 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Button, Modal, Table, message } from 'antd'
+import { Layout, Button, Modal, Table, message, Cascader } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
 import AddPopover from '../../components/addPopover'
-import { getSideList } from '../../api/tools'
+import { getSideList,getFormList } from '../../api/tools'
 
 class Admin extends React.Component {
   constructor(props) {
@@ -57,6 +57,10 @@ class Admin extends React.Component {
   }
   changeType(type) {
     this.setState({type: type})
+  }
+  handleFilter(value){
+    const { filterBook } = this.props.bookActions
+    filterBook(value)
   }
   showDialog(options) {
     const { resetUserReq } = this.props.userActions
@@ -144,14 +148,21 @@ class Admin extends React.Component {
   layout() {
     const listData = this.props.state.type.data || []
     const list = getSideList( listData )
+    const types = getFormList( listData )
     switch (this.state.type) {
       case 'book':
-        const { data } = this.props.state.book
+        const { data, filtedata } = this.props.state.book
         let columns = [
           { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
           { title: '书名', dataIndex: 'title', key: 'title' },
           { title: '作者', dataIndex: 'author', key: 'author' },
-          { title: '分类', dataIndex: 'type', key: 'type', render: (text) => text.join('/') },
+          { title: '分类',
+            dataIndex: 'type',
+            key: 'type',
+            render: (text) => text.join('/'),
+            filterDropdown: (
+              <Cascader options={types} onChange={this.handleFilter.bind(this)}/>
+            )},
           { title: '数量', dataIndex: 'num', key: 'num' },
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
             <Button.Group>
@@ -173,7 +184,7 @@ class Admin extends React.Component {
                 proList={listData}
                 onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
                 />
-              <Sidebar list={list}/>
+              <Sidebar list={list} action={this.handleFilter.bind(this)} />
             </Sider>
             <Content style={{ padding: '0 24px', minHeight: 280 }}>
               <Content>
@@ -181,7 +192,7 @@ class Admin extends React.Component {
               </Content>
               <Table
                 columns={columns}
-                dataSource={data}
+                dataSource={filtedata || data}
                 expandedRowRender={record => <p>{record.description}</p>}
               />
             </Content>

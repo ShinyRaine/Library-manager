@@ -35,14 +35,20 @@ export default function book (state = initialState, action) {
           data: data
         })
       case "FILTER_BOOK":
-      console.log(state.data)
-        const filtedata = state.data.filter((item) => {
-          return item.type.join('') === action.text.join('')
-        })
-        return Object.assign({}, state, {
-          type: action.text,
-          filtedata: filtedata
-        })
+        if (action.text.join('') === 'all') {
+          return Object.assign({}, state, {
+            type: '',
+            filtedata: null
+          })
+        } else {
+          const filtedata = state.data.filter((item) => {
+            return item.type.join('') === action.text.join('')
+          })
+          return Object.assign({}, state, {
+            type: action.text.join(''),
+            filtedata: filtedata
+          })
+        }
     default:
       return state
   }
