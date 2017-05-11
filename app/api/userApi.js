@@ -64,5 +64,13 @@ export const fetchData = (type, options) => (dispatch) => {
         })
         .then(res => res.json())
         .then(json => dispatch(receiveUserMessage(json)))
+      case 'getBorrowed':
+        return fetch('/user/borrowed', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+        })
+        .then(res => res.json())
+        .then(json => dispatch(receiveBorrowed(json)))
     }
 }

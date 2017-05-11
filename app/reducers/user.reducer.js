@@ -1,4 +1,4 @@
-import { RECEIVE_USER_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_USER_REQ, RECEIVE_USERS} from '../actions/user.action'
+import { RECEIVE_USER_MESSAGE, RECEIVE_LOG_RES, RECEIVE_MANAGECODE, RESET_USER_REQ, RECEIVE_USERS, RECEIVE_BORROWED} from '../actions/user.action'
 
 const initialState = {
   resCode: '',
@@ -31,6 +31,10 @@ export default function name (state = initialState, action) {
     case "RECEIVE_USERS":
       return Object.assign({}, state, {
         users: action.res
+      })
+    case "RECEIVE_BORROWED":
+      return Object.assign({}, state, {
+        books: action.res
       })
     default:
       return state

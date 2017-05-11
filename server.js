@@ -62,7 +62,7 @@ const tokenCollector = require('./lib/collectors/token.collector')
 const bookCollector = require('./lib/collectors/book.collector')
 const typeCollector = require('./lib/collectors/type.collector')
 
-app.use(['/admin/*', /\/user\/(?!(all|signup|login))/], tokenCollector.checklogin)
+app.use(['/books/*','/admin/*', /\/user\/(?!(all|signup|login))/], tokenCollector.checklogin)
 
 app.get('/books', bookCollector.all)
 app.get('/types', typeCollector.all)
@@ -74,6 +74,8 @@ app.post('/user/remove', userCollector.remove)
 app.post('/user/checkmanage', userCollector.checkManage)
 app.post('/user/setmanage', userCollector.setManage)
 app.post('/user/checklogin', userCollector.checkManage)
+
+app.post('/user/borrowed', userCollector.getBorrowed)
 
 app.post('/admin/books/new', bookCollector.addbook)
 app.post('/admin/books/remove', bookCollector.remove)

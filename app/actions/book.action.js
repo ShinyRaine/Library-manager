@@ -55,6 +55,22 @@ export function filterBook(text) {
   }
 }
 
+export const BORROW_BOOK = 'BORROW_BOOK'
+export function borrowBook(text) {
+  return {
+    type: BORROW_BOOK,
+    text
+  }
+}
+
+export const RETURN_BOOK = 'RETURN_BOOK'
+export function returnBook(text) {
+  return {
+    type: RETURN_BOOK,
+    text
+  }
+}
+
 export const fetchBookData = fetchData
 export const fetchTypeData = fetchType
 

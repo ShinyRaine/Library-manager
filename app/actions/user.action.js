@@ -49,4 +49,12 @@ export function receiveUserMessage(res) {
   }
 }
 
+export const RECEIVE_BORROWED = 'RECEIVE_BORROWED'
+export function receiveBorrowed(res) {
+  return {
+    type: RECEIVE_BORROWED,
+    res
+  }
+}
+
 export const fetchUserData = fetchData
