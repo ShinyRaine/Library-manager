@@ -37,7 +37,8 @@ class User extends React.Component {
     const { fetchBookData } = this.props.bookActions
     fetchBookData('return', {
       token: localStorage.token,
-      isbn: value.isbn
+      isbn: value.isbn,
+      borrowTime: +new Date(value.borrowTime)
     })
     .then(() => {
       const { resCode, message } = this.props.state.book
@@ -62,7 +63,6 @@ class User extends React.Component {
         let date = new Date(text)
         return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
       } },
-      { title: '数量', dataIndex: 'num', key: 'num' },
       { title: '操作', dataIndex: '', key: 'admin', render: (text, record) => (
         <Button type="primary" onClick={this.onReturn.bind(this, record)}>归还</Button>
       )}

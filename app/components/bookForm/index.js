@@ -140,8 +140,8 @@ class bookModal extends React.Component {
           label="数量"
           required="true"
           >
-          {getFieldDecorator('num', {
-            initialValue: data.num || ''
+          {getFieldDecorator('sumNum', {
+            initialValue: data.sumNum || ''
           })(
             <Input />
           )}

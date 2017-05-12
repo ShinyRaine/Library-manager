@@ -62,9 +62,9 @@ class Root extends React.Component {
           <Cascader options={types} onChange={this.handleFilter.bind(this)}/>
         )
      },
-      { title: '数量', dataIndex: 'num', key: 'num' },
+      { title: '数量', dataIndex: 'num', key: 'num', render: (text, record) => <span>{record.sumNum - record.borrowNum}</span> },
       { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
-          if (record.num > 0) {
+          if (record.sumNum - record.borrowNum > 0) {
             return <Button type="primary" onClick={this.onBorrow.bind(this, record)}>借出</Button>
           } else {
             return <span>已借</span>

@@ -163,7 +163,7 @@ class Admin extends React.Component {
             filterDropdown: (
               <Cascader options={types} onChange={this.handleFilter.bind(this)}/>
             )},
-          { title: '数量', dataIndex: 'num', key: 'num' },
+          { title: '数量', dataIndex: 'sumNum', key: 'sumNum' },
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
             <Button.Group>
               <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
