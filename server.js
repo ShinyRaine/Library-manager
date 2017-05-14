@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'dev') {
 	    webpackHotMiddleware = require('webpack-hot-middleware'),
 	    webpackDevConfig = require('./webpack.config.js')
 
-	let compiler = webpack(webpackDevConfig);
+	let compiler = webpack(webpackDevConfig)
 
 	// attach to the compiler & the server
 	app.use(webpackDevMiddleware(compiler, {
