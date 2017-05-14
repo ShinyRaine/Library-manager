@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run build",
-    "dev": "cross-env NODE_ENV=dev && nodemon server.js --ignore app/",
+    "dev": "cross-env NODE_ENV=dev nodemon server.js --ignore app/",
     "build": "cross-env NODE_ENV=prod webpack --colors --display-error-details --config ./webpack.config.prod.js && node server.js "
   },
   "repository": {
@@ -21,7 +21,6 @@
   "dependencies": {
     "body-parser": "^1.16.1",
     "cookie-parser": "^1.4.3",
-    "cross-env": "^3.2.4",
     "es6-promise": "^4.1.0",
     "express": "^4.14.1",
     "jsonwebtoken": "^7.3.0",

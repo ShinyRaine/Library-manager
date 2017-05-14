@@ -27,7 +27,6 @@ if (process.env.NODE_ENV === 'dev') {
 	    webpackDevConfig = require('./webpack.config.js')
 
 	let compiler = webpack(webpackDevConfig)
-
 	// attach to the compiler & the server
 	app.use(webpackDevMiddleware(compiler, {
 	    // public path should be the same with webpack config
