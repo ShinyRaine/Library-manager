@@ -14,6 +14,8 @@ import BookForm from '../../components/bookForm'
 import AddPopover from '../../components/addPopover'
 import { getSideList,getFormList } from '../../api/tools'
 
+import './style.scss'
+
 class Admin extends React.Component {
   constructor(props) {
     super(props)
@@ -152,6 +154,7 @@ class Admin extends React.Component {
     switch (this.state.type) {
       case 'book':
         const { data, filtedata } = this.props.state.book
+        const deviceWidth = document.documentElement.clientWidth
         let columns = [
           { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
           { title: '书名', dataIndex: 'title', key: 'title' },
@@ -164,16 +167,26 @@ class Admin extends React.Component {
               <Cascader options={types} onChange={this.handleFilter.bind(this)}/>
             )},
           { title: '数量', dataIndex: 'sumNum', key: 'sumNum' },
-          { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => (
-            <Button.Group>
-              <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
-              <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
-            </Button.Group>
-          )}
+          { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
+            if (deviceWidth < 600) {
+              return(<div className="btns">
+                <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
+                <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
+              </div>) 
+            } else {
+              return (
+              <Button.Group>
+                <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
+                <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
+              </Button.Group>
+            )
+            }
+        }}
         ]
-        return (
-          <Layout className="main-layout">
-            <Sider width={200} style={{ background: '#fff' }}>
+        const bar = deviceWidth < 600 ? (
+          <div>
+            <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+            <div className="btns">
               <AddPopover
                 name="添加类目"
                 proList={listData}
@@ -184,12 +197,32 @@ class Admin extends React.Component {
                 proList={listData}
                 onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
                 />
-              <Sidebar list={list} action={this.handleFilter.bind(this)} />
-            </Sider>
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
-              <Content>
-                <Button onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
-              </Content>
+              <Button type="primary" className="addbookbtn" onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
+              </div>
+          </div>
+        ) : (
+          <Sider width={200} style={{ background: '#fff' }}>
+            <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+              <AddPopover
+                name="添加类目"
+                proList={listData}
+                onSubmit={this.handleTypeSubmit.bind(this, 'addtype')}
+                />
+              <AddPopover
+                name="删除类目"
+                proList={listData}
+                onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
+                />
+          </Sider>)
+        return (
+          <Layout className="main-layout">
+            { bar }
+            <Content className="main-content">
+              { deviceWidth < 600 ? null : (
+                <Content>
+                  <Button className="addbookbtn" onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
+                </Content>
+              )}
               <Table
                 columns={columns}
                 dataSource={filtedata || data}
@@ -214,7 +247,7 @@ class Admin extends React.Component {
         ]
         return (
           <Layout className="main-layout">
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            <Content className="main-content">
               <Table
                 columns={columns}
                 dataSource={users}
@@ -263,8 +296,8 @@ class Admin extends React.Component {
     return (
       <Layout>
         <Head user={localStorage.userName}/>
-        <Content style={{ padding: '50px' }}>
-          <Content>
+        <Content className="warp">
+          <Content className="adminbar">
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>
             <Button onClick={this.changeType.bind(this, 'user')} >管理用户</Button>
           </Content>

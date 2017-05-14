@@ -43,6 +43,11 @@ class AddPopover extends React.Component {
       value: value
     })
   }
+  handleCancel() {
+    this.setState({
+      visible: false
+    })
+  }
   handleSubmit() {
     this.setState({
       visible: false
@@ -68,7 +73,7 @@ class AddPopover extends React.Component {
         {this.props.name === "添加类目" ? <p>选择一个一级分类，若不选择则添加为一级分类</p> : null}
         <Select
           showSearch
-          style={{ width: 200 }}
+          style={{ width: 100 }}
           optionFilterProp="children"
           onChange={this.handleChange.bind(this)}
           filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input) >= 0}
@@ -80,10 +85,10 @@ class AddPopover extends React.Component {
             }).map( (item) => <Option key={item._id} value={item.name}>{item.name}</Option>)
           }
         </Select>
-        {this.props.name === "添加类目" ? <Input style={{width: 200}} onChange={this.handleInput.bind(this)}/> :
+        {this.props.name === "添加类目" ? <Input style={{width: 100}} onChange={this.handleInput.bind(this)}/> :
           <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: 100 }}
             optionFilterProp="children"
             onChange={this.selectItem.bind(this)}
             filterOption={(input, option) => option.props.value.toLowerCase().indexOf(input) >= 0}
@@ -96,8 +101,11 @@ class AddPopover extends React.Component {
             }
           </Select>
         }
-        <Button onClick={this.handleSubmit.bind(this)}>提交</Button>
-      </div>
+        <div>
+        <Button onClick={this.handleSubmit.bind(this)} type="primary">提交</Button>
+        <Button onClick={this.handleCancel.bind(this)}>取消</Button>
+        </div>
+    </div>
     )
     return (
       <Popover
@@ -109,7 +117,6 @@ class AddPopover extends React.Component {
       >
         <Button
           style={{marginLeft:'10px'}}
-          type="primary"
           onClick={this.showPop.bind(this)}
           >
           {this.props.name}

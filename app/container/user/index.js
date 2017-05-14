@@ -70,9 +70,9 @@ class User extends React.Component {
     return(
       <Layout>
         <Head user={localStorage.userName}/>
-        <Content style={{ padding: '50px' }}>
-          <Layout style={{ padding: '24px 0', background: '#fff' }}>
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+        <Content className="warp">
+          <Layout className="main-layout">
+            <Content className="main-content">
               <Table
                 columns={columns}
                 dataSource={books}

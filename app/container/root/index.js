@@ -71,15 +71,21 @@ class Root extends React.Component {
           }
       }}
     ]
+    const deviceWidth = document.documentElement.clientWidth
+    const bar = deviceWidth < 600 ? (
+      <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+
+    ) : (
+      <Sider width={200} style={{ background: '#fff' }}>
+        <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+      </Sider>)
     return (
       <Layout>
         <Head user={localStorage.userName}/>
-        <Content style={{ padding: '50px' }}>
+        <Content className="warp">
           <Layout className="main-layout">
-            <Sider width={200} style={{ background: '#fff' }}>
-              <Sidebar list={list} action={this.handleFilter.bind(this)}/>
-            </Sider>
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            {bar}
+            <Content className="main-content">
               <Table
                 columns={columns}
                 dataSource={filtedata || data}

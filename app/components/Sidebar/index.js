@@ -27,10 +27,11 @@ class Sidebar extends React.Component {
         return <Menu.Item key={item.key}>{item.name}</Menu.Item>
       }
     })
+    const deviceWidth = document.documentElement.clientWidth
 
     return (
         <Menu
-          mode="inline"
+          mode={deviceWidth < 600 ? "horizontal" : "inline"}
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           style={{ height: '100%' }}
