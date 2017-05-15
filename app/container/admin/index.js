@@ -170,9 +170,9 @@ class Admin extends React.Component {
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
             if (deviceWidth < 600) {
               return(<div className="btns">
-                <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
-                <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
-              </div>) 
+              <Button onClick={this.editBook.bind(this, record)} type="primary">编辑</Button>
+              <Button onClick={this.remove.bind(this, 'book', record.isbn)}>删除</Button>
+            </div>)
             } else {
               return (
               <Button.Group>
@@ -183,36 +183,20 @@ class Admin extends React.Component {
             }
         }}
         ]
+        const popovers = [<AddPopover key="add" name="添加类目" proList={listData} onSubmit={this.handleTypeSubmit.bind(this, 'addtype')} />,
+                          <AddPopover key="delet" name="删除类目" proList={listData} onSubmit={this.handleTypeSubmit.bind(this, 'removetype')} />]
         const bar = deviceWidth < 600 ? (
           <div>
             <Sidebar list={list} action={this.handleFilter.bind(this)}/>
             <div className="btns">
-              <AddPopover
-                name="添加类目"
-                proList={listData}
-                onSubmit={this.handleTypeSubmit.bind(this, 'addtype')}
-                />
-              <AddPopover
-                name="删除类目"
-                proList={listData}
-                onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
-                />
+              { popovers }
               <Button type="primary" className="addbookbtn" onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
               </div>
           </div>
         ) : (
           <Sider width={200} style={{ background: '#fff' }}>
             <Sidebar list={list} action={this.handleFilter.bind(this)}/>
-              <AddPopover
-                name="添加类目"
-                proList={listData}
-                onSubmit={this.handleTypeSubmit.bind(this, 'addtype')}
-                />
-              <AddPopover
-                name="删除类目"
-                proList={listData}
-                onSubmit={this.handleTypeSubmit.bind(this, 'removetype')}
-                />
+              { popovers }
           </Sider>)
         return (
           <Layout className="main-layout">

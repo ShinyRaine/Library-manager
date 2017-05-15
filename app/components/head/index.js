@@ -52,10 +52,9 @@ class Head extends React.Component {
             <Menu.Item key="root"><Link to="/">首页</Link></Menu.Item>
             <Menu.Item key="admin"><Link to="/admin">管理</Link></Menu.Item>
             {rightList(user)}
-            <Menu.Item key="" className="right-list">
+            <Menu.Item key="" className="right-list search">
               <Input.Search
                         placeholder="搜索"
-                        style={{ width: 200,color: '#000' }}
                         onSearch={this.search.bind(this)}
                       />
             </Menu.Item>

@@ -26,7 +26,8 @@
     "jsonwebtoken": "^7.3.0",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.6",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "quagga": "^0.11.6"
   },
   "devDependencies": {
     "antd": "^2.7.2",
