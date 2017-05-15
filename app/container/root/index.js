@@ -5,17 +5,23 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Modal, Table, Button, Cascader, message as Message } from 'antd'
+import { Layout, Modal, Table, Button, Input, Cascader, message as Message } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import './style.scss'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import { getSideList, getFormList } from '../../api/tools'
-
+import Scanner from '../../components/scanner'
 class Root extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      scannerVisible: true,
+      scannedCode: '',
+      infoVisible: false,
+      bookInfo: null
+    }
   }
   componentDidMount() {
     const { fetchBookData, fetchTypeData } = this.props.bookActions
@@ -44,6 +50,31 @@ class Root extends React.Component {
         })
       }
     })
+  }
+  handleResult (result) {
+    this.stopScanning()
+    const scannedCode = result.codeResult.code
+    this.setState({scannedCode : scannedCode})
+    const { fetchBookData, fetchTypeData } = this.props.bookActions
+    console.log(scannedCode)
+    if (scannedCode) {
+      fetchBookData('search', {
+        data: {isbn: scannedCode}
+        token: localStorage.token
+      })
+    }
+  }
+  stopScanning () {
+    this.setState({scannerVisible: false})
+  }
+  clearInfo () {
+    this.setState({infoVisible: false, bookInfo: null})
+  }
+  handleOk () {
+    const { searchRes } = this.props.state.book
+    if (searchRes) {
+      this.onBorrow(searchRes)
+    }
   }
   render(){
     const { message, books } = this.props.state.user
@@ -94,6 +125,24 @@ class Root extends React.Component {
             </Content>
           </Layout>
         </Content>
+        <Modal
+          visible={this.state.scannerVisible}
+          onCancel={this.stopScanning.bind(this)}>
+          <Scanner
+            onDetected={this.handleResult.bind(this)}
+            onCancel={this.stopScanning.bind(this)}/>
+        </Modal>
+        <Modal
+          visible={this.state.infoVisible}
+          onCancel={this.clearInfo.bind(this)}
+          footer={[
+            <Button key="back" size="large" onClick={this.handleCancel.bind(this)}>取消</Button>,
+            <Button key="submit" type="primary" size="large" onClick={this.handleOk.bind(this)}>
+              确认借书
+            </Button>,
+          ]}>
+            <Input placeholder="输入isbn"/> <Button>扫描条码</Button>
+        </Modal>
        </Layout>
     )
   }

@@ -1,4 +1,4 @@
-import { bookRequest, receiveBooks, receiveBookMessage } from '../actions/book.action'
+import { bookRequest, receiveBooks, receiveBookMessage, receiveSearchRes } from '../actions/book.action'
 const urls = {
   book : '/books',
   addbook : '/admin/books/new',
@@ -16,7 +16,16 @@ export const fetchData = (type, options) => (dispatch) => {
           .then(json =>
             dispatch(receiveBooks(json))
           )
-      default:
+      case 'search':
+        return fetch('/search',{
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(options)
+         })
+          .then(res => res.json())
+          .then(json => {
+            dispatch(receiveSearchRes(json))
+          })
         return fetch(urls[type], {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},

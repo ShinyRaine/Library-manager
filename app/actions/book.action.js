@@ -71,6 +71,14 @@ export function returnBook(text) {
   }
 }
 
+export const RECEIVE_SEARCHRES = 'RECEIVE_SEARCHRES'
+export function receiveSearchRes(res) {
+  return {
+    type: RECEIVE_SEARCHRES,
+    res
+  }
+}
+
 export const fetchBookData = fetchData
 export const fetchTypeData = fetchType
 
