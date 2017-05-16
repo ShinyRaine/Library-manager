@@ -13,14 +13,15 @@ import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import { getSideList, getFormList } from '../../api/tools'
 import Scanner from '../../components/scanner'
+import FloatBtn from '../../components/floatBtn'
+
 class Root extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      scannerVisible: true,
+      scannerVisible: false,
       scannedCode: '',
-      infoVisible: false,
-      bookInfo: null
+      infoVisible: false
     }
   }
   componentDidMount() {
@@ -51,6 +52,12 @@ class Root extends React.Component {
       }
     })
   }
+  showInfo() {
+    this.setState({infoVisible: true})
+  }
+  showScanner() {
+    this.setState({scannerVisible: true})
+  }
   handleResult (result) {
     this.stopScanning()
     const scannedCode = result.codeResult.code
@@ -60,7 +67,6 @@ class Root extends React.Component {
     if (scannedCode) {
       fetchBookData('search', {
         data: {isbn: scannedCode}
-        token: localStorage.token
       })
     }
   }
@@ -68,7 +74,7 @@ class Root extends React.Component {
     this.setState({scannerVisible: false})
   }
   clearInfo () {
-    this.setState({infoVisible: false, bookInfo: null})
+    this.setState({infoVisible: false})
   }
   handleOk () {
     const { searchRes } = this.props.state.book
@@ -76,9 +82,17 @@ class Root extends React.Component {
       this.onBorrow(searchRes)
     }
   }
+  handleInput (e) {
+    const { fetchBookData, bookRequest } = this.props.bookActions
+    let value = e.target.value
+    if (/^\d{13}$/.test(value)) {
+      bookRequest()
+      fetchBookData('search', {isbn: value})
+    }
+  }
   render(){
     const { message, books } = this.props.state.user
-    const { data, filtedata } = this.props.state.book
+    const { data, filtedata, searchRes, loadingData } = this.props.state.book
     const list = getSideList( this.props.state.type.data || [] )
     const types = getFormList( this.props.state.type.data || [] )
     const columns = [
@@ -105,10 +119,10 @@ class Root extends React.Component {
     const deviceWidth = document.documentElement.clientWidth
     const bar = deviceWidth < 600 ? (
       <Sidebar list={list} action={this.handleFilter.bind(this)}/>
-
     ) : (
       <Sider width={200} style={{ background: '#fff' }}>
         <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+        <Button onClick={this.showInfo.bind(this)}>借书</Button>
       </Sider>)
     return (
       <Layout>
@@ -124,6 +138,7 @@ class Root extends React.Component {
               />
             </Content>
           </Layout>
+          <FloatBtn name="借书" onClick={this.showInfo.bind(this)} />
         </Content>
         <Modal
           visible={this.state.scannerVisible}
@@ -133,15 +148,28 @@ class Root extends React.Component {
             onCancel={this.stopScanning.bind(this)}/>
         </Modal>
         <Modal
+          title="输入isbn借书"
           visible={this.state.infoVisible}
           onCancel={this.clearInfo.bind(this)}
+          confirmLoading={loadingData}
           footer={[
-            <Button key="back" size="large" onClick={this.handleCancel.bind(this)}>取消</Button>,
+            <Button key="back" size="large" onClick={this.clearInfo.bind(this)}>取消</Button>,
             <Button key="submit" type="primary" size="large" onClick={this.handleOk.bind(this)}>
               确认借书
             </Button>,
           ]}>
-            <Input placeholder="输入isbn"/> <Button>扫描条码</Button>
+            <Input placeholder="输入isbn" onChange={this.handleInput.bind(this)}/> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
+            {searchRes ? (
+              <div className="infobox">
+                <img src={searchRes.pic} />
+                <div>
+                  isbn: {searchRes.isbn} <br />
+                  书名: {searchRes.title} <br />
+                  作者: {searchRes.author} <br />
+                </div>
+
+              </div>
+            ) : null}
         </Modal>
        </Layout>
     )

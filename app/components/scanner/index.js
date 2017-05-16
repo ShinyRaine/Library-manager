@@ -1,6 +1,6 @@
 import React from 'react'
 import Quagga from '../../../static/quagga';
-
+import './style.scss'
 class Scanner extends React.Component {
   constructor(props){
     super(props)

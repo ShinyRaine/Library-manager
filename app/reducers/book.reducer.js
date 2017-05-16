@@ -1,4 +1,4 @@
-import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS, FILTER_BOOK, RECEIVE_SEARCHRES} from '../actions/book.action'
+import { RESET_BOOK_REQ, RECEIVE_BOOK_MESSAGE, BOOK_REQUEST, RECEIVE_BOOKS, FILTER_BOOK, RECEIVE_SEARCHRES, RESET_SEARCH} from '../actions/book.action'
 
 const initialState = {
   resCode: '',
@@ -52,7 +52,12 @@ export default function book (state = initialState, action) {
         }
       case "RECEIVE_SEARCHRES":
         return Object.assign({}, state, {
-          searchRes: action.res
+          searchRes: action.res,
+          loadingData: false
+        })
+      case "RESET_SEARCH":
+        return Object.assign({}, state, {
+          searchRes: null
         })
     default:
       return state

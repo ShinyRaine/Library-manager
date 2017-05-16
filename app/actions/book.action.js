@@ -78,6 +78,13 @@ export function receiveSearchRes(res) {
     res
   }
 }
+export const RESET_SEARCH = 'RESET_SEARCH'
+export function resetSearch(res) {
+  return {
+    type: RESET_SEARCH,
+    res
+  }
+}
 
 export const fetchBookData = fetchData
 export const fetchTypeData = fetchType

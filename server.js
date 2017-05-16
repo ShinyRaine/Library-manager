@@ -45,7 +45,7 @@ app.use(express.static(__dirname + '/static'))
 // 页面路由重定向
 app.use((req, res, next) => {
   if (req.method === 'GET' && req.path === "/login" || req.path === "/user" || req.path === "/signup" || req.path === "/admin" ) {
-		return res.sendFile(req.baseUrl + '/index.html')
+		return res.sendFile(__dirname + '/static' + '/index.html')
   }else {
 		return next()
 	}
@@ -61,7 +61,7 @@ const tokenCollector = require('./lib/collectors/token.collector')
 const bookCollector = require('./lib/collectors/book.collector')
 const typeCollector = require('./lib/collectors/type.collector')
 
-app.use(['/books/*','/admin/*', /\/user\/(remove|checkmanage|setmanage|borrowed)/], tokenCollector.checklogin)
+app.use([/\/books\/(borrow|return)/,'/admin/*', /\/user\/(remove|checkmanage|setmanage|borrowed)/], tokenCollector.checklogin)
 
 app.get('/books', bookCollector.all)
 app.get('/types', typeCollector.all)
@@ -84,6 +84,7 @@ app.post('/admin/type/new', typeCollector.add)
 app.post('/admin/type/remove', typeCollector.remove)
 
 
+app.post('/books/search', bookCollector.searchBook)
 app.post('/books/borrow', bookCollector.borrowBook)
 app.post('/books/return', bookCollector.returnBook)
 

@@ -17,7 +17,7 @@ export const fetchData = (type, options) => (dispatch) => {
             dispatch(receiveBooks(json))
           )
       case 'search':
-        return fetch('/search',{
+        return fetch('/books/search',{
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(options)
