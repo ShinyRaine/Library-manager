@@ -195,8 +195,9 @@ class Admin extends React.Component {
           </div>
         ) : (
           <Sider width={200} style={{ background: '#fff' }}>
+            { popovers }
+            
             <Sidebar list={list} action={this.handleFilter.bind(this)}/>
-              { popovers }
           </Sider>)
         return (
           <Layout className="main-layout">

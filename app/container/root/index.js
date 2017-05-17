@@ -20,7 +20,6 @@ class Root extends React.Component {
     super(props)
     this.state = {
       scannerVisible: false,
-      scannedCode: '',
       infoVisible: false,
       isbn: ''
     }
@@ -64,7 +63,7 @@ class Root extends React.Component {
   handleResult (result) {
     this.stopScanning()
     const scannedCode = result.codeResult.code
-    this.setState({scannedCode : scannedCode})
+    this.setState({isbn : scannedCode})
     const { fetchBookData, fetchTypeData } = this.props.bookActions
     console.log(scannedCode)
     if (scannedCode) {
@@ -78,6 +77,8 @@ class Root extends React.Component {
   }
   clearInfo () {
     this.setState({infoVisible: false, isbn: ''})
+    const { resetSearch } = this.props.bookActions
+    resetSearch()
   }
   handleOk () {
     const { searchRes } = this.props.state.book
@@ -126,7 +127,6 @@ class Root extends React.Component {
     ) : (
       <Sider width={200} style={{ background: '#fff' }}>
         <Sidebar list={list} action={this.handleFilter.bind(this)}/>
-        <Button onClick={this.showInfo.bind(this)}>借书</Button>
       </Sider>)
     return (
       <Layout>

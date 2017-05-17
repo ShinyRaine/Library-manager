@@ -12,7 +12,7 @@ module.exports = {
           './app/app.js'
   ],
   output: {
-    path: '/',
+    path: __dirname + './static',
     filename: '[name].js',
     publicPath: 'http://localhost:3000/'
   },
