@@ -21,7 +21,8 @@ class Root extends React.Component {
     this.state = {
       scannerVisible: false,
       scannedCode: '',
-      infoVisible: false
+      infoVisible: false,
+      isbn: ''
     }
   }
   componentDidMount() {
@@ -34,7 +35,7 @@ class Root extends React.Component {
     filterBook(value)
   }
   onBorrow(value) {
-    const { fetchBookData, fetchTypeData } = this.props.bookActions
+    const { fetchBookData, fetchTypeData, resetSearch } = this.props.bookActions
     fetchBookData('borrow', {
       token: localStorage.token,
       isbn: value.isbn
@@ -44,6 +45,8 @@ class Root extends React.Component {
       if (resCode === "success") {
         Message.success(message)
         fetchBookData('book')
+        resetSearch()
+        this.setState({isbn: '', infoVisible: false})
       } else {
         Modal.error({
           title: '错误',
@@ -71,10 +74,10 @@ class Root extends React.Component {
     }
   }
   stopScanning () {
-    this.setState({scannerVisible: false})
+    this.setState({scannerVisible: false, isbn: ''})
   }
   clearInfo () {
-    this.setState({infoVisible: false})
+    this.setState({infoVisible: false, isbn: ''})
   }
   handleOk () {
     const { searchRes } = this.props.state.book
@@ -85,6 +88,7 @@ class Root extends React.Component {
   handleInput (e) {
     const { fetchBookData, bookRequest } = this.props.bookActions
     let value = e.target.value
+    this.setState({isbn: value})
     if (/^\d{13}$/.test(value)) {
       bookRequest()
       fetchBookData('search', {isbn: value})
@@ -158,7 +162,7 @@ class Root extends React.Component {
               确认借书
             </Button>,
           ]}>
-            <Input placeholder="输入isbn" onChange={this.handleInput.bind(this)}/> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
+            <Input placeholder="输入isbn" onChange={this.handleInput.bind(this)} value={this.state.isbn} /> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
             {searchRes ? (
               <div className="infobox">
                 <img src={searchRes.pic} />

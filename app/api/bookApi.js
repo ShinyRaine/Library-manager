@@ -26,6 +26,7 @@ export const fetchData = (type, options) => (dispatch) => {
           .then(json => {
             dispatch(receiveSearchRes(json))
           })
+      default:
         return fetch(urls[type], {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
