@@ -158,11 +158,11 @@ class Root extends React.Component {
           confirmLoading={loadingData}
           footer={[
             <Button key="back" size="large" onClick={this.clearInfo.bind(this)}>取消</Button>,
-            <Button key="submit" type="primary" size="large" onClick={this.handleOk.bind(this)}>
+            <Button key="submit" type="primary" size="large" disabled={/^\d{13}$/.test(this.state.isbn) ? false : true} onClick={this.handleOk.bind(this)}>
               确认借书
             </Button>,
           ]}>
-            <Input placeholder="输入isbn" onChange={this.handleInput.bind(this)} value={this.state.isbn} /> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
+            <Input placeholder="输入isbn" value={this.state.isbn} onChange={this.handleInput.bind(this)}  /> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
             {searchRes ? (
               <div className="infobox">
                 <img src={searchRes.pic} />
