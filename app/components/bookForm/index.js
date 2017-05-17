@@ -124,6 +124,7 @@ class bookModal extends React.Component {
           })(
             <Input ref={(input) => {this.isbnInput = input }}/>
           )}
+          <Button onClick={this.props.showScanner}>扫码输入</Button>
           <Button onClick={this.handleInput.bind(this)}>获取信息</Button>
         </FormItem>
         <FormItem

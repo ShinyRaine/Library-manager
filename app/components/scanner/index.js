@@ -21,18 +21,16 @@ class Scanner extends React.Component {
         }
       })
   }
-  onCancel (e) {
-    e.preventDefault()
-    if (this._scanUntilResult) {
-      this._scanUntilResult.cancel()
-      this_scanUntilResult = null
-    }
-  }
   componentDidMount() {
-    this._scanUntilResult = this._scanner.toPromise();
-    this._scanUntilResult.promise
-      .then(this.props.onDetected)
-      .catch(this.props.onCancel);
+      this._scanner
+          .addEventListener('detected', this.props.onDetected)
+          .start();
+  }
+
+  componentWillUnmount() {
+      this._scanner
+          .removeEventListener('detected', this.props.onDetected)
+          .stop();
   }
   render() {
     return (

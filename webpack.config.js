@@ -51,8 +51,7 @@ module.exports = {
       {
         test: /\.js$/,
         loaders: [ 'babel-loader' ],
-        exclude: /node_modules/,
-        include: __dirname
+        exclude: /(node_modules|quagga\.js)/
       },
     ]
   }

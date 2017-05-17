@@ -11,6 +11,7 @@ const { Header, Content, Sider } = Layout
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import BookForm from '../../components/bookForm'
+import Scanner from '../../components/scanner'
 import AddPopover from '../../components/addPopover'
 import { getSideList,getFormList } from '../../api/tools'
 
@@ -21,6 +22,7 @@ class Admin extends React.Component {
     super(props)
     this.state = {
       type: 'book',
+      scannerVisible: false,
       bookFormVisible: false,
       bookFormType: 'addbook',
       bookData: null
@@ -196,7 +198,7 @@ class Admin extends React.Component {
         ) : (
           <Sider width={200} style={{ background: '#fff' }}>
             { popovers }
-            
+
             <Sidebar list={list} action={this.handleFilter.bind(this)}/>
           </Sider>)
         return (
@@ -241,6 +243,16 @@ class Admin extends React.Component {
           </Layout>
         )
     }
+  }
+  showScanner() {
+    this.setState({scannerVisible: true})
+  }
+  stopScanning () {
+    this.setState({scannerVisible: false, bookData: null})
+  }
+  handleResult(result) {
+    const scannedCode = result.codeResult.code
+    this.setState({scannerVisible: false, bookData: {isbn: scannedCode}})
   }
   showAddBookDialog(){
     this.setState({
@@ -292,9 +304,18 @@ class Admin extends React.Component {
           visible={this.state.bookFormVisible}
           data={this.state.bookData}
           type={this.state.bookFormType}
+          showScanner={this.showScanner.bind(this)}
           onSubmit={this.handleSubmit.bind(this)}
           onCancel={this.handleCancel.bind(this)}
           />
+        <Modal
+          visible={this.state.scannerVisible}
+          onCancel={this.stopScanning.bind(this)}>
+          {this.state.scannerVisible ?
+            <Scanner
+            onDetected={this.handleResult.bind(this)}
+            scanning={this.state.scannerVisible}/> : null}
+        </Modal>
        </Layout>
     )
   }

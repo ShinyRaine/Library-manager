@@ -61,16 +61,15 @@ class Root extends React.Component {
     this.setState({scannerVisible: true})
   }
   handleResult (result) {
-    this.stopScanning()
     const scannedCode = result.codeResult.code
-    this.setState({isbn : scannedCode})
-    const { fetchBookData, fetchTypeData } = this.props.bookActions
-    console.log(scannedCode)
-    if (scannedCode) {
-      fetchBookData('search', {
-        data: {isbn: scannedCode}
-      })
-    }
+    this.setState({scannerVisible: false,isbn : scannedCode})
+    // const { fetchBookData, fetchTypeData } = this.props.bookActions
+    // console.log(scannedCode)
+    // if (scannedCode) {
+    //   fetchBookData('search', {
+    //     data: {isbn: scannedCode}
+    //   })
+    // }
   }
   stopScanning () {
     this.setState({scannerVisible: false, isbn: ''})
@@ -147,9 +146,10 @@ class Root extends React.Component {
         <Modal
           visible={this.state.scannerVisible}
           onCancel={this.stopScanning.bind(this)}>
-          <Scanner
+          {this.state.scannerVisible ?
+            <Scanner
             onDetected={this.handleResult.bind(this)}
-            onCancel={this.stopScanning.bind(this)}/>
+            scanning={this.state.scannerVisible}/> : null}
         </Modal>
         <Modal
           title="输入isbn借书"
