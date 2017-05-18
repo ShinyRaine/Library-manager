@@ -15,7 +15,7 @@ class Scanner extends React.Component {
           constraints: {
               width: 800,
               height: 600,
-              deviceId: 0,
+              deviceId: props && props.deviceId,
               facingMode: "environment",
           }
         }

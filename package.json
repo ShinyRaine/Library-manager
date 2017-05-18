@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npm run build",
+    "start": "npm run build && node server.js",
     "dev": "cross-env NODE_ENV=dev nodemon server.js --ignore app/",
-    "build": "cross-env NODE_ENV=prod webpack --colors --display-error-details --config ./webpack.config.prod.js && node server.js "
+    "build": "cross-env NODE_ENV=prod webpack --colors --display-error-details --config ./webpack.config.prod.js  "
   },
   "repository": {
     "type": "git",

@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: './app/app.js',
   output: {
-    path: __dirname + './static',
+    path: __dirname + './dist',
     filename: '[name].js'
   },
   plugins: [
@@ -63,7 +63,7 @@ module.exports = {
       {
         test: /\.js$/,
         loaders: [ 'babel-loader' ],
-        exclude: /node_modules/,
+        exclude: /(node_modules|quagga\.js)/,
         include: __dirname
       },
     ]

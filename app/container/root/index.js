@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Modal, Table, Button, Input, Cascader, message as Message } from 'antd'
+import { Layout, Modal, Table, Button, Select, Input, Cascader, message as Message } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import './style.scss'
@@ -20,11 +20,16 @@ class Root extends React.Component {
     super(props)
     this.state = {
       scannerVisible: false,
+      deviceId: 0,
+      devices: [],
       infoVisible: false,
       isbn: ''
     }
   }
   componentDidMount() {
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+      this.setState({devices: devices.filter(info => info.kind === 'videoinput')})
+    })
     const { fetchBookData, fetchTypeData } = this.props.bookActions
     fetchBookData('book')
     fetchTypeData('all')
@@ -94,6 +99,9 @@ class Root extends React.Component {
       fetchBookData('search', {isbn: value})
     }
   }
+  selectDevice(value) {
+    this.setState({deviceId: value})
+  }
   render(){
     const { message, books } = this.props.state.user
     const { data, filtedata, searchRes, loadingData } = this.props.state.book
@@ -127,6 +135,7 @@ class Root extends React.Component {
       <Sider width={200} style={{ background: '#fff' }}>
         <Sidebar list={list} action={this.handleFilter.bind(this)}/>
       </Sider>)
+      console.log(this.state.devices);
     return (
       <Layout>
         <Head user={localStorage.userName}/>
@@ -146,10 +155,19 @@ class Root extends React.Component {
         <Modal
           visible={this.state.scannerVisible}
           onCancel={this.stopScanning.bind(this)}>
-          {this.state.scannerVisible ?
+          <Select style={{ width: 120 }} onChange={this.selectDevice.bind(this)}>
+            {
+                this.state.devices.map(videoDevice => ([
+                  <Select.Option value={videoDevice.deviceId}>{videoDevice.label}</Select.Option>
+                ]))
+            }
+          </Select>
+          {this.state.scannerVisible &&
             <Scanner
-            onDetected={this.handleResult.bind(this)}
-            scanning={this.state.scannerVisible}/> : null}
+              deviceId={this.state.deviceId}
+              scanning={this.state.scannerVisible}
+              onDetected={this.handleResult.bind(this)}
+            />}
         </Modal>
         <Modal
           title="输入isbn借书"

@@ -19,9 +19,9 @@ const app = express()
 // 	secret: 'library-manager',
 // 	store: store
 // }))
-const webpack = require('webpack')
 
 if (process.env.NODE_ENV === 'dev') {
+	const webpack = require('webpack')
 	let webpackDevMiddleware = require('webpack-dev-middleware'),
 	    webpackHotMiddleware = require('webpack-hot-middleware'),
 	    webpackDevConfig = require('./webpack.config.js')
