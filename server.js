@@ -60,7 +60,7 @@ const userCollector = require('./lib/collectors/user.collector')
 const tokenCollector = require('./lib/collectors/token.collector')
 const bookCollector = require('./lib/collectors/book.collector')
 const typeCollector = require('./lib/collectors/type.collector')
-
+userCollector.init()
 app.use([/\/books\/(borrow|return)/,'/admin/*', /\/user\/(remove|checkmanage|setmanage|borrowed)/], tokenCollector.checklogin)
 
 app.get('/books', bookCollector.all)
