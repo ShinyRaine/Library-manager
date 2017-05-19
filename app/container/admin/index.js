@@ -45,9 +45,9 @@ class Admin extends React.Component {
     fetchUserData('checkManage', {token: token}).then(() => {
       const { resCode, manage, message } = this.props.state.user
       let routeTo = message.match(/过期/) ? browserHistory.push.bind(null, '/login') : browserHistory.push.bind(null, '/')
-      if (resCode === 'error') {
+      if (resCode === 'error' || manage == 0) {
         this.showDialog({
-          title: message,
+          title: manage == 0 ? '权限不足' : message,
           type: 'user',
           cb: routeTo
         })
@@ -121,7 +121,7 @@ class Admin extends React.Component {
     fetchData('remove', data).then(() => {
       this.showDialog({
         success: type === 'user' ? this.props.state.user.resCode : this.props.state.user.message,
-        title: type === 'user' ? this.props.state.book.resCode : this.props.state.book.message,
+        title: type === 'user' ? this.props.state.user.message : this.props.state.book.message,
         type: type,
         cb: fetchData.bind(null, type)
       })
