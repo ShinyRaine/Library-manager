@@ -12,24 +12,17 @@ import './style.scss'
 import Head from '../../components/head'
 import Sidebar from '../../components/sidebar'
 import { getSideList, getFormList } from '../../api/tools'
-import Scanner from '../../components/scanner'
 import FloatBtn from '../../components/floatBtn'
 
 class Root extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      scannerVisible: false,
-      deviceId: 0,
-      devices: [],
       infoVisible: false,
       isbn: ''
     }
   }
   componentDidMount() {
-    navigator.mediaDevices.enumerateDevices().then(devices => {
-      this.setState({devices: devices.filter(info => info.kind === 'videoinput')})
-    })
     const { fetchBookData, fetchTypeData } = this.props.bookActions
     fetchBookData('book')
     fetchTypeData('all')
@@ -61,23 +54,6 @@ class Root extends React.Component {
   }
   showInfo() {
     this.setState({infoVisible: true})
-  }
-  showScanner() {
-    this.setState({scannerVisible: true})
-  }
-  handleResult (result) {
-    const scannedCode = result.codeResult.code
-    this.setState({scannerVisible: false,isbn : scannedCode})
-    // const { fetchBookData, fetchTypeData } = this.props.bookActions
-    // console.log(scannedCode)
-    // if (scannedCode) {
-    //   fetchBookData('search', {
-    //     data: {isbn: scannedCode}
-    //   })
-    // }
-  }
-  stopScanning () {
-    this.setState({scannerVisible: false, isbn: ''})
   }
   clearInfo () {
     this.setState({infoVisible: false, isbn: ''})
@@ -135,7 +111,6 @@ class Root extends React.Component {
       <Sider width={200} style={{ background: '#fff' }}>
         <Sidebar list={list} action={this.handleFilter.bind(this)}/>
       </Sider>)
-      console.log(this.state.devices);
     return (
       <Layout>
         <Head user={localStorage.userName}/>
@@ -153,23 +128,6 @@ class Root extends React.Component {
           <FloatBtn name="借书" onClick={this.showInfo.bind(this)} />
         </Content>
         <Modal
-          visible={this.state.scannerVisible}
-          onCancel={this.stopScanning.bind(this)}>
-          <Select style={{ width: 120 }} onChange={this.selectDevice.bind(this)}>
-            {
-                this.state.devices.map(videoDevice => ([
-                  <Select.Option value={videoDevice.deviceId}>{videoDevice.label}</Select.Option>
-                ]))
-            }
-          </Select>
-          {this.state.scannerVisible &&
-            <Scanner
-              deviceId={this.state.deviceId}
-              scanning={this.state.scannerVisible}
-              onDetected={this.handleResult.bind(this)}
-            />}
-        </Modal>
-        <Modal
           title="输入isbn借书"
           visible={this.state.infoVisible}
           onCancel={this.clearInfo.bind(this)}
@@ -180,7 +138,7 @@ class Root extends React.Component {
               确认借书
             </Button>,
           ]}>
-            <Input placeholder="输入isbn" value={this.state.isbn} onChange={this.handleInput.bind(this)}  /> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
+            <Input placeholder="输入isbn" value={this.state.isbn} onChange={this.handleInput.bind(this)} />
             {searchRes ? (
               <div className="infobox">
                 <img src={searchRes.pic} />
