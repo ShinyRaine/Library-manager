@@ -4,8 +4,9 @@ import './style.scss'
 class Scanner extends React.Component {
   constructor(props){
     super(props)
+    console.log(props.deviceId);
     this._scanner = Quagga
-      .decoder({readers: ['ean_reader','code_39_reader','code_128_reader',]})
+      .decoder({readers: ['ean_reader','code_39_reader','code_128_reader']})
       .locator({patchSize: 'medium'})
       .fromSource({
         target: '.overlay_content',
@@ -22,15 +23,15 @@ class Scanner extends React.Component {
       })
   }
   componentDidMount() {
-      this._scanner
-          .addEventListener('detected', this.props.onDetected)
-          .start();
+    this._scanner
+      .addEventListener('detected', this.props.onDetected)
+      .start()
   }
 
   componentWillUnmount() {
-      this._scanner
-          .removeEventListener('detected', this.props.onDetected)
-          .stop();
+    this._scanner
+      .removeEventListener('detected', this.props.onDetected)
+      .stop()
   }
   render() {
     return (

@@ -135,7 +135,6 @@ class Root extends React.Component {
       <Sider width={200} style={{ background: '#fff' }}>
         <Sidebar list={list} action={this.handleFilter.bind(this)}/>
       </Sider>)
-      console.log(this.state.devices);
     return (
       <Layout>
         <Head user={localStorage.userName}/>
@@ -155,13 +154,6 @@ class Root extends React.Component {
         <Modal
           visible={this.state.scannerVisible}
           onCancel={this.stopScanning.bind(this)}>
-          <Select style={{ width: 120 }} onChange={this.selectDevice.bind(this)}>
-            {
-                this.state.devices.map(videoDevice => ([
-                  <Select.Option value={videoDevice.deviceId}>{videoDevice.label}</Select.Option>
-                ]))
-            }
-          </Select>
           {this.state.scannerVisible &&
             <Scanner
               deviceId={this.state.deviceId}
@@ -180,7 +172,16 @@ class Root extends React.Component {
               确认借书
             </Button>,
           ]}>
-            <Input placeholder="输入isbn" value={this.state.isbn} onChange={this.handleInput.bind(this)}  /> <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
+            <Input placeholder="输入isbn" value={this.state.isbn} onChange={this.handleInput.bind(this)}  />
+            <span>选择扫码设备</span>
+              <Select style={{ width: 120 }} onChange={this.selectDevice.bind(this)}>
+                {
+                    this.state.devices.map(videoDevice => ([
+                      <Select.Option value={videoDevice.deviceId}>{videoDevice.label}</Select.Option>
+                    ]))
+                }
+              </Select>
+             <Button onClick={this.showScanner.bind(this)}>扫描条码</Button>
             {searchRes ? (
               <div className="infobox">
                 <img src={searchRes.pic} />
