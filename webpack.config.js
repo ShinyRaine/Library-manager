@@ -12,9 +12,9 @@ module.exports = {
           './app/app.js'
   ],
   output: {
-    path: __dirname + './static',
+    path: __dirname + '/static',
     filename: '[name].js',
-    publicPath: 'http://localhost:3000/'
+    publicPath: './'
   },
   plugins: [
     new ExtractTextPlugin('style.css'),

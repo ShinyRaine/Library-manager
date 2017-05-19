@@ -1,4 +1,6 @@
 const express = require('express')
+
+
 // const session = require('express-session')
 // const MongoDBStore = require('connect-mongodb-session')(session)
 
@@ -88,7 +90,15 @@ app.post('/books/search', bookCollector.searchBook)
 app.post('/books/borrow', bookCollector.borrowBook)
 app.post('/books/return', bookCollector.returnBook)
 
+const https = require('https')
+const fs = require('fs')
+const privateKey  = fs.readFileSync('./ssl/private.pem', 'utf8')
+const certificate = fs.readFileSync('./ssl/file.crt', 'utf8')
+const credentials = {key: privateKey, cert: certificate}
 
 app.listen(3000,function () {
 	console.log('listening on *:3000')
+})
+https.createServer(credentials, app).listen(3001, function() {
+  console.log('HTTPS Server is running on: 3001')
 })
