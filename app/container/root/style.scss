@@ -12,6 +12,15 @@
 .infobox {
   margin: 10px auto;
 }
+.ant-confirm .ant-modal-body {
+  padding: 16px
+}
+.ant-confirm .ant-confirm-btns {
+  margin-top: 0
+}
+.ant-confirm-body .ant-confirm-content {
+  margin-left: 0
+}
 @media screen and (max-width: 600px) {
   .warp {
     padding: 0

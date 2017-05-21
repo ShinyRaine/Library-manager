@@ -147,6 +147,20 @@ class Admin extends React.Component {
         }
       })
   }
+  showBorrowInfo(record) {
+    const info = record.meta
+    const columns = [
+      { title: '借阅人', dataIndex: 'borrowUser', key: 'borrowUser'},
+      { title: '借阅时间', dataIndex: 'borrowTime', key: 'borrowTime', render: (text) => {
+        let date = new Date(text)
+        return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+      }}
+    ]
+    Modal.info({
+      title: '借阅信息',
+      content: <Table columns={columns} dataSource={info}/>
+    })
+  }
   layout() {
     const listData = this.props.state.type.data || []
     const list = getSideList( listData )
@@ -166,7 +180,14 @@ class Admin extends React.Component {
             filterDropdown: (
               <Cascader options={types} onChange={this.handleFilter.bind(this)}/>
             )},
-          { title: '数量', dataIndex: 'sumNum', key: 'sumNum' },
+          { title: '总数', dataIndex: 'sumNum', key: 'sumNum' },
+          { title: '借出数', dataIndex: 'borrowNum', key: 'borrowNum', render: (text, record) => {
+            if (text) {
+              return <a onClick={this.showBorrowInfo.bind(this, record)}>{text} 查看借阅信息</a>
+            } else {
+              return <span>{text}</span>
+            }
+          } },
           { title: '操作', dataIndex: '', key: 'admin', render: (text,record) => {
             if (deviceWidth < 600) {
               return(<div className="btns">

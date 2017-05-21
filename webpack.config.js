@@ -14,7 +14,7 @@ module.exports = {
   output: {
     path: __dirname + '/static',
     filename: '[name].js',
-    publicPath: 'https://113.54.228.67:3001/'
+    publicPath: 'http://localhost:3000/'
   },
   plugins: [
     new ExtractTextPlugin('style.css'),
