@@ -44,15 +44,6 @@ if (process.env.NODE_ENV === 'dev') {
 
 
 app.use(express.static(__dirname + '/static'))
-// 页面路由重定向
-app.use((req, res, next) => {
-  if (req.method === 'GET' && req.path === "/login" || req.path === "/user" || req.path === "/signup" || req.path === "/admin" ) {
-		return res.sendFile(__dirname + '/static' + '/index.html')
-  }else {
-		return next()
-	}
-	// console.log(req.session.loggedIn)
-})
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
@@ -63,7 +54,7 @@ const tokenCollector = require('./lib/collectors/token.collector')
 const bookCollector = require('./lib/collectors/book.collector')
 const typeCollector = require('./lib/collectors/type.collector')
 userCollector.init()
-app.use([/\/books\/(borrow|return)/,'/admin/*', /\/user\/(remove|checkmanage|setmanage|borrowed)/], tokenCollector.checklogin)
+app.use([/\/books\/(borrow|return)/,/\/admin\/.*/, /\/user\/(remove|checkmanage|setmanage|borrowed)/], tokenCollector.checklogin)
 
 app.get('/books', bookCollector.all)
 app.get('/types', typeCollector.all)
@@ -90,6 +81,15 @@ app.post('/books/search', bookCollector.searchBook)
 app.post('/books/borrow', bookCollector.borrowBook)
 app.post('/books/return', bookCollector.returnBook)
 
+// 页面路由重定向
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.originalUrl.match(/css|js/) ) {
+		return res.sendFile(__dirname + '/static' + '/index.html')
+  }else {
+		return next()
+	}
+	// console.log(req.session.loggedIn)
+})
 const https = require('https')
 const fs = require('fs')
 const privateKey  = fs.readFileSync('./ssl/private.pem', 'utf8')

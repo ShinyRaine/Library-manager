@@ -84,7 +84,6 @@ class Root extends React.Component {
     const list = getSideList( this.props.state.type.data || [] )
     const types = getFormList( this.props.state.type.data || [] )
     const columns = [
-      { title: 'ISBN', dataIndex: 'isbn', key: 'isbn' },
       { title: '书名', dataIndex: 'title', key: 'title' },
       { title: '作者', dataIndex: 'author', key: 'author' },
       { title: '分类',

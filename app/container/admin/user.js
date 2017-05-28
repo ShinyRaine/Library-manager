@@ -44,7 +44,7 @@ class Admin extends React.Component {
 
     fetchUserData('checkManage', {token: token}).then(() => {
       const { resCode, manage, message } = this.props.state.user
-      let routeTo = resCode === 'error' ? browserHistory.push.bind(null, '/login') : browserHistory.push.bind(null, '/')
+      let routeTo = message.match(/过期/) ? browserHistory.push.bind(null, '/login') : browserHistory.push.bind(null, '/')
       if (resCode === 'error' || manage == 0) {
         this.showDialog({
           title: manage == 0 ? '权限不足' : message,
@@ -307,7 +307,7 @@ class Admin extends React.Component {
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>
             <Button onClick={this.changeType.bind(this, 'user')} >管理用户</Button>
           </Content>
-          {this.layout()}
+          {this.props.children}
         </Content>
         <BookForm title="请输入要添加书目的ISBN"
           visible={this.state.bookFormVisible}

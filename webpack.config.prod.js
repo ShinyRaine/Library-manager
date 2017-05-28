@@ -7,7 +7,10 @@ const extractSass = new ExtractTextPlugin({
     disable: process.env.NODE_ENV === "dev"
 });
 module.exports = {
-  entry: './app/app.js',
+  entry: {
+    main: './app/app.js',
+    vendor: ['react', 'redux', 'react-redux', 'react-router']
+  },
   output: {
     path: __dirname + '/static',
     filename: '[name].js'
