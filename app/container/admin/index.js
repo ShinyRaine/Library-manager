@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 import * as BookActions from '../../actions/book.action'
 import * as UserActions from '../../actions/user.action'
 
-import { Layout, Button, Modal, Table, message, Cascader } from 'antd'
+import { Layout, Button, Modal, Table, message as Message, Cascader } from 'antd'
 const { Header, Content, Sider } = Layout
 
 import Head from '../../components/head'
@@ -47,7 +47,7 @@ class Admin extends React.Component {
       let routeTo = resCode === 'error' ? browserHistory.push.bind(null, '/login') : browserHistory.push.bind(null, '/')
       if (resCode === 'error' || manage == 0) {
         this.showDialog({
-          title: manage == 0 ? '权限不足' : message,
+          title: resCode === 'error' ? message : '权限不足',
           type: 'user',
           cb: routeTo
         })
@@ -140,10 +140,10 @@ class Admin extends React.Component {
       .then(() => {
         const { resCode, resMessage } = this.props.state.type
         if(resCode === 'success') {
-          message.success(resMessage)
+          Message.success(resMessage)
           fetchTypeData('all')
         } else {
-          message.error(resMessage)
+          Message.error(resMessage)
         }
       })
   }
@@ -208,7 +208,7 @@ class Admin extends React.Component {
                           <AddPopover key="delet" name="删除类目" proList={listData} onSubmit={this.handleTypeSubmit.bind(this, 'removetype')} />]
         const bar = deviceWidth < 600 ? (
           <div>
-            <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+            <Sidebar defaultSelecte={this.props.state.book.type} list={list} action={this.handleFilter.bind(this)}/>
             <div className="btns">
               { popovers }
               <Button type="primary" className="addbookbtn" onClick={this.showAddBookDialog.bind(this)}>添加书目</Button>
@@ -217,8 +217,7 @@ class Admin extends React.Component {
         ) : (
           <Sider width={200} style={{ background: '#fff' }}>
             { popovers }
-
-            <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+            <Sidebar defaultSelecte={this.props.state.book.type} list={list} action={this.handleFilter.bind(this)}/>
           </Sider>)
         return (
           <Layout className="main-layout">

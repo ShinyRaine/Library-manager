@@ -36,6 +36,7 @@ class Sidebar extends React.Component {
           defaultOpenKeys={['sub1']}
           style={{ zIndex: "100",height: '100%' }}
           onClick={this.handleSelect.bind(this)}
+          defaultSelectedKeys={this.props.defaultSelecte || ['all']}
         >
           <Menu.Item key='all'>全部</Menu.Item>
           {menu}

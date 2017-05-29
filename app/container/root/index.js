@@ -105,10 +105,10 @@ class Root extends React.Component {
     ]
     const deviceWidth = document.documentElement.clientWidth
     const bar = deviceWidth < 600 ? (
-      <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+      <Sidebar defaultSelecte={this.props.state.book.type} list={list} action={this.handleFilter.bind(this)}/>
     ) : (
       <Sider width={200} style={{ background: '#fff' }}>
-        <Sidebar list={list} action={this.handleFilter.bind(this)}/>
+        <Sidebar defaultSelecte={this.props.state.book.type} list={list} action={this.handleFilter.bind(this)}/>
       </Sider>)
     return (
       <Layout>

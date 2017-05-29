@@ -37,6 +37,7 @@ export const fetchData = (type, options) => (dispatch) => {
         .then(res => res.json())
         .then(json => {
           dispatch(receiveManagecode(json))
+          dispatch(receiveUserMessage(json))
         })
       case 'setManage':
         return fetch('/user/setmanage', {

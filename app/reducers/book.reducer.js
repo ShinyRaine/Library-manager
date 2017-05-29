@@ -46,7 +46,7 @@ export default function book (state = initialState, action) {
             return item.type.join('') === action.text.join('')
           })
           return Object.assign({}, state, {
-            type: action.text.join(''),
+            type: action.text,
             filtedata: filtedata
           })
         }
