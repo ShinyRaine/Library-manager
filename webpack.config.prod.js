@@ -12,7 +12,7 @@ module.exports = {
     vendor: ['react', 'redux', 'react-redux', 'react-router']
   },
   output: {
-    path: __dirname + '/static',
+    path: __dirname + '/dist',
     filename: '[name].[chunkhash].js'
   },
   plugins: [

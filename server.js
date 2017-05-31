@@ -40,11 +40,10 @@ if (process.env.NODE_ENV === 'dev') {
 			}
 	}))
 	app.use(webpackHotMiddleware(compiler))
+	app.use(express.static(__dirname + '/static'))
+} else {
+	app.use(express.static(__dirname + '/dist', {maxAge: 1000 * 60 * 60 * 24 * 356}))
 }
-
-
-app.use(express.static(__dirname + '/static', {maxAge: 1000 * 60 * 60 * 24 * 356}))
-
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()) // parse application/json
