@@ -1,5 +1,5 @@
-import { receiveTypes, receiveTypeMessage } from '../actions/book.action'
 
+import { receiveTypes, receiveTypeMessage } from '../actions/book.action'
 const urls = {
   addtype: '/admin/type/new',
   removetype: '/admin/type/remove'

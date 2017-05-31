@@ -38,7 +38,7 @@ class Admin extends React.Component {
     }
   }
   componentDidMount() {
-    const { fetchUserData } = this.props.userActions
+    const { fetchUserData, resetUserReq } = this.props.userActions
     const { fetchBookData, fetchTypeData } = this.props.bookActions
     const token = localStorage.token
 
@@ -49,8 +49,13 @@ class Admin extends React.Component {
         this.showDialog({
           title: resCode === 'error' ? message : '权限不足',
           type: 'user',
-          cb: routeTo
+          cb: () => {
+            routeTo()
+            resetUserReq()
+          }
         })
+      } else {
+        resetUserReq()
       }
     })
     fetchTypeData('all')
@@ -183,7 +188,7 @@ class Admin extends React.Component {
           { title: '总数', dataIndex: 'sumNum', key: 'sumNum' },
           { title: '借出数', dataIndex: 'borrowNum', key: 'borrowNum', render: (text, record) => {
             if (text) {
-              return <a onClick={this.showBorrowInfo.bind(this, record)}>{text} 查看借阅信息</a>
+              return <a onClick={this.showBorrowInfo.bind(this, record)}>{text}</a>
             } else {
               return <span>{text}</span>
             }

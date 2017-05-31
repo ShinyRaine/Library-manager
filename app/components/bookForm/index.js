@@ -99,7 +99,16 @@ class bookModal extends React.Component {
     const title = this.state.title || this.props.title
     const data = this.props.data || {}
     const types = getFormList(this.props.state.type.data || [])
-
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 3},
+        sm: { span: 3},
+      },
+      wrapperCol: {
+        xs: { span: 20 },
+        sm: { span: 20 },
+      },
+    };
     return (
       <Modal
         title={title}
@@ -114,19 +123,21 @@ class bookModal extends React.Component {
           </Button>,
         ] }
         >
-        <Form className="login-form">
+        <Form className="book-form">
         <FormItem
+          {...formItemLayout}
           label="isbn"
           required="true"
           >
           {getFieldDecorator('isbn', {
             initialValue: data.isbn || ''
           })(
-            <Input ref={(input) => {this.isbnInput = input }}/>
+            <Input style={{width: 200}} ref={(input) => {this.isbnInput = input }}/>
           )}
           <Button onClick={this.handleInput.bind(this)}>获取信息</Button>
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="分类"
           required="true"
           >
@@ -137,6 +148,7 @@ class bookModal extends React.Component {
           )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="数量"
           required="true"
           >
@@ -147,6 +159,7 @@ class bookModal extends React.Component {
           )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="书名"
           required="true"
           >
@@ -157,6 +170,7 @@ class bookModal extends React.Component {
           )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="作者"
           >
           {getFieldDecorator('author', {
@@ -166,6 +180,7 @@ class bookModal extends React.Component {
         )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="译者"
           >
           {getFieldDecorator('translator', {
@@ -175,6 +190,7 @@ class bookModal extends React.Component {
         )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="出版日期"
           >
           {getFieldDecorator('publishTime', {
@@ -184,6 +200,7 @@ class bookModal extends React.Component {
         )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="简介"
           >
           {getFieldDecorator('description', {
@@ -193,6 +210,7 @@ class bookModal extends React.Component {
         )}
         </FormItem>
         <FormItem
+          {...formItemLayout}
           label="封面"
           >
           {getFieldDecorator('pic', {

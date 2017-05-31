@@ -1,3 +1,6 @@
+import { Promise } from 'es6-promise'
+window.Promise = Promise
+
 import React from 'react'
 import ReactDom from 'react-dom'
 import { AppContainer } from 'react-hot-loader'

@@ -5,6 +5,7 @@
   ],
   "plugins": [
     "react-hot-loader/babel",
+    "transform-object-assign",
     ["import", { libraryName: "antd", style: "css" }]
   ]
 }

@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 
-app.use(express.static(__dirname + '/static'))
+app.use(express.static(__dirname + '/static', {maxAge: 1000 * 60 * 60 * 24 * 356}))
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true })) // parse application/x-www-form-urlencoded

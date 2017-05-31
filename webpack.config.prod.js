@@ -13,16 +13,16 @@ module.exports = {
   },
   output: {
     path: __dirname + '/static',
-    filename: '[name].js'
+    filename: '[name].[chunkhash].js'
   },
   plugins: [
-    new ExtractTextPlugin('style.css'),
+    new ExtractTextPlugin('[name].[chunkhash].css'),
     new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './app/index.tmpl'),
         inject: true,
         hash: false,
         filename: 'index.html',
-        minify: false,
+        minify: true,
         favicon: false,
     }),
     new webpack.optimize.UglifyJsPlugin({
@@ -34,7 +34,6 @@ module.exports = {
        // 在UglifyJs删除没有用到的代码时不输出警告
        warnings: false,
        // 删除所有的 `console` 语句
-       // 还可以兼容ie浏览器
        drop_console: true,
        // 内嵌定义了但是只用到一次的变量
        collapse_vars: true,
