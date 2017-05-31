@@ -22,7 +22,7 @@ module.exports = {
         inject: true,
         hash: false,
         filename: 'index.html',
-        minify: true,
+        minify: false,
         favicon: false,
     }),
     new webpack.optimize.UglifyJsPlugin({
