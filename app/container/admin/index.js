@@ -158,7 +158,7 @@ class Admin extends React.Component {
       { title: '借阅人', dataIndex: 'borrowUser', key: 'borrowUser'},
       { title: '借阅时间', dataIndex: 'borrowTime', key: 'borrowTime', render: (text) => {
         let date = new Date(text)
-        return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+        return date.getFullYear() + '-' + (+date.getMonth() + 1) + '-' + date.getDate()
       }}
     ]
     Modal.info({

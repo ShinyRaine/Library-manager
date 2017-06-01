@@ -61,7 +61,7 @@ class User extends React.Component {
       { title: '分类', dataIndex: 'type', key: 'type',render: (text) => text.join('/') },
       { title: '借阅时间', dataIndex: 'borrowTime', key: 'borrowTime', render: (text) => {
         let date = new Date(text)
-        return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+        return date.getFullYear() + '-' + (+date.getMonth() + 1) + '-' + date.getDate()
       } },
       { title: '操作', dataIndex: '', key: 'admin', render: (text, record) => (
         <Button type="primary" onClick={this.onReturn.bind(this, record)}>归还</Button>
