@@ -9,7 +9,8 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: {
     main: './app/app.js',
-    vendor: ['react', 'redux', 'react-redux', 'react-router']
+    antd: ['antd/lib/form', 'antd/lib/table', 'antd/lib/menu'],
+    vendor: ['react', 'redux', 'react-dom', 'react-redux', 'react-router']
   },
   output: {
     path: __dirname + '/dist',
@@ -24,6 +25,10 @@ module.exports = {
         filename: 'index.html',
         minify: false,
         favicon: false,
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ["antd", "vendor"],
+      minChunks: Infinity
     }),
     new webpack.optimize.UglifyJsPlugin({
       // 最紧凑的输出

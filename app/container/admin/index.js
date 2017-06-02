@@ -39,7 +39,7 @@ class Admin extends React.Component {
   }
   componentDidMount() {
     const { fetchUserData, resetUserReq } = this.props.userActions
-    const { fetchBookData, fetchTypeData } = this.props.bookActions
+    const { fetchBookData, fetchTypeData, resetBookReq } = this.props.bookActions
     const token = localStorage.token
 
     fetchUserData('checkManage', {token: token}).then(() => {
@@ -58,6 +58,7 @@ class Admin extends React.Component {
         resetUserReq()
       }
     })
+    resetBookReq()
     fetchTypeData('all')
     fetchBookData('book')
     fetchUserData('user')
@@ -164,6 +165,12 @@ class Admin extends React.Component {
     Modal.info({
       title: '借阅信息',
       content: <Table columns={columns} dataSource={info}/>
+    })
+  }
+  searchBook(key) {
+    const { fetchBookData, bookRequest } = this.props.bookActions
+    fetchBookData('search', {key: key}).then(() => {
+      this.setState({type: 'book'})
     })
   }
   layout() {
@@ -305,7 +312,7 @@ class Admin extends React.Component {
 
     return (
       <Layout>
-        <Head user={localStorage.userName}/>
+        <Head user={localStorage.userName} onSearch={this.searchBook.bind(this)}/>
         <Content className="warp">
           <Content className="adminbar">
             <Button onClick={this.changeType.bind(this, 'book')} >管理图书</Button>

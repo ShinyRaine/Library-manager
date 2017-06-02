@@ -10,7 +10,11 @@ class Head extends React.Component {
     super(props)
   }
   search(value) {
-    console.log(value)
+    if (value) {
+      if (this.props.onSearch) {
+        this.props.onSearch(value)
+      }
+    }
   }
   logout() {
     localStorage.userName = ''
@@ -53,10 +57,10 @@ class Head extends React.Component {
             <Menu.Item key="admin"><Link to="/admin">管理</Link></Menu.Item>
             {rightList(user)}
             <Menu.Item key="" className="right-list search">
-              <Input.Search
+              {this.props.onSearch && <Input.Search
                         placeholder="搜索"
                         onSearch={this.search.bind(this)}
-                      />
+                      />}
             </Menu.Item>
           </Menu>
       </Header>

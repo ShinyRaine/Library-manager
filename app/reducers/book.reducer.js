@@ -15,7 +15,9 @@ export default function book (state = initialState, action) {
       case "RESET_BOOK_REQ":
         return Object.assign({}, state, {
           resCode: '',
-          message: ''
+          message: '',
+          filtedata: null,
+          searchRes: null
         })
       case "RECEIVE_BOOK_MESSAGE":
         return Object.assign({}, state, {
@@ -51,6 +53,12 @@ export default function book (state = initialState, action) {
           })
         }
       case "RECEIVE_SEARCHRES":
+        if (typeof(action.res.length) === 'number') {
+          return Object.assign({}, state, {
+            filtedata: action.res,
+            loadingData: false
+          })
+        }
         return Object.assign({}, state, {
           searchRes: action.res,
           loadingData: false

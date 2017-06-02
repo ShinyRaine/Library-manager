@@ -23,7 +23,8 @@ class Root extends React.Component {
     }
   }
   componentDidMount() {
-    const { fetchBookData, fetchTypeData } = this.props.bookActions
+    const { fetchBookData, fetchTypeData, resetBookReq } = this.props.bookActions
+    resetBookReq()
     fetchBookData('book')
     fetchTypeData('all')
   }
@@ -78,6 +79,10 @@ class Root extends React.Component {
   selectDevice(value) {
     this.setState({deviceId: value})
   }
+  searchBook(key) {
+    const { fetchBookData, bookRequest } = this.props.bookActions
+    fetchBookData('search', {key: key})
+  }
   render(){
     const { message, books } = this.props.state.user
     const { data, filtedata, searchRes, loadingData } = this.props.state.book
@@ -112,7 +117,7 @@ class Root extends React.Component {
       </Sider>)
     return (
       <Layout>
-        <Head user={localStorage.userName}/>
+        <Head user={localStorage.userName} onSearch={this.searchBook.bind(this)}/>
         <Content className="warp">
           <Layout className="main-layout">
             {bar}
